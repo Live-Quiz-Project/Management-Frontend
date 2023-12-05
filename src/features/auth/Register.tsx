@@ -53,7 +53,6 @@ export default function Register() {
         <button className="w-max py-2 px-8 bg-ocean-blue text-white rounded-lg">
           Register
         </button>
-        {/* google register here */}
       </div>
     </form>
   );

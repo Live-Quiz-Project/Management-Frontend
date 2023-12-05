@@ -4,6 +4,8 @@ import { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logIn } from "./store/slice";
+import { jwtDecode } from "jwt-decode";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 export default function Login() {
   const dispatch = useDispatch<StoreDispatch>();
@@ -18,9 +20,10 @@ export default function Login() {
         email,
         password,
       });
+      console.log(data)
       dispatch(
         logIn({
-          token: data.token,
+          token: data.accessToken,
           user: {
             id: data.id,
             name: data.name,
@@ -73,7 +76,25 @@ export default function Login() {
         <button className="w-max py-2 px-8 bg-pastel-orange text-white rounded-lg">
           Log In
         </button>
-        {/* google login here */}
+        <GoogleOAuthProvider clientId="1048387093330-488nf8o6cm1ufh1g26lbs6456anjpgc9.apps.googleusercontent.com">
+          <div className="flex-1 flex justify-center items-center">
+            <div className="w-full max-w-xs">
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  if (credentialResponse.credential) {
+                    const decoded = jwtDecode(credentialResponse.credential);
+                    console.log(decoded);
+                    const googleId = decoded.sub;
+                    console.log("Google ID:", googleId);
+                  } else {
+                    console.log("No credentials received");
+                  }
+                }}
+                onError={() => console.log("Login Failed")}
+              />
+            </div>
+          </div>
+        </GoogleOAuthProvider>
       </div>
     </form>
   );
