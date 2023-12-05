@@ -1,15 +1,39 @@
 import TextInput from "@/common/layouts/auth/components/TextInput";
+import { http } from "@/common/services/axios";
 import { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { createUser } from "./store/slice";
 
 export default function Register() {
+  const dispatch = useDispatch<StoreDispatch>();
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      console.error("Passwords do not match");
+      return;
+    }
+
+    try {
+      const { data, status: _ } = await http.post("/users", {
+        name,
+        email,
+        password
+      });
+      console.log(data)
+      dispatch(
+         dispatch(createUser(data))
+      );
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
