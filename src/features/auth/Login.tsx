@@ -97,6 +97,8 @@ export default function Login() {
             value={password}
             handleOnInput={(e) => setPassword(e.currentTarget.value)}
           />{passwordError && <p style={{ color: 'red', fontSize: '12px', textAlign: 'left', marginTop: '4px'}}>{passwordError}</p>}
+          </div>
+          <div className="w-full flex flex-col justify-center items-center space-y-4 relative">
           <Link
             className="hover:text-pastel-orange hover:underline"
             to="/forgot"
@@ -112,7 +114,9 @@ export default function Login() {
               Create one
             </Link>
           </p>
-        </div>
+          </div>
+          
+        
         <button className="w-max py-2 px-8 bg-pastel-orange text-white rounded-lg">
           Log In
         </button>
