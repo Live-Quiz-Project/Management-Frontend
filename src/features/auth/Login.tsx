@@ -11,29 +11,46 @@ export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
   async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    try {
-      const { data, status: _ } = await http.post("/login", {
-        email,
-        password,
-      });
-      console.log(data)
-      dispatch(
-        logIn({
-          token: data.accessToken,
-          user: {
-            id: data.id,
-            name: data.name,
-            email: data.email,
-          },
-        })
-      );
-      navigate("/");
-    } catch (error) {
-      console.error(error);
+
+    if (!email) {
+      setEmailError("Email is required");
+    } else {
+      setEmailError("");
+    }
+
+    if (!password) {
+      setPasswordError("Password is required");
+    } else {
+      setPasswordError("");
+    }
+
+    if (email && password) {
+      try {
+        const { data, status: _ } = await http.post("/login", {
+          email,
+          password,
+        });
+        console.log(data);
+        dispatch(
+          logIn({
+            token: data.accessToken,
+            user: {
+              id: data.id,
+              name: data.name,
+              email: data.email,
+            },
+          })
+        );
+        navigate("/");
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 
@@ -66,19 +83,20 @@ export default function Login() {
     >
       <div className="w-1/2 flex flex-col items-center space-y-10">
         <h1 className="">Log In</h1>
-        <div className="w-full flex flex-col justify-center items-center space-y-4 relative">
+        <div className="w-full flex flex-col justify-center items-start space-y-4 relative">
           <TextInput
             type="email"
             label="Email"
             value={email}
             handleOnInput={(e) => setEmail(e.currentTarget.value)}
           />
+          {emailError && <p style={{ color: 'red', fontSize: '12px', textAlign: 'left', marginTop: '4px' }}>{emailError}</p>}
           <TextInput
             type="password"
             label="Password"
             value={password}
             handleOnInput={(e) => setPassword(e.currentTarget.value)}
-          />
+          />{passwordError && <p style={{ color: 'red', fontSize: '12px', textAlign: 'left', marginTop: '4px'}}>{passwordError}</p>}
           <Link
             className="hover:text-pastel-orange hover:underline"
             to="/forgot"
