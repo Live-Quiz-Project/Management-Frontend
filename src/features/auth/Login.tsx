@@ -1,11 +1,10 @@
 import TextInput from "@/common/layouts/auth/components/TextInput";
 import { http } from "@/common/services/axios";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState} from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logIn } from "./store/slice";
-import { jwtDecode } from "jwt-decode";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin, GoogleOAuthProvider} from "@react-oauth/google";
 
 export default function Login() {
   const dispatch = useDispatch<StoreDispatch>();
@@ -19,6 +18,28 @@ export default function Login() {
       const { data, status: _ } = await http.post("/login", {
         email,
         password,
+      });
+      console.log(data)
+      dispatch(
+        logIn({
+          token: data.accessToken,
+          user: {
+            id: data.id,
+            name: data.name,
+            email: data.email,
+          },
+        })
+      );
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function handleOnGoogleLogin(token : string) {
+    try {
+      const { data, status: _ } = await http.post("/google-signin", {
+        token
       });
       console.log(data)
       dispatch(
@@ -82,10 +103,7 @@ export default function Login() {
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
                   if (credentialResponse.credential) {
-                    const decoded = jwtDecode(credentialResponse.credential);
-                    console.log(decoded);
-                    const googleId = decoded.sub;
-                    console.log("Google ID:", googleId);
+                    handleOnGoogleLogin(credentialResponse.credential);
                   } else {
                     console.log("No credentials received");
                   }
