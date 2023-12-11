@@ -11,6 +11,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
   async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -97,7 +98,7 @@ export default function Login() {
         <button className="w-max py-2 px-8 bg-pastel-orange text-white rounded-lg">
           Log In
         </button>
-        <GoogleOAuthProvider clientId="1048387093330-488nf8o6cm1ufh1g26lbs6456anjpgc9.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId={googleClientId}>
           <div className="flex-1 flex justify-center items-center">
             <div className="w-full max-w-xs">
               <GoogleLogin
