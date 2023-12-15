@@ -28,8 +28,11 @@ export const auth = createSlice({
         },
       };
     },
+    refreshToken: (state, action: PayloadAction<string>) => {
+      state.value.token = action.payload;
+    },
   },
 });
 
-export const { logOut, logIn } = auth.actions;
+export const { logOut, logIn, refreshToken } = auth.actions;
 export default auth.reducer;

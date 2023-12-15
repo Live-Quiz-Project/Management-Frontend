@@ -2,12 +2,19 @@ import TextInput from "@/common/layouts/auth/components/TextInput";
 import { http } from "@/common/services/axios";
 import { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { logIn } from "./store/slice";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+import { logIn } from "@/features/auth/store/slice";
 
 export default function Login() {
   const dispatch = useDispatch<StoreDispatch>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams, _] = useSearchParams();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -28,6 +35,16 @@ export default function Login() {
           },
         })
       );
+      if (searchParams.get("code")) {
+        window.location.href = `${import.meta.env.VITE_LIVE_QUIZ_URL}?token=${
+          data.token
+        }&code=${searchParams.get("code")}`;
+        return;
+      }
+      if (location.state?.from?.pathname) {
+        navigate(location.state?.from?.pathname);
+        return;
+      }
       navigate("/");
     } catch (error) {
       console.error(error);

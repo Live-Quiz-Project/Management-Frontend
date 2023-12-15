@@ -1,4 +1,5 @@
-import { useTypedSelector } from "@/common/hooks/useTypedSelector";
+import FilledButton from "@/common/components/buttons/FilledButton";
+import useTypedSelector from "@/common/hooks/useTypedSelector";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +18,16 @@ export default function Home() {
   return (
     <div className="">
       <h1 className="">Home</h1>
+      <FilledButton
+        className="bg-pastel-orange"
+        onClick={() =>
+          window.open(
+            `${import.meta.env.VITE_LIVE_QUIZ_URL}?token=${auth.value.token}`
+          )
+        }
+      >
+        Join
+      </FilledButton>
     </div>
   );
 }

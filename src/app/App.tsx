@@ -1,6 +1,6 @@
 import "@/app/tailwind.css";
 import { RouterProvider } from "react-router-dom";
-import { router } from "@/app/routes";
+import router from "@/app/router";
 import { Suspense } from "react";
 import Loading from "@/features/Loading";
 import { store, persistor } from "@/app/store";

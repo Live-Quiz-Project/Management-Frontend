@@ -9,6 +9,15 @@ declare global {
   type InitAuthStoreState = {
     value: AuthStoreState;
   };
+
+  type QuizEditorStoreState = {
+    curPage: number;
+    curType: string;
+    quiz: Quiz | null;
+  };
+  type InitQuizEditorStoreState = {
+    value: QuizEditorStoreState;
+  };
 }
 
 export {};
