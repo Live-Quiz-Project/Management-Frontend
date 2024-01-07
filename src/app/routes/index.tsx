@@ -1,5 +1,7 @@
 import AuthLayout from "@/common/layouts/auth";
 import MainLayout from "@/common/layouts/main";
+import Forgot from "@/features/auth/ForgotPassword";
+import NewPassword from "@/features/auth/ResetPassword";
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -60,4 +62,16 @@ export const router = createBrowserRouter([
     path: "/setting",
     element: <Setting />,
   },
+  {
+    path: "/forgot",
+    element: <AuthLayout>
+    <Forgot />
+  </AuthLayout>
+  },
+  {
+    path: "/reset",
+    element: <AuthLayout>
+    <NewPassword />
+  </AuthLayout>
+  }
 ]);
