@@ -10,6 +10,7 @@ const Library = lazy(() => import("@/features/library"));
 const History = lazy(() => import("@/features/history"));
 const Help = lazy(() => import("@/features/help"));
 const Setting = lazy(() => import("@/features/setting"));
+const HistoryDetail = lazy(() => import("@/features/history/HistoryDetail"))
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +52,15 @@ export const router = createBrowserRouter([
         <History />
       </MainLayout>
     ),
+  },
+  {
+    path: "/history-detail",
+    element: 
+    // (
+    //   <MainLayout>
+        <HistoryDetail />
+    //   </MainLayout>
+    // ),
   },
   {
     path: "/help",

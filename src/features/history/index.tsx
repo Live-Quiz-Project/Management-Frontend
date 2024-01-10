@@ -2,23 +2,16 @@ import AppDropdown from "@/common/layouts/main/components/AppDropdown";
 import SearchField from "@/common/layouts/main/components/SearchField";
 import Table, { ColumnsType } from "antd/es/table";
 import { Chart } from "react-google-charts";
-import HistoryItem from "./HistoryItem";
+import HistoryItem from "./components/HistoryItem";
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function History() {
+  const navigate = useNavigate();
   const [liveHistoryList, setLiveHistoryList] = useState<
   IHistoryItem[]
 >(mockHistoryListData)
-  const chartData = [
-    ["City", "Population"],
-    ["New York City, NY", 8175000],
-    ["Los Angeles, CA", 3792000],
-    ["Chicago, IL", 2695000],
-    ["Houston, TX", 2328000],
-    ["Philadelphia, PA", 1568000],
-  ];
-
-  const columns: ColumnsType<IHistoryItem> = [
+  const columns: ColumnsType<IHistoryRow> = [
     {
       title: "",
       dataIndex: "image",
@@ -45,18 +38,6 @@ export default function History() {
     },
   ];
 
-  const chartOptions = {
-    title: "Population of Largest U.S. Cities",
-    chartArea: { width: "50%" },
-    hAxis: {
-      title: "Total Population",
-      minValue: 0,
-    },
-    vAxis: {
-      title: "City",
-    },
-  };
-
   const filterTypes = [
     { key: "1", label: "Questions" },
     { key: "2", label: "Paticipants" },
@@ -71,7 +52,8 @@ export default function History() {
     return liveHistoryList.map<IHistoryRow>((item, index) => {
       return {
         key: item.id,
-        image: (<div>{item.image}</div>),
+        image: (<div><img className="rounded-md" src={item.image} width="250" height="200"></img></div>
+        ),
         name: item.name,
         creator: item.creator,
         lastEdit: item.lastEdit,
@@ -93,21 +75,15 @@ export default function History() {
           <AppDropdown items={sortingFilter} indexSelected={1} minWidth={100} />
         </div>
       </div>
-      {/* <Chart
-        chartType="BarChart"
-        data={chartData}
-        options={chartOptions}
-        width="100%"
-        height="400px"
-      /> */}
       <Table
         columns={columns}
         dataSource={dataSource}
-        rowKey={(record) => record.id}
+        rowKey={(record) => record.key}
         pagination={false}
         onRow={(record, rowIndex) => ({
-          onClick: () => {}
+          onClick: event => navigate(`/history-detail`)
         })}
+        rowClassName={'cursor-pointer'}
       />
       {/* <HistoryItem 
       image=""
@@ -138,7 +114,7 @@ interface IHistoryRow {
 const mockHistoryListData : IHistoryItem[] = [
   {
     id: 1,
-    image: "Image",
+    image: "https://media.discordapp.net/attachments/988486551275200573/1149605252149026816/how-to-install-a-split-jamb-door-step-6.png?ex=65aa22d2&is=6597add2&hm=4f59872bca885805d274a5581790057cd43f694f784184bccc3215a7263519f1&=&format=webp&quality=lossless&width=1872&height=1170",
     name: "Kittiphon Singchom",
     creator: "You",
     lastEdit: "10 days ago.",
