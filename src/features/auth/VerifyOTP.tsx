@@ -3,16 +3,16 @@ import { http } from "@/common/services/axios";
 import { useState} from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Forgot() {
+export default function VerifyOTP() {
   const navigate = useNavigate();
   const [email, setEmail] = useState<string>("");
 
   async function handleOnSubmit() {
     try {
-       await http.post("/otp", {
+      const { data, status: _ } = await http.post("/otp", {
         email: email
       });
-      navigate('/verify-otp')
+      console.log(data)
     } catch (error) {
       console.error(error);
     }
@@ -28,7 +28,7 @@ export default function Forgot() {
         <div className="w-full flex flex-col justify-center items-start space-y-4 relative">
           <TextInput
             type="email"
-            label="Email"
+            label="OTP"
             handleOnInput={(e) => setEmail(e.currentTarget.value)}
           />
           </div>

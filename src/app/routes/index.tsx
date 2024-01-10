@@ -2,6 +2,7 @@ import AuthLayout from "@/common/layouts/auth";
 import MainLayout from "@/common/layouts/main";
 import Forgot from "@/features/auth/ForgotPassword";
 import NewPassword from "@/features/auth/ResetPassword";
+import VerifyOTP from "@/features/auth/VerifyOTP";
 import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -73,5 +74,11 @@ export const router = createBrowserRouter([
     element: <AuthLayout>
     <NewPassword />
   </AuthLayout>
-  }
+  },
+  {
+    path: "/verify-otp",
+    element: <AuthLayout>
+    <VerifyOTP />
+  </AuthLayout>
+  },
 ]);

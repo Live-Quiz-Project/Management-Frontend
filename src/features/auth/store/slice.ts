@@ -30,7 +30,7 @@ export const auth = createSlice({
     },
     createUser: (state, action: PayloadAction<User>) => {
       state.value.user = action.payload;
-    },
+    }
   },
 });
 
