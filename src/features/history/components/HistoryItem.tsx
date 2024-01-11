@@ -1,29 +1,39 @@
 import React, { useState } from "react";
 
 interface HistoryItemProps {
-    image: string
-    name: string
-    creator: string
-    lastEdit: string
+  image: string;
+  name: string;
+  creator: string;
+  lastEdit: string;
 }
 
-const HistoryItem: React.FC<HistoryItemProps> = ({image, name, creator, lastEdit }) => {
-
-
+const HistoryItem: React.FC<HistoryItemProps> = ({
+  image,
+  name,
+  creator,
+  lastEdit,
+}) => {
   return (
-    <div className="flex justify-around">
+    <div className="rounded-xl bg-peach p-4 mb-2 mt-2">
+      <div className="flex justify-between pl-2 pr-6">
         <div>
-            <p>Image</p>
+          <p>
+            <img
+              className="object-cover h-24 w-36 rounded-xl border-2 border-pastel-orange"
+              src={image}
+            />
+          </p>
         </div>
         <div>
-            <p>Kittiphon Singchom</p>
+          <p>{name}</p>
         </div>
         <div>
-            <p>You</p>
+          <p>{creator}</p>
         </div>
         <div>
-            <p>10 days ago.</p>
+          <p>{lastEdit}</p>
         </div>
+      </div>
     </div>
   );
 };
