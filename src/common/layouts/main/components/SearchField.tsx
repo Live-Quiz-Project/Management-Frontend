@@ -23,7 +23,7 @@ const SearchField: React.FC<SearchFieldProps> = ({ onSearch }) => {
       <div className="flex p-1.5 border border-pastel-orange rounded ">
         <SearchOutlinedIcon style={{ fontSize: 26, color: "#FFCC70", paddingTop: 6 }} />
         <Input
-        className={`border-white text-sm`}
+        className={`border-white text-sm w-96`}
         placeholder={'Search...'}
         value={searchQuery}
         onChange={handleSearchChange}

@@ -21,7 +21,7 @@ const CustomizableTable: React.FC<CustomizableTableProps> = ({ columns, data, st
       </thead>
       <tbody>
         {data.map((row, index) => (
-          <tr key={index} className='rounded-xl bg-peach' style={{ cursor: onRowClick ? 'pointer' : 'default' }} onClick={() => onRowClick && onRowClick(row, index)}>
+          <tr key={index} className='border-2 rounded-xl bg-peach' style={{ cursor: onRowClick ? 'pointer' : 'default' }} onClick={() => onRowClick && onRowClick(row, index)}>
             {columns.map((column) => (
               <td key={column.key} className="p-4">
                 {column.key === 'image' ? (
