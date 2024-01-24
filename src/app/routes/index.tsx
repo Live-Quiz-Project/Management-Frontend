@@ -54,13 +54,11 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: "/history-detail",
+    path: "/history/history-detail",
     element: 
-    // (
-    //   <MainLayout>
+    (
         <HistoryDetail />
-    //   </MainLayout>
-    // ),
+    ),
   },
   {
     path: "/help",

@@ -2,28 +2,9 @@ import AppDropdown from "@/common/layouts/main/components/AppDropdown";
 import SearchField from "@/common/layouts/main/components/SearchField";
 import { Chart } from "react-google-charts";
 import { useMemo, useState } from "react";
+import QuestionItem from "./components/QuestionItem";
 
 export default function HistoryDetail() {
-  const chartData = [
-    ["City", "Population"],
-    ["New York City, NY", 8175000],
-    ["Los Angeles, CA", 3792000],
-    ["Chicago, IL", 2695000],
-    ["Houston, TX", 2328000],
-    ["Philadelphia, PA", 1568000],
-  ];
-
-  const chartOptions = {
-    title: "Population of Largest U.S. Cities",
-    chartArea: { width: "50%" },
-    hAxis: {
-      title: "Total Population",
-      minValue: 0,
-    },
-    vAxis: {
-      title: "City",
-    },
-  };
 
   const filterTypes = [
     { key: "1", label: "Questions" },
@@ -49,12 +30,9 @@ export default function HistoryDetail() {
           <AppDropdown items={sortingFilter} indexSelected={1} minWidth={100} />
         </div>
       </div>
-      <Chart
-        chartType="BarChart"
-        data={chartData}
-        options={chartOptions}
-        width="100%"
-        height="400px"
+      <QuestionItem 
+      title="What is the capital city of Thailand"
+      data={[]}
       />
     </div>
   );

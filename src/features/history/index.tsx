@@ -1,8 +1,4 @@
-import AppDropdown from "@/common/layouts/main/components/AppDropdown";
 import SearchField from "@/common/layouts/main/components/SearchField";
-import Table, { ColumnsType } from "antd/es/table";
-import { Chart } from "react-google-charts";
-import HistoryItem from "./components/HistoryItem";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
@@ -72,7 +68,7 @@ export default function History() {
 
   const handleRowClick = (rowData : IHistoryItem, rowIndex : number) => {
     console.log('Row Clicked:', rowData, rowIndex);
-    navigate('/history-detail')
+    navigate('/history/history-detail')
   };
 
   return (
