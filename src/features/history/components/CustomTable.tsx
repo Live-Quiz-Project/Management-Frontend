@@ -20,7 +20,7 @@ const CustomizableTable: React.FC<CustomizableTableProps> = ({ columns, data, st
 </Flex>
 <Flex className='flex-col'>
   {data.map((row, index) => (
-    <div key={index} className='flex rounded-xl bg-peach my-2' style={{ cursor: onRowClick ? 'pointer' : 'default' }} onClick={() => onRowClick && onRowClick(row, index)}>
+    <div key={index} className='flex rounded-xl bg-peach my-2 border-2 border-transparent hover:border-pastel-orange' style={{ cursor: onRowClick ? 'pointer' : 'default' }} onClick={() => onRowClick && onRowClick(row, index)}>
       {columns.map((column) => (
         <div key={column.key} className="p-4" style={{ width: column.width }}>
           {column.key === 'image' ? (
