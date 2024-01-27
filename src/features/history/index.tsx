@@ -6,6 +6,9 @@ import CustomizableTable from "./components/CustomTable";
 
 export default function History() {
   const navigate = useNavigate();
+  const [isNameAscending, setIsNameAscending] = useState(true);
+  const [isCreatorAscending, setIsCreatorAscending] = useState(true);
+  const [isLastEditedAscending, setIsLastEditedAscending] = useState(true);
 
   const columns = [
     { key: 'image', header: '', width: '20%' },
@@ -41,6 +44,34 @@ export default function History() {
       action: <span></span>
     },
   ];
+  const [sortedData, setSortedData] = useState(data);
+
+  const toggleSortByName = () => {
+    setSortedData((prevData) => {
+      const sorted = [...prevData];
+      sorted.sort((a, b) => isNameAscending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+      return sorted;
+    });
+    setIsNameAscending(!isNameAscending);
+  };
+
+  const toggleSortByCraetor = () => {
+    setSortedData((prevData) => {
+      const sorted = [...prevData];
+      sorted.sort((a, b) => isCreatorAscending ? a.creator.localeCompare(b.creator) : b.creator.localeCompare(a.creator));
+      return sorted;
+    });
+    setIsCreatorAscending(!isCreatorAscending);
+  };
+
+  const toggleSortByLastEdited = () => {
+    setSortedData((prevData) => {
+      const sorted = [...prevData];
+      sorted.sort((a, b) => isLastEditedAscending ? a.lastEdited.localeCompare(b.lastEdited) : b.lastEdited.localeCompare(a.lastEdited));
+      return sorted;
+    });
+    setIsLastEditedAscending(!isLastEditedAscending);
+  };
 
   const handleRowClick = (rowData : IHistoryItem, rowIndex : number) => {
     console.log('Row Clicked:', rowData, rowIndex);
@@ -56,7 +87,7 @@ export default function History() {
         </div>
       </div>
       <div>
-      <CustomizableTable columns={columns} data={data} onRowClick={handleRowClick} />
+      <CustomizableTable columns={columns} data={sortedData} onRowClick={handleRowClick} sortName={toggleSortByName} sortCreator={toggleSortByCraetor} sortLastEdited={toggleSortByLastEdited} />
     </div>
     </div>
   );
