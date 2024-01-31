@@ -48,4 +48,9 @@ body {
   .text-note {
     @apply text-2xs;
   }
+
+  .custom-row {
+    background-color: #FFFADD;
+  }
+  
 }

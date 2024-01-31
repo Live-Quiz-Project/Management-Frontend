@@ -39,7 +39,7 @@ export default function Login() {
         console.log(data);
         dispatch(
           logIn({
-            token: data.accessToken,
+            token: data.token,
             user: {
               id: data.id,
               name: data.name,
@@ -62,7 +62,7 @@ export default function Login() {
       console.log(data)
       dispatch(
         logIn({
-          token: data.accessToken,
+          token: data.token,
           user: {
             id: data.id,
             name: data.name,
