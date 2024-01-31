@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Chart from "react-google-charts";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import PieChartIcon from "@mui/icons-material/PieChart";
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 
 interface QuestionItemProps {
   title: string;
@@ -10,9 +11,10 @@ interface QuestionItemProps {
 }
 
 const QuestionItem: React.FC<QuestionItemProps> = ({ title, data }) => {
-  const [chartType, setChartType] = useState<"BarChart" | "PieChart">(
-    "BarChart"
-  );
+  const [chartType, setChartType] = useState<
+    "BarChart" | "PieChart" | "ListChart" | "LineChart"
+  >("BarChart");
+  const [isListChartState, setIsListChartState] = useState(false);
   const chartData = [
     ["", "", { role: "style" }],
     ["Bangsean", 8175000, "#FFAAAA"],
@@ -34,7 +36,10 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title, data }) => {
           className={`rounded-sm px-2 ${
             chartType === "BarChart" ? "bg-white" : null
           } mr-1`}
-          onClick={() => setChartType("BarChart")}
+          onClick={() => {
+            setChartType("BarChart");
+            setIsListChartState(false);
+          }}
         >
           <BarChartIcon style={{ fontSize: 18 }} />
         </button>
@@ -42,9 +47,22 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title, data }) => {
           className={`rounded-sm px-2 ${
             chartType === "PieChart" ? "bg-white" : null
           }`}
-          onClick={() => setChartType("PieChart")}
+          onClick={() => {
+            setChartType("PieChart");
+            setIsListChartState(false);
+          }}
         >
           <PieChartIcon style={{ fontSize: 18 }} />
+        </button>
+        <button
+          className={`rounded-sm px-2 ${
+            isListChartState === true ? "bg-white" : null
+          }`}
+          onClick={() => {
+            setIsListChartState(true)
+            setChartType("LineChart");}}
+        >
+          <FormatListNumberedIcon style={{ fontSize: 18 }} />
         </button>
       </div>
     );
@@ -56,13 +74,20 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title, data }) => {
         <h2>{title}</h2>
         {buildChartTypesButton()}
       </Flex>
-      <Chart
+      {
+        chartType === "LineChart" 
+        ? <div>
+          
+        </div>
+        :  <Chart
         chartType={chartType}
         data={chartData}
         options={chartOptions}
         width="100%"
         height="400px"
       />
+      }
+     
     </div>
   );
 };
