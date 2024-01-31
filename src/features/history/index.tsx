@@ -1,7 +1,7 @@
 import SearchField from "@/common/layouts/main/components/SearchField";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomizableTable from "./components/CustomTable";
+import CustomizableTable from "./components/CustomHistoryTable";
 
 export default function History() {
   const navigate = useNavigate();
