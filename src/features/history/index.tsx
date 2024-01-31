@@ -1,31 +1,31 @@
 import SearchField from "@/common/layouts/main/components/SearchField";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import CustomizableTable from "./components/CustomTable";
 
 export default function History() {
   const navigate = useNavigate();
-  const [isNameAscending, setIsNameAscending] = useState(true);
-  const [isCreatorAscending, setIsCreatorAscending] = useState(true);
-  const [isLastEditedAscending, setIsLastEditedAscending] = useState(true);
+  const [isNameAscending, setIsNameAscending] = useState(false);
+  const [isCreatorAscending, setIsCreatorAscending] = useState(false);
+  const [isLastEditedAscending, setIsLastEditedAscending] = useState(false);
 
   const columns = [
-    { key: 'image', header: '', width: '20%' },
-    { key: 'name', header: 'Name', width: '20%' },
-    { key: 'creator', header: 'Creator', width: '20%' },
-    { key: 'lastEdited', header: 'Last edited', width: '20%' },
-    { key: 'action', header: '', width: '20%' },
+    { key: "image", header: "", width: "20%" },
+    { key: "name", header: "Name", width: "20%" },
+    { key: "creator", header: "Creator", width: "20%" },
+    { key: "lastEdited", header: "Last edited", width: "20%" },
+    { key: "action", header: "", width: "20%" },
   ];
 
-  const data : IHistoryItem[] = [
+  const data: IHistoryItem[] = [
     {
       image:
         "https://media.discordapp.net/attachments/988486551275200573/1115852890720972883/IMG_9028.jpg?ex=65b08b7c&is=659e167c&hm=62f766768e59e8ac0d4d426ab5120de2278cd0bd7fc33a70f9795ecf3eb8c9c7&=&format=webp&width=1560&height=1170",
       name: "Kittiphon Singchom",
       creator: "You",
       lastEdited: "10 days ago.",
-      action: <span></span>
+      action: <span></span>,
     },
     {
       image:
@@ -33,7 +33,7 @@ export default function History() {
       name: "Chanikan Singchom",
       creator: "You",
       lastEdited: "15 days ago.",
-      action: <span></span>
+      action: <span></span>,
     },
     {
       image:
@@ -41,7 +41,7 @@ export default function History() {
       name: "Chanikan Suechareon",
       creator: "You",
       lastEdited: "15 days ago.",
-      action: <span></span>
+      action: <span></span>,
     },
   ];
   const [sortedData, setSortedData] = useState(data);
@@ -49,33 +49,51 @@ export default function History() {
   const toggleSortByName = () => {
     setSortedData((prevData) => {
       const sorted = [...prevData];
-      sorted.sort((a, b) => isNameAscending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+      sorted.sort((a, b) =>
+        isNameAscending
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name)
+      );
       return sorted;
     });
     setIsNameAscending(!isNameAscending);
+    setIsCreatorAscending(false);
+    setIsLastEditedAscending(false);
   };
 
   const toggleSortByCraetor = () => {
     setSortedData((prevData) => {
       const sorted = [...prevData];
-      sorted.sort((a, b) => isCreatorAscending ? a.creator.localeCompare(b.creator) : b.creator.localeCompare(a.creator));
+      sorted.sort((a, b) =>
+        isCreatorAscending
+          ? a.creator.localeCompare(b.creator)
+          : b.creator.localeCompare(a.creator)
+      );
       return sorted;
     });
     setIsCreatorAscending(!isCreatorAscending);
+    setIsNameAscending(false);
+    setIsLastEditedAscending(false);
   };
 
   const toggleSortByLastEdited = () => {
     setSortedData((prevData) => {
       const sorted = [...prevData];
-      sorted.sort((a, b) => isLastEditedAscending ? a.lastEdited.localeCompare(b.lastEdited) : b.lastEdited.localeCompare(a.lastEdited));
+      sorted.sort((a, b) =>
+        isLastEditedAscending
+          ? a.lastEdited.localeCompare(b.lastEdited)
+          : b.lastEdited.localeCompare(a.lastEdited)
+      );
       return sorted;
     });
     setIsLastEditedAscending(!isLastEditedAscending);
+    setIsNameAscending(false);
+    setIsCreatorAscending(false);
   };
 
-  const handleRowClick = (rowData : IHistoryItem, rowIndex : number) => {
-    console.log('Row Clicked:', rowData, rowIndex);
-    navigate('/history/history-detail')
+  const handleRowClick = (rowData: IHistoryItem, rowIndex: number) => {
+    console.log("Row Clicked:", rowData, rowIndex);
+    navigate("/history/history-detail");
   };
 
   return (
@@ -87,8 +105,18 @@ export default function History() {
         </div>
       </div>
       <div>
-      <CustomizableTable columns={columns} data={sortedData} onRowClick={handleRowClick} sortName={toggleSortByName} sortCreator={toggleSortByCraetor} sortLastEdited={toggleSortByLastEdited} />
-    </div>
+        <CustomizableTable
+          columns={columns}
+          data={sortedData}
+          onRowClick={handleRowClick}
+          sortName={toggleSortByName}
+          sortCreator={toggleSortByCraetor}
+          sortLastEdited={toggleSortByLastEdited}
+          isNameAscending={isNameAscending}
+          isCreatorAscending={isCreatorAscending}
+          isLastEditedAscending={isLastEditedAscending}
+        />
+      </div>
     </div>
   );
 }
@@ -98,5 +126,5 @@ interface IHistoryItem {
   name: string;
   creator: string;
   lastEdited: string;
-  action: JSX.Element
+  action: JSX.Element;
 }
