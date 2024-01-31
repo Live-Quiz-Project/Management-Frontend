@@ -1,7 +1,6 @@
 import SearchField from "@/common/layouts/main/components/SearchField";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import CustomizableTable from "./components/CustomTable";
 
 export default function History() {
@@ -10,7 +9,7 @@ export default function History() {
   const [isCreatorAscending, setIsCreatorAscending] = useState(false);
   const [isLastEditedAscending, setIsLastEditedAscending] = useState(false);
 
-  const columns = [
+  const columns : TableColumn[] = [
     { key: "image", header: "", width: "20%" },
     { key: "name", header: "Name", width: "20%" },
     { key: "creator", header: "Creator", width: "20%" },
@@ -115,16 +114,22 @@ export default function History() {
           isNameAscending={isNameAscending}
           isCreatorAscending={isCreatorAscending}
           isLastEditedAscending={isLastEditedAscending}
-        />
+          />
       </div>
     </div>
   );
 }
 
-interface IHistoryItem {
+export interface IHistoryItem {
   image: string;
   name: string;
   creator: string;
   lastEdited: string;
   action: JSX.Element;
+}
+
+export interface TableColumn {
+  key: keyof IHistoryItem;
+  header: string;
+  width: string;
 }

@@ -1,7 +1,5 @@
 import AppDropdown from "@/common/layouts/main/components/AppDropdown";
 import SearchField from "@/common/layouts/main/components/SearchField";
-import { Chart } from "react-google-charts";
-import { useMemo, useState } from "react";
 import QuestionItem from "./components/QuestionItem";
 
 export default function HistoryDetail() {

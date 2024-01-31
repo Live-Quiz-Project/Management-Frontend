@@ -1,19 +1,19 @@
 import { Flex } from "antd";
-import React, { ReactNode } from "react";
+import React from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { IHistoryItem, TableColumn } from "..";
 
 interface CustomizableTableProps {
-  columns: { key: string; header: string }[];
-  data: { [key: string]: ReactNode }[];
+  columns: TableColumn[];
+  data: IHistoryItem[];
   onRowClick?: (
-    rowData: { [key: string]: ReactNode },
+    rowData: IHistoryItem,
     rowIndex: number
   ) => void;
   sortName?: () => void;
   sortCreator?: () => void;
   sortLastEdited?: () => void;
-  currentSortColumn: string;
   isNameAscending: boolean;
   isCreatorAscending: boolean;
   isLastEditedAscending: boolean;
