@@ -8,6 +8,7 @@ export default function History() {
   const [isNameAscending, setIsNameAscending] = useState(false);
   const [isCreatorAscending, setIsCreatorAscending] = useState(false);
   const [isLastEditedAscending, setIsLastEditedAscending] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const columns : HistoryTableColumn[] = [
     { key: "image", header: "", width: "20%" },
@@ -44,6 +45,26 @@ export default function History() {
     },
   ];
   const [sortedData, setSortedData] = useState(data);
+
+  const getFilteredData = () => {
+    const filteredData = data.filter(item =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (isNameAscending) {
+      filteredData.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (!isNameAscending && searchTerm) {
+      filteredData.sort((a, b) => b.name.localeCompare(a.name));
+    }
+
+    return filteredData;
+  };
+
+  const filteredData = getFilteredData();
+
+  const handleSearch = (query: string) => {
+    setSearchTerm(query);
+  };
 
   const toggleSortByName = () => {
     setSortedData((prevData) => {
@@ -100,13 +121,13 @@ export default function History() {
       <p className="text-2xl">Live History</p>
       <div className="flex">
         <div className="pr-2">
-          <SearchField onSearch={() => {}} />
+          <SearchField onSearch={handleSearch} />
         </div>
       </div>
       <div>
         <CustomHistoryTable
           columns={columns}
-          data={sortedData}
+          data={filteredData}
           onRowClick={handleRowClick}
           sortName={toggleSortByName}
           sortCreator={toggleSortByCraetor}
