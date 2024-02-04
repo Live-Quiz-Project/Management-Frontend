@@ -1,7 +1,7 @@
 import SearchField from "@/common/layouts/main/components/SearchField";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomizableTable from "./components/CustomHistoryTable";
+import CustomHistoryTable from "./components/CustomHistoryTable";
 
 export default function History() {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ export default function History() {
   const [isCreatorAscending, setIsCreatorAscending] = useState(false);
   const [isLastEditedAscending, setIsLastEditedAscending] = useState(false);
 
-  const columns : TableColumn[] = [
+  const columns : HistoryTableColumn[] = [
     { key: "image", header: "", width: "20%" },
     { key: "name", header: "Name", width: "20%" },
     { key: "creator", header: "Creator", width: "20%" },
@@ -104,7 +104,7 @@ export default function History() {
         </div>
       </div>
       <div>
-        <CustomizableTable
+        <CustomHistoryTable
           columns={columns}
           data={sortedData}
           onRowClick={handleRowClick}
@@ -128,7 +128,7 @@ export interface IHistoryItem {
   action: JSX.Element;
 }
 
-export interface TableColumn {
+export interface HistoryTableColumn {
   key: keyof IHistoryItem;
   header: string;
   width: string;

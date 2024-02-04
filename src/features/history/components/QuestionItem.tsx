@@ -4,13 +4,14 @@ import Chart from "react-google-charts";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import PieChartIcon from "@mui/icons-material/PieChart";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import CustomHistoryDetailTable from "./CustomHistoryDetailTable";
 
 interface QuestionItemProps {
   title: string;
   data: CityPopulation[];
 }
 
-const QuestionItem: React.FC<QuestionItemProps> = ({ title, data }) => {
+const QuestionItem: React.FC<QuestionItemProps> = ({ title }) => {
   const [chartType, setChartType] = useState<
     "BarChart" | "PieChart" | "ListChart" | "LineChart"
   >("BarChart");
@@ -28,6 +29,37 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title, data }) => {
     chartArea: { width: "50%" },
     backgroundColor: "#FFFADD",
   };
+
+  const columns : HistoryDetailTableColumn[] = [
+    { key: "displayName", header: "Display Name", width: "25%" },
+    { key: "answer", header: "Answer", width: "25%" },
+    { key: "mark", header: "Mark", width: "25%" },
+    { key: "totalMarks", header: "Total Marks", width: "25%" },
+  ];
+
+  const data: IHistoryDetailItem[] = [
+    {
+      displayName:
+        "Kittiphon Singchom",
+        answer: "Kittiphon Singchom",
+        mark: "5",
+        totalMarks: "5",
+    },
+    {
+      displayName:
+      "Kittiphon Singchom",
+      answer: "Kittiphon Singchom",
+      mark: "5",
+      totalMarks: "5",
+    },
+    {
+      displayName:
+        "Kittiphon Singchom",
+        answer: "Kittiphon Singchom",
+        mark: "7",
+        totalMarks: "7",
+    },
+  ];
 
   const buildChartTypesButton = () => {
     return (
@@ -77,7 +109,17 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title, data }) => {
       {
         chartType === "LineChart" 
         ? <div>
-          
+          <CustomHistoryDetailTable
+          columns={columns}
+          data={data}
+          onRowClick={() => {}}
+          sortName={() => {}}
+          sortCreator={() => {}}
+          sortLastEdited={() => {}}
+          isNameAscending={false}
+          isCreatorAscending={false}
+          isLastEditedAscending={false}
+          />
         </div>
         :  <Chart
         chartType={chartType}
@@ -87,7 +129,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title, data }) => {
         height="400px"
       />
       }
-     
     </div>
   );
 };
@@ -97,4 +138,17 @@ export default QuestionItem;
 export interface CityPopulation {
   city: string;
   population: number;
+}
+
+export interface IHistoryDetailItem {
+  displayName: string;
+  answer: string;
+  mark: string;
+  totalMarks: string;
+}
+
+export interface HistoryDetailTableColumn {
+  key: keyof IHistoryDetailItem;
+  header: string;
+  width: string;
 }

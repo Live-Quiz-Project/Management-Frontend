@@ -2,10 +2,10 @@ import { Flex } from "antd";
 import React from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { IHistoryItem, TableColumn } from "..";
+import { IHistoryItem, HistoryTableColumn } from "..";
 
-interface CustomizableTableProps {
-  columns: TableColumn[];
+interface CustomHistoryTableProps {
+  columns: HistoryTableColumn[];
   data: IHistoryItem[];
   onRowClick?: (
     rowData: IHistoryItem,
@@ -19,7 +19,7 @@ interface CustomizableTableProps {
   isLastEditedAscending: boolean;
 }
 
-const CustomizableTable: React.FC<CustomizableTableProps> = ({
+const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
   columns,
   data,
   onRowClick,
@@ -115,4 +115,4 @@ const CustomizableTable: React.FC<CustomizableTableProps> = ({
   );
 };
 
-export default CustomizableTable;
+export default CustomHistoryTable;
