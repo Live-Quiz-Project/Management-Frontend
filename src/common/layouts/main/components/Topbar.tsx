@@ -23,7 +23,7 @@ export default function Topbar({ children, backable = false }: Props) {
           <button className="">
             <FaRegBell className="w-5 h-5" />
           </button>
-          <div className="w-10 h-10 bg-light-gray rounded-full"></div>
+          <div className="w-10 h-10 bg-quill-gray rounded-full"></div>
         </div>
       </div>
       {children}

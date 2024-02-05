@@ -20,7 +20,7 @@ export default function SearchBar({
       <button onClick={() => inputRef.current?.focus()}>
         <IoSearch
           className={`absolute top-1/2 left-3 -translate-y-1/2 h-5 w-5 ${
-            isFocused ? "text-pastel-orange" : "text-light-gray"
+            isFocused ? "text-koromiko" : "text-quill-gray"
           }`}
         />
       </button>
@@ -33,7 +33,7 @@ export default function SearchBar({
         onBlur={() => setIsFocused(false)}
         placeholder="Search..."
         className={`rounded-lg border-2 pl-9 py-1.5 ${
-          isFocused ? "border-pastel-orange" : "border-light-gray"
+          isFocused ? "border-koromiko" : "border-quill-gray"
         }`}
       />
     </div>

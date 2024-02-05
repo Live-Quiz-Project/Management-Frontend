@@ -19,7 +19,7 @@ export default function Home() {
     <div className="">
       <h1 className="">Home</h1>
       <FilledButton
-        className="bg-pastel-orange"
+        className="bg-koromiko"
         onClick={() =>
           window.open(
             `${import.meta.env.VITE_LIVE_QUIZ_URL}?token=${auth.value.token}`

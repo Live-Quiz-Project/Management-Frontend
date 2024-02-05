@@ -22,7 +22,7 @@ export default function BaseDialogue({
   const dialogueRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
+    const onClickOutside = (e: MouseEvent) => {
       if (
         dialogueRef.current &&
         !dialogueRef.current.contains(e.target as Node)
@@ -30,9 +30,9 @@ export default function BaseDialogue({
         setIsOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", onClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", onClickOutside);
     };
   }, [dialogueRef]);
 

@@ -35,7 +35,7 @@ export default function QuizCard({ quiz }: Props) {
   ];
 
   return (
-    <div className="grid grid-cols-12 bg-peach rounded-xl items-center">
+    <div className="grid grid-cols-12 bg-egg-sour rounded-xl items-center">
       <img
         src=""
         alt=""

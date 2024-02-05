@@ -35,7 +35,7 @@ export default function Sidebar({ className = "" }: Props) {
 
   return (
     <div
-      className={`flex flex-col h-full bg-light-gray p-2 rounded-xl justify-between text-body-1 ${className}`}
+      className={`flex flex-col h-full bg-quill-gray p-2 rounded-xl justify-between text-body-1 ${className}`}
     >
       <ul className="space-y-1">
         {/* <img src="" alt="logo" className="" /> */}
@@ -45,9 +45,9 @@ export default function Sidebar({ className = "" }: Props) {
               <Link
                 to={menu.link}
                 className={`flex items-center space-x-2 h-10 rounded-lg px-3 w-44 ${
-                  route?.path === "/" && i === 0 && "bg-peach"
-                } ${route?.path === "/library" && i === 1 && "bg-peach"} ${
-                  route?.path === "/history" && i === 2 && "bg-peach"
+                  route?.path === "/" && i === 0 && "bg-egg-sour"
+                } ${route?.path === "/library" && i === 1 && "bg-egg-sour"} ${
+                  route?.path === "/history" && i === 2 && "bg-egg-sour"
                 }`}
               >
                 {menu.icon}

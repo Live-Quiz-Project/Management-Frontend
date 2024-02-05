@@ -1,4 +1,4 @@
-enum QuestionTypes {
+enum QuestionTypesEnum {
   CHOICE = "CHOICE",
   TRUE_FALSE = "TRUE_FALSE",
   FILL_BLANK = "FILL_BLANK",
@@ -7,4 +7,4 @@ enum QuestionTypes {
   POOL = "POOL",
 }
 
-export default QuestionTypes;
+export default QuestionTypesEnum;

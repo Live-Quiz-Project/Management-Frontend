@@ -1,6 +1,15 @@
+import { store } from "@/app/store";
+
 declare global {
   type StoreRootState = ReturnType<typeof store.getState>;
   type StoreDispatch = typeof store.dispatch;
+
+  type ThemeStoreState = {
+    theme: "light" | "dark";
+  };
+  type InitThemeStoreState = {
+    value: ThemeStoreState;
+  };
 
   type AuthStoreState = {
     token: string;
@@ -11,8 +20,10 @@ declare global {
   };
 
   type QuizEditorStoreState = {
+    mode: "create" | "edit" | null;
     curPage: number;
-    curType: string;
+    editing: boolean;
+    sidebarExpanded: boolean;
     quiz: Quiz | null;
   };
   type InitQuizEditorStoreState = {

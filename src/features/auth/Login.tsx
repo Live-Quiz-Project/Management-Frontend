@@ -18,7 +18,7 @@ export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
       const { data, status: _ } = await http.post("/login", {
@@ -53,7 +53,7 @@ export default function Login() {
 
   return (
     <form
-      onSubmit={handleOnSubmit}
+      onSubmit={onSubmit}
       className="flex flex-col justify-center items-center w-full h-dscreen"
     >
       <div className="w-1/2 flex flex-col items-center space-y-10">
@@ -63,31 +63,28 @@ export default function Login() {
             type="email"
             label="Email"
             value={email}
-            handleOnInput={(e) => setEmail(e.currentTarget.value)}
+            onInput={(e) => setEmail(e.currentTarget.value)}
           />
           <TextInput
             type="password"
             label="Password"
             value={password}
-            handleOnInput={(e) => setPassword(e.currentTarget.value)}
+            onInput={(e) => setPassword(e.currentTarget.value)}
           />
-          <Link
-            className="hover:text-pastel-orange hover:underline"
-            to="/forgot"
-          >
+          <Link className="hover:text-koromiko hover:underline" to="/forgot">
             Forgot password
           </Link>
           <p className="">
             Don't have an account?&nbsp;
             <Link
-              className="hover:text-pastel-orange hover:underline"
+              className="hover:text-koromiko hover:underline"
               to="/register"
             >
               Create one
             </Link>
           </p>
         </div>
-        <button className="w-max py-2 px-8 bg-pastel-orange text-white rounded-lg">
+        <button className="w-max py-2 px-8 bg-koromiko text-white rounded-lg">
           Log In
         </button>
         {/* google login here */}
