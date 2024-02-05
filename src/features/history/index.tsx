@@ -2,6 +2,7 @@ import SearchField from "@/common/layouts/main/components/SearchField";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomHistoryTable from "./components/CustomHistoryTable";
+import Topbar from "@/common/layouts/main/components/Topbar";
 
 export default function History() {
   const navigate = useNavigate();
@@ -117,15 +118,13 @@ export default function History() {
   };
 
   return (
-    <div className="flex flex-col px-6 pt-2">
-      <p className="text-2xl">Live History</p>
-      <div className="flex">
-        <div className="pr-2">
-          <SearchField onSearch={handleSearch} />
-        </div>
-      </div>
+    <Topbar>
       <div>
-        <CustomHistoryTable
+         <p className="text-2xl">Live History</p>
+        <div className="pr-2">
+           <SearchField onSearch={handleSearch} />
+         </div>
+         <CustomHistoryTable
           columns={columns}
           data={filteredData}
           onRowClick={handleRowClick}
@@ -137,7 +136,7 @@ export default function History() {
           isLastEditedAscending={isLastEditedAscending}
           />
       </div>
-    </div>
+    </Topbar>
   );
 }
 
