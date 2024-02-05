@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+[contenteditable="true"]:empty:before {
+  content: attr(data-placeholder);
+  opacity: 0.5;
+  pointer-events: none;
+  display: block;
+  @apply truncate;
+}
+
+.mq-editable-field {
+  @apply w-full h-10 xl:h-12 bg-white !border-none px-3 xl:px-4 py-1 flex items-center rounded-xl;
+}
+.mq-editable-field .mq-root-block {
+  @apply !flex items-center justify-start w-full h-full text-header-3;
+}
+.mq-editable-field .mq-root-block.mq-empty::before {
+  content: "Enter equation...";
+  pointer-events: none;
+  @apply font-sans-serif text-body-1 text-regent-gray;
+}
+
+.mq-editable-field.mq-focused {
+  @apply !rounded-xl;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+.fade-exit {
+  opacity: 1;
+}
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+@layer components {
+  .text-stroke-white {
+    text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white,
+      1px 1px 0 white;
+  }
+
+  .text-title {
+    @apply text-3xl lg:text-4xl;
+  }
+
+  .text-subtitle {
+    @apply text-2xl lg:text-3xl;
+  }
+
+  .text-header-1 {
+    @apply text-xl lg:text-2xl;
+  }
+
+  .text-header-2 {
+    @apply text-lg lg:text-xl;
+  }
+
+  .text-header-3 {
+    @apply text-base lg:text-lg;
+  }
+
+  .text-body-1 {
+    @apply text-sm lg:text-base;
+  }
+
+  .text-body-2 {
+    @apply text-xs lg:text-sm;
+  }
+
+  .text-body-3 {
+    @apply text-2xs lg:text-xs;
+  }
+
+  .text-note {
+    @apply text-2xs;
+  }
+}

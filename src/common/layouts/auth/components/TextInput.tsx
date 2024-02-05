@@ -4,7 +4,7 @@ type Props = {
   type?: string;
   className?: string;
   label?: string;
-  handleOnInput?: (e: FormEvent<HTMLInputElement>) => void;
+  onInput?: (e: FormEvent<HTMLInputElement>) => void;
   value?: string;
 };
 
@@ -12,7 +12,7 @@ export default function TextInput({
   type = "text",
   className = "",
   label = "",
-  handleOnInput,
+  onInput: onInput,
   value,
 }: Props) {
   return (
@@ -20,9 +20,9 @@ export default function TextInput({
       <p className="">{label}</p>
       <input
         type={type}
-        onInput={handleOnInput}
+        onInput={onInput}
         value={value}
-        className="border border-dark-gray rounded-lg w-full h-10"
+        className="border border-regent-gray rounded-lg w-full h-10"
       />
     </label>
   );
