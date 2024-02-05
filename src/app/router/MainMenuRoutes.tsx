@@ -1,10 +1,10 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
-import LibraryRoutes from "./LibraryRoutes";
+import LibraryRoutes from "@/app/router/LibraryRoutes";
 import MainLayout from "@/common/layouts/main";
+import HistoryRoutes from "@/app/router/HistoryRoutes";
 
 const Home = lazy(() => import("@/features/home"));
-const History = lazy(() => import("@/features/history"));
 const Help = lazy(() => import("@/features/help"));
 const Setting = lazy(() => import("@/features/setting"));
 
@@ -23,11 +23,7 @@ const MainMenuRoutes: RouteObject[] = [
   },
   {
     path: "history",
-    element: (
-      <MainLayout>
-        <History />
-      </MainLayout>
-    ),
+    children: HistoryRoutes,
   },
   {
     path: "help",
