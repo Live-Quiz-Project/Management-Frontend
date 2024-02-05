@@ -32,6 +32,10 @@ export default function HistoryDetail() {
       title="What is the capital city of Thailand"
       data={[]}
       />
+      <QuestionItem 
+      title="What is the capital city of Thailand"
+      data={[]}
+      />
     </div>
   );
 }
