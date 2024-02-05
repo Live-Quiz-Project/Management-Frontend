@@ -122,7 +122,7 @@ export default function History() {
       <div>
          <p className="text-2xl">Live History</p>
         <div className="pr-2">
-           <SearchField onSearch={handleSearch} />
+           <SearchField onSearch={handleSearch} keyword={searchTerm} setKeyword={setSearchTerm} />
          </div>
          <CustomHistoryTable
           columns={columns}
