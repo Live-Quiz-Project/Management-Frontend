@@ -120,8 +120,8 @@ export default function History() {
   return (
     <Topbar>
       <div>
-         <p className="text-2xl">Live History</p>
-        <div className="pr-2">
+         <p className="font-serif text-2xl">Live History</p>
+        <div className="pr-2 py-2">
            <SearchField onSearch={handleSearch} keyword={searchTerm} setKeyword={setSearchTerm} />
          </div>
          <CustomHistoryTable
