@@ -85,7 +85,7 @@ const CustomHistoryTableDetail: React.FC<CustomHistoryTableDetailProps> = ({
         {data.map((row, index) => (
           <div
             key={index}
-            className="flex rounded-xl bg-light-gray my-2 border-2 border-transparent hover:border-pastel-orange"
+            className="flex rounded-lg bg-quill-gray my-2 border-2 border-transparent hover:border-pastel-orange"
             style={{ cursor: onRowClick ? "pointer" : "default" }}
             onClick={() => onRowClick && onRowClick(row, index)}
           >

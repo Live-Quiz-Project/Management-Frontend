@@ -41,21 +41,21 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title }) => {
     {
       displayName:
         "Kittiphon Singchom",
-        answer: "Kittiphon Singchom",
+        answer: "will",
         mark: "5",
         totalMarks: "5",
     },
     {
       displayName:
-      "Kittiphon Singchom",
-      answer: "Kittiphon Singchom",
+      "Chanikan Singchom",
+      answer: "you",
       mark: "5",
       totalMarks: "5",
     },
     {
       displayName:
-        "Kittiphon Singchom",
-        answer: "Kittiphon Singchom",
+        "Lawan Singchom",
+        answer: "marry",
         mark: "7",
         totalMarks: "7",
     },
