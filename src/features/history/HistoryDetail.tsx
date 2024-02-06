@@ -6,6 +6,7 @@ import { MenuProps } from "antd";
 
 export default function HistoryDetail() {
   const [viewTypeFiltered, setViewTypeFiltered] = useState(defaultViewTypeFiltered)
+  const [sortingFiltered, setSortingFiltered] = useState(defaultSortingFilteredFiltered)
 
   const viewTypeDropdownData = useMemo<MenuProps['items']>(() => {
     const newRowDropdown = defaultViewType.map(item => ({
@@ -26,6 +27,25 @@ export default function HistoryDetail() {
     }))
   }
 
+  const sortingDropdownData = useMemo<MenuProps['items']>(() => {
+    const newRowDropdown = defaultSorting.map(item => ({
+      key: item.id.toString(),
+      label: <div className='text-sm '>{item.viewType}</div>,
+      onClick: () => {
+        handleSortingDropdownChange(item.id.toString(), 'sortingSelected')
+      },
+    }))
+
+    return [...newRowDropdown]
+  }, [defaultViewType])
+
+  const handleSortingDropdownChange = (key: string, fieldName: string) => {
+    setSortingFiltered(prevState => ({
+      ...prevState,
+      [fieldName]: Number.parseInt(key),
+    }))
+  }
+
   return (
     <div className="flex flex-col">
       <p className="text-2xl font-serif">Parabola Quiz</p>
@@ -37,7 +57,7 @@ export default function HistoryDetail() {
           <AppDropdown items={viewTypeDropdownData} indexSelected={viewTypeFiltered.viewTypeSelected} minWidth={130} />
         </div>
         <div className="pr-2">
-          <AppDropdown items={[]} indexSelected={0} minWidth={100} />
+          <AppDropdown items={sortingDropdownData} indexSelected={sortingFiltered.sortingSelected} minWidth={100} />
         </div>
       </div>
       <QuestionItem 
@@ -71,5 +91,31 @@ const defaultViewType : IViewType[] = [
   {
     id: 1,
     viewType: "Paticipants",
+  }
+]
+
+interface ISortingFiltered {
+  sortingText: string
+  sortingSelected: number
+}
+
+const defaultSortingFilteredFiltered: ISortingFiltered = {
+  sortingText: '',
+  sortingSelected: 0,
+}
+
+interface ISorting {
+  id: number
+  viewType: string
+}
+
+const defaultSorting : ISorting[] = [
+  {
+    id: 0,
+    viewType: "Asc",
+  },
+  {
+    id: 1,
+    viewType: "Dsc",
   }
 ]
