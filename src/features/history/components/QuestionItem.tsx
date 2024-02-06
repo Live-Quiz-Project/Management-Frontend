@@ -103,7 +103,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title }) => {
   return (
     <div className="w-2/3 rounded-xl bg-peach p-4 mb-2 mt-2">
       <Flex className="justify-between">
-        <h2>{title}</h2>
+        <h2 className="font-serif">{title}</h2>
         {buildChartTypesButton()}
       </Flex>
       {
