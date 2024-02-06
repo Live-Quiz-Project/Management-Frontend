@@ -21,6 +21,8 @@ export default {
       "quill-gray": "#E3E3E0",
       beige: "#faf7ee",
       white: "#FFF",
+      "pastel-orange": "#FFCC70",
+      "peach": "#FFFADD"
     },
     fontFamily: {
       serif: ["Young Serif", "Chonburi", "serif"],
