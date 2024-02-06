@@ -7,10 +7,7 @@ import { IHistoryItem, HistoryTableColumn } from "..";
 interface CustomHistoryTableProps {
   columns: HistoryTableColumn[];
   data: IHistoryItem[];
-  onRowClick?: (
-    rowData: IHistoryItem,
-    rowIndex: number
-  ) => void;
+  onRowClick?: (rowData: IHistoryItem, rowIndex: number) => void;
   sortName?: () => void;
   sortCreator?: () => void;
   sortLastEdited?: () => void;
@@ -101,8 +98,10 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
                   <img
                     src={row["image"]}
                     alt="Image"
-                    className="object-cover h-24 w-36 rounded-xl border-2 border-pastel-orange "
+                    className="object-cover h-24 w-36 rounded-xl border-2 border-pastel-orange"
                   />
+                ) : column.key === "lastEdited" ? (
+                  `${row[column.key]} days ago.`
                 ) : (
                   row[column.key]
                 )}
