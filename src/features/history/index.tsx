@@ -1,8 +1,9 @@
 import SearchField from "@/common/layouts/main/components/SearchField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomHistoryTable from "./components/CustomHistoryTable";
 import Topbar from "@/common/layouts/main/components/Topbar";
+import { ILiveHistoryData, liveHistoryData } from "../library/utils/mockData/LiveHistory";
 
 export default function History() {
   const navigate = useNavigate();
@@ -47,6 +48,25 @@ export default function History() {
   ];
   const [sortedData, setSortedData] = useState(data);
 
+  const mapDataToIHistoryItem = (data : ILiveHistoryData[]) => {
+    return data.map(item => ({
+      image: item.cover_image,
+      name: item.title,
+      creator: item.creator_name,
+      lastEdited: formatLastEditedDate(item.updated_at),
+      action: <span></span>,
+    }));
+  };
+
+  const formatLastEditedDate = (dateString : string) => {
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  useEffect(() => {
+    const transformedData = mapDataToIHistoryItem(liveHistoryData);
+    setSortedData(transformedData);
+  }, [liveHistoryData]);
+
   const getFilteredData = () => {
     const filteredData = sortedData.filter(item =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -68,7 +88,7 @@ export default function History() {
   };
 
   const toggleSortByName = () => {
-    setIsNameAscending(!isNameAscending); // Toggle first to ensure the sort uses the updated state
+    setIsNameAscending(!isNameAscending);
     setIsCreatorAscending(false);
     setIsLastEditedAscending(false);
   
@@ -76,8 +96,8 @@ export default function History() {
       const sorted = [...prevData];
       sorted.sort((a, b) =>
         isNameAscending
-          ? b.name.localeCompare(a.name) // If previously ascending, now sort descending
-          : a.name.localeCompare(b.name) // If previously descending, now sort ascending
+          ? b.name.localeCompare(a.name)
+          : a.name.localeCompare(b.name)
       );
       return sorted;
     });
