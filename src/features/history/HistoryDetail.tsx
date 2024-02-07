@@ -1,12 +1,45 @@
 import AppDropdown from "@/common/layouts/main/components/AppDropdown";
 import SearchField from "@/common/layouts/main/components/SearchField";
-import QuestionItem from "./components/QuestionItem";
+import QuestionItem, { ITableColumn } from "./components/QuestionItem";
 import { useMemo, useState } from "react";
 import { MenuProps } from "antd";
+import CustomParticipantsDashboardTable from "./components/CustomParticipantsDashboardTable";
 
 export default function HistoryDetail() {
   const [viewTypeFiltered, setViewTypeFiltered] = useState(defaultViewTypeFiltered)
   const [sortingFiltered, setSortingFiltered] = useState(defaultSortingFilteredFiltered)
+
+  const columns : ITableColumn[] = [
+    { key: "displayName", header: "Display Name", width: "25%" },
+    { key: "mark", header: "Mark", width: "25%" },
+    { key: "corrects", header: "Corrects", width: "25%" },
+    { key: "incorrects", header: "Incorrects", width: "25%" },
+    { key: "unanswered", header: "Unanswered", width: "25%" },
+  ];
+
+  const data: IHistoryPaticipantsDetailItem[] = [
+    {
+      displayName: 'kittiphon',
+  mark: '114/150',
+  corrects: '25/30',
+  incorrects: '4/30',
+  unanswered: '1/30'
+    },
+    {
+      displayName: 'kittiphon',
+  mark: '114/150',
+  corrects: '25/30',
+  incorrects: '4/30',
+  unanswered: '1/30'
+    },
+    {
+      displayName: 'kittiphon',
+  mark: '114/150',
+  corrects: '25/30',
+  incorrects: '4/30',
+  unanswered: '1/30'
+    },
+  ];
 
   const viewTypeDropdownData = useMemo<MenuProps['items']>(() => {
     const newRowDropdown = defaultViewType.map(item => ({
@@ -60,10 +93,27 @@ export default function HistoryDetail() {
           <AppDropdown items={sortingDropdownData} indexSelected={sortingFiltered.sortingSelected} minWidth={100} />
         </div>
       </div>
-      <QuestionItem 
-      title="What is the capital city of Thailand"
-      data={[]}
-      />
+      {
+        viewTypeFiltered.viewTypeSelected === 0
+        ? <QuestionItem 
+        title="What is the capital city of Thailand"
+        data={[]}
+        />
+        : <div>
+          <CustomParticipantsDashboardTable
+          columns={columns}
+          data={data}
+          onRowClick={() => {}}
+          sortName={() => {}}
+          sortCreator={() => {}}
+          sortLastEdited={() => {}}
+          isNameAscending={false}
+          isCreatorAscending={false}
+          isLastEditedAscending={false}
+          />
+        </div>
+      }
+      
     </div>
   );
 }
@@ -119,3 +169,17 @@ const defaultSorting : ISorting[] = [
     viewType: "Dsc",
   }
 ]
+
+export interface IHistoryPaticipantsDetailItem {
+  displayName: string;
+  mark: string;
+  corrects: string;
+  incorrects: string;
+  unanswered: string;
+}
+
+export interface HistoryPaticipantsDetailTableColumn {
+  key: keyof IHistoryPaticipantsDetailItem;
+  header: string;
+  width: string;
+}
