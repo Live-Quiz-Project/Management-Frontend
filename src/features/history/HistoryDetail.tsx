@@ -1,45 +1,37 @@
 import AppDropdown from "@/common/layouts/main/components/AppDropdown";
 import SearchField from "@/common/layouts/main/components/SearchField";
-import QuestionItem, { ITableColumn } from "./components/QuestionItem";
+import QuestionItem from "./components/QuestionItem";
 import { useMemo, useState } from "react";
 import { MenuProps } from "antd";
 import CustomParticipantsDashboardTable from "./components/CustomParticipantsDashboardTable";
+import { participantsHistoryDetailData } from "../library/utils/mockData/LiveHistory";
 
 export default function HistoryDetail() {
   const [viewTypeFiltered, setViewTypeFiltered] = useState(defaultViewTypeFiltered)
   const [sortingFiltered, setSortingFiltered] = useState(defaultSortingFilteredFiltered)
 
-  const columns : ITableColumn[] = [
+  const columns : HistoryPaticipantsDetailTableColumn[] = [
     { key: "displayName", header: "Display Name", width: "25%" },
-    { key: "mark", header: "Mark", width: "25%" },
+    // { key: "mark", header: "Mark", width: "25%" },
     { key: "corrects", header: "Corrects", width: "25%" },
     { key: "incorrects", header: "Incorrects", width: "25%" },
     { key: "unanswered", header: "Unanswered", width: "25%" },
   ];
 
-  const data: IHistoryPaticipantsDetailItem[] = [
-    {
-      displayName: 'kittiphon',
-  mark: '114/150',
-  corrects: '25/30',
-  incorrects: '4/30',
-  unanswered: '1/30'
-    },
-    {
-      displayName: 'kittiphon',
-  mark: '114/150',
-  corrects: '25/30',
-  incorrects: '4/30',
-  unanswered: '1/30'
-    },
-    {
-      displayName: 'kittiphon',
-  mark: '114/150',
-  corrects: '25/30',
-  incorrects: '4/30',
-  unanswered: '1/30'
-    },
-  ];
+  const mapParticipantsToDetailItems = (participants) => {
+    return participants.map(participant => ({
+      displayName: participant.name,
+      mark: `${participant.marks}/${participant.total_marks}`,
+      corrects: `${participant.corrects}/${participant.total_questions}`,
+      incorrects: `${participant.incorrects}/${participant.total_questions}`,
+      unanswered: `${participant.unanswered}/${participant.total_questions}`,
+    }));
+  };
+  
+  // Using the provided mock data
+  const { participants } = participantsHistoryDetailData;
+  
+  const historyParticipantsDetailItems = mapParticipantsToDetailItems(participants);
 
   const viewTypeDropdownData = useMemo<MenuProps['items']>(() => {
     const newRowDropdown = defaultViewType.map(item => ({
@@ -95,14 +87,16 @@ export default function HistoryDetail() {
       </div>
       {
         viewTypeFiltered.viewTypeSelected === 0
-        ? <QuestionItem 
+        ? (
+          <QuestionItem 
         title="What is the capital city of Thailand"
         data={[]}
         />
+        )
         : <div>
           <CustomParticipantsDashboardTable
           columns={columns}
-          data={data}
+          data={historyParticipantsDetailItems}
           onRowClick={() => {}}
           sortName={() => {}}
           sortCreator={() => {}}
@@ -172,7 +166,7 @@ const defaultSorting : ISorting[] = [
 
 export interface IHistoryPaticipantsDetailItem {
   displayName: string;
-  mark: string;
+  // mark: string;
   corrects: string;
   incorrects: string;
   unanswered: string;
