@@ -11,8 +11,9 @@ import {
 export default function History() {
   const navigate = useNavigate();
   const [isNameAscending, setIsNameAscending] = useState(false);
-  const [isCreatorAscending, setIsCreatorAscending] = useState(false);
-  const [isLastEditedAscending, setIsLastEditedAscending] = useState(false);
+  const [isDateAscending, setIsDateAscending] = useState(false);
+  const [isTotalParticipantsAscending, setIsTotalParticipantsAscending] =
+    useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortedData, setSortedData] = useState<IHistoryItem[]>([
     defaultHistoryItem,
@@ -73,8 +74,8 @@ export default function History() {
 
   const toggleSortByName = () => {
     setIsNameAscending(!isNameAscending);
-    setIsCreatorAscending(false);
-    setIsLastEditedAscending(false);
+    setIsDateAscending(false);
+    setIsTotalParticipantsAscending(false);
 
     setSortedData((prevData) => {
       const sorted = [...prevData];
@@ -87,34 +88,41 @@ export default function History() {
     });
   };
 
-  const toggleSortByCraetor = () => {
+  const toggleSortByDate = () => {
     setSortedData((prevData) => {
       const sorted = [...prevData];
-      sorted.sort((a, b) =>
-        isCreatorAscending
-          ? a.date.localeCompare(b.date)
-          : b.date.localeCompare(a.date)
-      );
+      sorted.sort((a, b) => {
+        const dateA = convertToDate(a.date);
+        const dateB = convertToDate(b.date);
+
+        return isDateAscending ? dateA - dateB : dateB - dateA;
+      });
       return sorted;
     });
     setIsNameAscending(false);
-    setIsCreatorAscending(!isCreatorAscending);
-    setIsLastEditedAscending(false);
+    setIsDateAscending(!isDateAscending);
+    setIsTotalParticipantsAscending(false);
   };
 
-  const toggleSortByLastEdited = () => {
+  const convertToDate = (dateString) => {
+    const parts = dateString.split("/");
+    const date = new Date(parts[2], parts[1] - 1, parts[0]);
+    return date;
+  };
+
+  const toggleSortByTotalParticipants = () => {
     setSortedData((prevData) => {
       const sorted = [...prevData];
       sorted.sort((a, b) =>
-        isLastEditedAscending
+        isTotalParticipantsAscending
           ? a.totalParticipants.localeCompare(b.totalParticipants)
           : b.totalParticipants.localeCompare(a.totalParticipants)
       );
       return sorted;
     });
     setIsNameAscending(false);
-    setIsCreatorAscending(false);
-    setIsLastEditedAscending(!isLastEditedAscending);
+    setIsDateAscending(false);
+    setIsTotalParticipantsAscending(!isTotalParticipantsAscending);
   };
 
   const handleRowClick = (rowData: IHistoryItem, rowIndex: number) => {
@@ -138,11 +146,11 @@ export default function History() {
           data={filteredData}
           onRowClick={handleRowClick}
           sortName={toggleSortByName}
-          sortCreator={toggleSortByCraetor}
-          sortLastEdited={toggleSortByLastEdited}
+          sortDate={toggleSortByDate}
+          sortTotalParticipants={toggleSortByTotalParticipants}
           isNameAscending={isNameAscending}
-          isCreatorAscending={isCreatorAscending}
-          isLastEditedAscending={isLastEditedAscending}
+          isDateAscending={isDateAscending}
+          isTotalParticipantsAscending={isTotalParticipantsAscending}
         />
       </div>
     </Topbar>

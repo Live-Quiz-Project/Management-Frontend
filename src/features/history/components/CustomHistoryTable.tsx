@@ -9,11 +9,11 @@ interface CustomHistoryTableProps {
   data: IHistoryItem[];
   onRowClick?: (rowData: IHistoryItem, rowIndex: number) => void;
   sortName?: () => void;
-  sortCreator?: () => void;
-  sortLastEdited?: () => void;
+  sortDate?: () => void;
+  sortTotalParticipants?: () => void;
   isNameAscending: boolean;
-  isCreatorAscending: boolean;
-  isLastEditedAscending: boolean;
+  isDateAscending: boolean;
+  isTotalParticipantsAscending: boolean;
 }
 
 const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
@@ -21,11 +21,11 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
   data,
   onRowClick,
   sortName,
-  sortCreator,
-  sortLastEdited,
+  sortDate,
+  sortTotalParticipants,
   isNameAscending,
-  isCreatorAscending,
-  isLastEditedAscending,
+  isDateAscending,
+  isTotalParticipantsAscending,
 }) => {
   const renderSortIcon = (columnKey: string) => {
     if (columnKey === "name") {
@@ -34,14 +34,14 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
       ) : (
         <KeyboardArrowDownIcon />
       );
-    } else if (columnKey === "creator") {
-      return isCreatorAscending ? (
+    } else if (columnKey === "date") {
+      return isDateAscending ? (
         <KeyboardArrowUpIcon />
       ) : (
         <KeyboardArrowDownIcon />
       );
-    } else if (columnKey === "lastEdited") {
-      return isLastEditedAscending ? (
+    } else if (columnKey === "totalParticipants") {
+      return isTotalParticipantsAscending ? (
         <KeyboardArrowUpIcon />
       ) : (
         <KeyboardArrowDownIcon />
@@ -55,11 +55,11 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
       case "name":
         sortName && sortName();
         break;
-      case "creator":
-        sortCreator && sortCreator();
+      case "date":
+        sortDate && sortDate();
         break;
-      case "lastEdited":
-        sortLastEdited && sortLastEdited();
+      case "totalParticipants":
+        sortTotalParticipants && sortTotalParticipants();
         break;
       default:
         break;
