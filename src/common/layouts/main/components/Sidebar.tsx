@@ -1,5 +1,5 @@
 import { TbHome, TbListDetails, TbHistory } from "react-icons/tb";
-import { Link, RouteProps, matchRoutes, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 type Props = {
   className?: string;
@@ -26,12 +26,16 @@ export default function Sidebar({ className = "" }: Props) {
 
   const location = useLocation();
 
-  if (!menus.map((menu) => menu.link).includes(location.pathname)) return null;
-
-  const routes = menus.map((menu) => ({
-    path: menu.link,
-  }));
-  const [{ route }] = matchRoutes(routes, location) as { route: RouteProps }[];
+  if (
+    !menus.reduce(
+      (acc, menu) =>
+        menu.link.slice(1) === location.pathname.split("/")[1]
+          ? menu.link.slice(1) === location.pathname.split("/")[1]
+          : acc,
+      false
+    )
+  )
+    return null;
 
   return (
     <div
@@ -45,9 +49,17 @@ export default function Sidebar({ className = "" }: Props) {
               <Link
                 to={menu.link}
                 className={`flex items-center space-x-2 h-10 rounded-lg px-3 w-44 ${
-                  route?.path === "/" && i === 0 && "bg-egg-sour"
-                } ${route?.path === "/library" && i === 1 && "bg-egg-sour"} ${
-                  route?.path === "/history" && i === 2 && "bg-egg-sour"
+                  location.pathname.split("/")[1] === "" &&
+                  i === 0 &&
+                  "bg-egg-sour"
+                } ${
+                  location.pathname.split("/")[1] === "library" &&
+                  i === 1 &&
+                  "bg-egg-sour"
+                } ${
+                  location.pathname.split("/")[1] === "history" &&
+                  i === 2 &&
+                  "bg-egg-sour"
                 }`}
               >
                 {menu.icon}

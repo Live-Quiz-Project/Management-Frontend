@@ -100,8 +100,8 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
                     alt="Image"
                     className="object-cover h-24 w-36 rounded-xl border-2 border-pastel-orange"
                   />
-                ) : column.key === "lastEdited" ? (
-                  `${row[column.key]} days ago.`
+                ) : column.key === "date" ? (
+                  `${row[column.key]}`
                 ) : (
                   row[column.key]
                 )}
