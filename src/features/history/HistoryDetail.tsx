@@ -22,13 +22,12 @@ export default function HistoryDetail() {
     return participants.map(participant => ({
       displayName: participant.name,
       mark: `${participant.marks}/${participant.total_marks}`,
-      corrects: `${participant.corrects}/${participant.total_questions}`,
-      incorrects: `${participant.incorrects}/${participant.total_questions}`,
-      unanswered: `${participant.unanswered}/${participant.total_questions}`,
+      corrects: `${participant.corrects}/${participant.total_questions}  (${(participant.corrects * 100)/(participant.total_questions - participant.unanswered)}%)`,
+      incorrects: `${participant.incorrects}/${participant.total_questions} (${(participant.incorrects * 100)/(participant.total_questions - participant.unanswered)}%)`,
+      unanswered: `${participant.unanswered}/${participant.total_questions} (${participant.unanswered * 100/(participant.total_questions - participant.unanswered)}%)`,
     }));
   };
   
-  // Using the provided mock data
   const { participants } = participantsHistoryDetailData;
   
   const historyParticipantsDetailItems = mapParticipantsToDetailItems(participants);
