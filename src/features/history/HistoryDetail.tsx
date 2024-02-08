@@ -72,7 +72,7 @@ export default function HistoryDetail() {
 
   return (
     <div className="flex flex-col">
-      <p className="text-2xl font-serif">Parabola Quiz</p>
+      <p className="text-2xl font-serif">English Quiz</p>
       <div className="flex">
         <div className="pr-2">
           <SearchField onSearch={() => {}} keyword={''} setKeyword={() => {}} />

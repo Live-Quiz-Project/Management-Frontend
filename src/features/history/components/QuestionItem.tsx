@@ -18,11 +18,11 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title }) => {
   const [isListChartState, setIsListChartState] = useState(false);
   const chartData = [
     ["", "", { role: "style" }],
-    ["Bangsean", 8175000, "#FFAAAA"],
-    ["Chiangmai", 3792000, "#FFCA7A"],
-    ["Bankok", 2695000, "#C7DAB0"],
-    ["Pattaya", 2328000, "#C8DAF5"],
-    ["Ayutthaya", 1568000, "#DDD1E1"],
+    ["Bangsean", 0, "#FFAAAA"],
+    ["Chiangmai", 0, "#FFCA7A"],
+    ["Bankok", 17, "#C7DAB0"],
+    ["Pattaya", 1, "#C8DAF5"],
+    ["Ayutthaya", 2, "#DDD1E1"],
   ];
 
   const chartOptions = {

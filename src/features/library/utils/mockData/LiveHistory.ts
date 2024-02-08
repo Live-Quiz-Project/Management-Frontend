@@ -4,7 +4,7 @@ export const liveHistoryData : ILiveHistoryData[] = [
         creator_name: "You",
         title: "Math Quiz",
         cover_image:
-        "https://media.discordapp.net/attachments/988486551275200573/1115852890720972883/IMG_9028.jpg?ex=65b08b7c&is=659e167c&hm=62f766768e59e8ac0d4d426ab5120de2278cd0bd7fc33a70f9795ecf3eb8c9c7&=&format=webp&width=1560&height=1170",
+        "https://media.discordapp.net/attachments/988486551275200573/1205172567317422140/math-102023-1281244731-01.png?ex=65d7676b&is=65c4f26b&hm=abb030152e1b2add37bf9dacb0625a259e58a257066c4d72c17c2dfa172859d5&=&format=webp&quality=lossless&width=1750&height=1170",
         updated_at:"2024-02-01T15:57:49.114064+07:00"
     },
     {
@@ -12,7 +12,7 @@ export const liveHistoryData : ILiveHistoryData[] = [
         creator_name: "You",
         title: "Englist Quiz",
         cover_image:
-        "https://media.discordapp.net/attachments/988486551275200573/1149605252149026816/how-to-install-a-split-jamb-door-step-6.png?ex=65aa22d2&is=6597add2&hm=4f59872bca885805d274a5581790057cd43f694f784184bccc3215a7263519f1&=&format=webp&quality=lossless&width=1872&height=1170",
+        "https://media.discordapp.net/attachments/988486551275200573/1205172679750197340/1000_F_280126582_Ig4OLIbbSryXwe2S63aBu2TKY0Bj9WjH.png?ex=65d76785&is=65c4f285&hm=76ff7ae313d2714d078d2c63b1888fa987937a515c2babcf69ccb33f8ce47a53&=&format=webp&quality=lossless&width=1756&height=1170",
         updated_at: "2024-02-02T15:57:49.114064+07:00"
     },
     {
@@ -20,7 +20,7 @@ export const liveHistoryData : ILiveHistoryData[] = [
         creator_name: "You",
         title: "Science Quiz",
         cover_image:
-        "https://media.discordapp.net/attachments/988486551275200573/1115852891832463390/IMG_6115.jpg?ex=65b08b7c&is=659e167c&hm=8924224afac46d2d02e9e8eb41418e3ed58c275258d0ca62f6a64e1d13b4189a&=&format=webp&width=878&height=1170",
+        "https://media.discordapp.net/attachments/988486551275200573/1205172750059175998/20231222_cpub_bii_header-1703185204173.png?ex=65d76796&is=65c4f296&hm=a219bbe1ee37025cb609c50b934105a14118dbb998f81dbc8b383b38322b88c8&=&format=webp&quality=lossless&width=1770&height=1170",
         updated_at: "2024-01-01T15:57:49.114064+07:00"
     },
     {
@@ -28,7 +28,7 @@ export const liveHistoryData : ILiveHistoryData[] = [
         creator_name: "You",
         title: "Art Quiz",
         cover_image:
-        "https://media.discordapp.net/attachments/988486551275200573/1115852891832463390/IMG_6115.jpg?ex=65b08b7c&is=659e167c&hm=8924224afac46d2d02e9e8eb41418e3ed58c275258d0ca62f6a64e1d13b4189a&=&format=webp&width=878&height=1170",
+        "https://media.discordapp.net/attachments/988486551275200573/1205172809425489940/main-pic-1.png?ex=65d767a4&is=65c4f2a4&hm=3d5dd312d54fe28bac7474f01679ceb662dec870e28a0f16da9cefa3710edd53&=&format=webp&quality=lossless&width=1674&height=1170",
         updated_at: "2024-01-14T15:57:49.114064+07:00"
     }
 ]
