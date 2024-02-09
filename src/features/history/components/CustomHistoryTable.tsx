@@ -80,7 +80,7 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
           </span>
         ))}
       </Flex>
-      <Flex className="flex-col">
+      <Flex className="flex-col overflow-y-auto" style={{ maxHeight: "780px" }}>
         {data.map((row, index) => (
           <div
             key={index}

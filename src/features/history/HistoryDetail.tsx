@@ -111,23 +111,30 @@ export default function HistoryDetail() {
           />
         </div>
       </div>
-      {viewTypeFiltered.viewTypeSelected === 0 ? (
-        <QuestionItem title="What is the capital city of Thailand" data={[]} />
-      ) : (
-        <div>
-          <CustomParticipantsDashboardTable
-            columns={columns}
-            data={historyParticipantsDetailItems}
-            onRowClick={() => {}}
-            sortName={() => {}}
-            sortCreator={() => {}}
-            sortLastEdited={() => {}}
-            isNameAscending={false}
-            isCreatorAscending={false}
-            isLastEditedAscending={false}
-          />
-        </div>
-      )}
+      <div className="overflow-y-auto" style={{ maxHeight: "780px" }}>
+        {viewTypeFiltered.viewTypeSelected === 0 ? (
+          <div>
+            <QuestionItem
+              title="What is the capital city of Thailand"
+              data={[]}
+            />
+          </div>
+        ) : (
+          <div>
+            <CustomParticipantsDashboardTable
+              columns={columns}
+              data={historyParticipantsDetailItems}
+              onRowClick={() => {}}
+              sortName={() => {}}
+              sortCreator={() => {}}
+              sortLastEdited={() => {}}
+              isNameAscending={false}
+              isCreatorAscending={false}
+              isLastEditedAscending={false}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
