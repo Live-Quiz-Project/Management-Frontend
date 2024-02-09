@@ -26,11 +26,11 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title }) => {
   ];
 
   const chartOptions = {
-    chartArea: { width: "50%" },
+    chartArea: { width: "80%", height: "80%" },
     backgroundColor: "#FFFADD",
   };
 
-  const columns : HistoryDetailTableColumn[] = [
+  const columns: HistoryDetailTableColumn[] = [
     { key: "displayName", header: "Display Name", width: "25%" },
     { key: "answer", header: "Answer", width: "25%" },
     { key: "mark", header: "Mark", width: "25%" },
@@ -39,25 +39,22 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title }) => {
 
   const data: IHistoryDetailItem[] = [
     {
-      displayName:
-        "Kittiphon Singchom",
-        answer: "will",
-        mark: "5",
-        totalMarks: "5",
+      displayName: "Kittiphon Singchom",
+      answer: "will",
+      mark: "5",
+      totalMarks: "5",
     },
     {
-      displayName:
-      "Chanikan Singchom",
+      displayName: "Chanikan Singchom",
       answer: "you",
       mark: "5",
       totalMarks: "5",
     },
     {
-      displayName:
-        "Lawan Singchom",
-        answer: "marry",
-        mark: "7",
-        totalMarks: "7",
+      displayName: "Lawan Singchom",
+      answer: "marry",
+      mark: "7",
+      totalMarks: "7",
     },
   ];
 
@@ -91,8 +88,9 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title }) => {
             isListChartState === true ? "bg-white" : null
           }`}
           onClick={() => {
-            setIsListChartState(true)
-            setChartType("LineChart");}}
+            setIsListChartState(true);
+            setChartType("LineChart");
+          }}
         >
           <FormatListNumberedIcon style={{ fontSize: 18 }} />
         </button>
@@ -101,34 +99,36 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title }) => {
   };
 
   return (
-    <div className="w-2/3 rounded-xl bg-peach p-4 mb-2 mt-2">
+    <div className="w-full rounded-xl bg-peach p-4 mb-2 mt-2">
       <Flex className="justify-between">
         <h2 className="font-serif">{title}</h2>
         {buildChartTypesButton()}
       </Flex>
-      {
-        chartType === "LineChart" 
-        ? <div>
+      {chartType === "LineChart" ? (
+        <div>
           <CustomHistoryDetailTable
-          columns={columns}
-          data={data}
-          onRowClick={() => {}}
-          sortName={() => {}}
-          sortCreator={() => {}}
-          sortLastEdited={() => {}}
-          isNameAscending={false}
-          isCreatorAscending={false}
-          isLastEditedAscending={false}
+            columns={columns}
+            data={data}
+            onRowClick={() => {}}
+            sortName={() => {}}
+            sortCreator={() => {}}
+            sortLastEdited={() => {}}
+            isNameAscending={false}
+            isCreatorAscending={false}
+            isLastEditedAscending={false}
           />
         </div>
-        :  <Chart
-        chartType={chartType}
-        data={chartData}
-        options={chartOptions}
-        width="100%"
-        height="400px"
-      />
-      }
+      ) : (
+        <div className="py-4">
+          <Chart
+            chartType={chartType}
+            data={chartData}
+            options={chartOptions}
+            width="100%"
+            height="400px"
+          />
+        </div>
+      )}
     </div>
   );
 };

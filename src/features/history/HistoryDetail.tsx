@@ -7,10 +7,14 @@ import CustomParticipantsDashboardTable from "./components/CustomParticipantsDas
 import { participantsHistoryDetailData } from "../library/utils/mockData/LiveHistory";
 
 export default function HistoryDetail() {
-  const [viewTypeFiltered, setViewTypeFiltered] = useState(defaultViewTypeFiltered)
-  const [sortingFiltered, setSortingFiltered] = useState(defaultSortingFilteredFiltered)
+  const [viewTypeFiltered, setViewTypeFiltered] = useState(
+    defaultViewTypeFiltered
+  );
+  const [sortingFiltered, setSortingFiltered] = useState(
+    defaultSortingFilteredFiltered
+  );
 
-  const columns : HistoryPaticipantsDetailTableColumn[] = [
+  const columns: HistoryPaticipantsDetailTableColumn[] = [
     { key: "displayName", header: "Display Name", width: "25%" },
     // { key: "mark", header: "Mark", width: "25%" },
     { key: "corrects", header: "Corrects", width: "25%" },
@@ -19,114 +23,131 @@ export default function HistoryDetail() {
   ];
 
   const mapParticipantsToDetailItems = (participants) => {
-    return participants.map(participant => ({
+    return participants.map((participant) => ({
       displayName: participant.name,
       mark: `${participant.marks}/${participant.total_marks}`,
-      corrects: `${participant.corrects}/${participant.total_questions}  (${(participant.corrects * 100)/(participant.total_questions - participant.unanswered)}%)`,
-      incorrects: `${participant.incorrects}/${participant.total_questions} (${(participant.incorrects * 100)/(participant.total_questions - participant.unanswered)}%)`,
-      unanswered: `${participant.unanswered}/${participant.total_questions} (${participant.unanswered * 100/(participant.total_questions - participant.unanswered)}%)`,
+      corrects: `${participant.corrects}/${participant.total_questions}  (${
+        (participant.corrects * 100) /
+        (participant.total_questions - participant.unanswered)
+      }%)`,
+      incorrects: `${participant.incorrects}/${participant.total_questions} (${
+        (participant.incorrects * 100) /
+        (participant.total_questions - participant.unanswered)
+      }%)`,
+      unanswered: `${participant.unanswered}/${participant.total_questions} (${
+        (participant.unanswered * 100) /
+        (participant.total_questions - participant.unanswered)
+      }%)`,
     }));
   };
-  
+
   const { participants } = participantsHistoryDetailData;
-  
-  const historyParticipantsDetailItems = mapParticipantsToDetailItems(participants);
 
-  const viewTypeDropdownData = useMemo<MenuProps['items']>(() => {
-    const newRowDropdown = defaultViewType.map(item => ({
+  const historyParticipantsDetailItems =
+    mapParticipantsToDetailItems(participants);
+
+  const viewTypeDropdownData = useMemo<MenuProps["items"]>(() => {
+    const newRowDropdown = defaultViewType.map((item) => ({
       key: item.id.toString(),
-      label: <div className='text-sm '>{item.viewType}</div>,
+      label: <div className="text-sm ">{item.viewType}</div>,
       onClick: () => {
-        handleViewTypeDropdownChange(item.id.toString(), 'viewTypeSelected')
+        handleViewTypeDropdownChange(item.id.toString(), "viewTypeSelected");
       },
-    }))
+    }));
 
-    return [...newRowDropdown]
-  }, [defaultViewType])
+    return [...newRowDropdown];
+  }, [defaultViewType]);
 
   const handleViewTypeDropdownChange = (key: string, fieldName: string) => {
-    setViewTypeFiltered(prevState => ({
+    setViewTypeFiltered((prevState) => ({
       ...prevState,
       [fieldName]: Number.parseInt(key),
-    }))
-  }
+    }));
+  };
 
-  const sortingDropdownData = useMemo<MenuProps['items']>(() => {
-    const newRowDropdown = defaultSorting.map(item => ({
+  const sortingDropdownData = useMemo<MenuProps["items"]>(() => {
+    const newRowDropdown = defaultSorting.map((item) => ({
       key: item.id.toString(),
-      label: <div className='text-sm '>{item.viewType}</div>,
+      label: <div className="text-sm ">{item.viewType}</div>,
       onClick: () => {
-        handleSortingDropdownChange(item.id.toString(), 'sortingSelected')
+        handleSortingDropdownChange(item.id.toString(), "sortingSelected");
       },
-    }))
+    }));
 
-    return [...newRowDropdown]
-  }, [defaultViewType])
+    return [...newRowDropdown];
+  }, [defaultViewType]);
 
   const handleSortingDropdownChange = (key: string, fieldName: string) => {
-    setSortingFiltered(prevState => ({
+    setSortingFiltered((prevState) => ({
       ...prevState,
       [fieldName]: Number.parseInt(key),
-    }))
-  }
+    }));
+  };
 
   return (
-    <div className="flex flex-col">
-      <p className="text-2xl font-serif">English Quiz</p>
-      <div className="flex">
+    <div className="flex w-full mx-12 mt-24 flex-col">
+      <p className="text-2xl pb-4 font-serif">English Quiz</p>
+      <div className="flex pb-4">
         <div className="pr-2">
-          <SearchField onSearch={() => {}} keyword={''} setKeyword={() => {}} />
-        </div>
-        <div className="pr-2">
-          <AppDropdown items={viewTypeDropdownData} indexSelected={viewTypeFiltered.viewTypeSelected} minWidth={130} />
-        </div>
-        <div className="pr-2">
-          <AppDropdown items={sortingDropdownData} indexSelected={sortingFiltered.sortingSelected} minWidth={100} />
-        </div>
-      </div>
-      {
-        viewTypeFiltered.viewTypeSelected === 0
-        ? (
-          <QuestionItem 
-        title="What is the capital city of Thailand"
-        data={[]}
-        />
-        )
-        : <div>
-          <CustomParticipantsDashboardTable
-          columns={columns}
-          data={historyParticipantsDetailItems}
-          onRowClick={() => {}}
-          sortName={() => {}}
-          sortCreator={() => {}}
-          sortLastEdited={() => {}}
-          isNameAscending={false}
-          isCreatorAscending={false}
-          isLastEditedAscending={false}
+          <SearchField
+            className=""
+            onSearch={() => {}}
+            keyword={""}
+            setKeyword={() => {}}
           />
         </div>
-      }
-      
+        <div className="pr-2">
+          <AppDropdown
+            items={viewTypeDropdownData}
+            indexSelected={viewTypeFiltered.viewTypeSelected}
+            minWidth={130}
+          />
+        </div>
+        <div className="pr-2">
+          <AppDropdown
+            items={sortingDropdownData}
+            indexSelected={sortingFiltered.sortingSelected}
+            minWidth={100}
+          />
+        </div>
+      </div>
+      {viewTypeFiltered.viewTypeSelected === 0 ? (
+        <QuestionItem title="What is the capital city of Thailand" data={[]} />
+      ) : (
+        <div>
+          <CustomParticipantsDashboardTable
+            columns={columns}
+            data={historyParticipantsDetailItems}
+            onRowClick={() => {}}
+            sortName={() => {}}
+            sortCreator={() => {}}
+            sortLastEdited={() => {}}
+            isNameAscending={false}
+            isCreatorAscending={false}
+            isLastEditedAscending={false}
+          />
+        </div>
+      )}
     </div>
   );
 }
 
 interface IViewTypeFiltered {
-  viewTypeText: string
-  viewTypeSelected: number
+  viewTypeText: string;
+  viewTypeSelected: number;
 }
 
 const defaultViewTypeFiltered: IViewTypeFiltered = {
-  viewTypeText: '',
+  viewTypeText: "",
   viewTypeSelected: 0,
-}
+};
 
 interface IViewType {
-  id: number
-  viewType: string
+  id: number;
+  viewType: string;
 }
 
-const defaultViewType : IViewType[] = [
+const defaultViewType: IViewType[] = [
   {
     id: 0,
     viewType: "Questions",
@@ -134,25 +155,25 @@ const defaultViewType : IViewType[] = [
   {
     id: 1,
     viewType: "Paticipants",
-  }
-]
+  },
+];
 
 interface ISortingFiltered {
-  sortingText: string
-  sortingSelected: number
+  sortingText: string;
+  sortingSelected: number;
 }
 
 const defaultSortingFilteredFiltered: ISortingFiltered = {
-  sortingText: '',
+  sortingText: "",
   sortingSelected: 0,
-}
+};
 
 interface ISorting {
-  id: number
-  viewType: string
+  id: number;
+  viewType: string;
 }
 
-const defaultSorting : ISorting[] = [
+const defaultSorting: ISorting[] = [
   {
     id: 0,
     viewType: "Asc",
@@ -160,8 +181,8 @@ const defaultSorting : ISorting[] = [
   {
     id: 1,
     viewType: "Dsc",
-  }
-]
+  },
+];
 
 export interface IHistoryPaticipantsDetailItem {
   displayName: string;
