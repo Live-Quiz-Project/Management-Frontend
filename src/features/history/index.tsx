@@ -46,6 +46,7 @@ export default function History() {
 
   const mapDataToIHistoryItem = (data: ILiveHistoryData[]) => {
     return data.map((item) => ({
+      id: item.id,
       image: item.cover_image,
       name: item.title,
       date: formatLastEditedDate(item.created_at),
@@ -139,7 +140,7 @@ export default function History() {
 
   const handleRowClick = (rowData: IHistoryItem, rowIndex: number) => {
     console.log("Row Clicked:", rowData, rowIndex);
-    navigate("/history/history-detail");
+    navigate(`/history/history-detail?id=${rowData.id}`);
   };
 
   return (
@@ -170,6 +171,7 @@ export default function History() {
 }
 
 const defaultHistoryItem: IHistoryItem = {
+  id: "",
   image: "",
   name: "",
   date: "",
@@ -178,6 +180,7 @@ const defaultHistoryItem: IHistoryItem = {
 };
 
 export interface IHistoryItem {
+  id: string;
   image: string;
   name: string;
   date: string;

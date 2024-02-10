@@ -1,12 +1,15 @@
 import AppDropdown from "@/common/layouts/main/components/AppDropdown";
 import SearchField from "@/common/layouts/main/components/SearchField";
 import QuestionItem from "./components/QuestionItem";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MenuProps } from "antd";
 import CustomParticipantsDashboardTable from "./components/CustomParticipantsDashboardTable";
 import { participantsHistoryDetailData } from "../library/utils/mockData/LiveHistory";
+import { privateHttp as http } from "@/common/services/axios";
 
 export default function HistoryDetail() {
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get("id");
   const [viewTypeFiltered, setViewTypeFiltered] = useState(
     defaultViewTypeFiltered
   );
@@ -21,6 +24,19 @@ export default function HistoryDetail() {
     { key: "incorrects", header: "Incorrects", width: "25%" },
     { key: "unanswered", header: "Unanswered", width: "25%" },
   ];
+
+  useEffect(() => {
+    fetchDashboard();
+  }, []);
+
+  async function fetchDashboard() {
+    try {
+      const dashboardData = await http.get(`/dashboard/answer/${id}`);
+      console.log("dashboardData: ", dashboardData.data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   const mapParticipantsToDetailItems = (participants) => {
     return participants.map((participant) => ({
