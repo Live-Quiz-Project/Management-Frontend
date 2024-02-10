@@ -3,10 +3,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomHistoryTable from "./components/CustomHistoryTable";
 import Topbar from "@/common/layouts/main/components/Topbar";
-import {
-  ILiveHistoryData,
-  liveHistoryData,
-} from "../library/utils/mockData/LiveHistory";
+import { ILiveHistoryData } from "../library/utils/mockData/LiveHistory";
+import { privateHttp as http } from "@/common/services/axios";
 
 export default function History() {
   const navigate = useNavigate();
@@ -18,6 +16,7 @@ export default function History() {
   const [sortedData, setSortedData] = useState<IHistoryItem[]>([
     defaultHistoryItem,
   ]);
+  const [liveHistoryData, setLiveHistoryData] = useState([]);
 
   const columns: HistoryTableColumn[] = [
     { key: "image", header: "", width: "20%" },
@@ -28,6 +27,19 @@ export default function History() {
   ];
 
   useEffect(() => {
+    fetchLiveHistory();
+  }, []);
+
+  async function fetchLiveHistory() {
+    try {
+      const liveHistoryResponse = await http.get("/dashboard");
+      setLiveHistoryData(liveHistoryResponse.data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
     const transformedData = mapDataToIHistoryItem(liveHistoryData);
     setSortedData(transformedData);
   }, [liveHistoryData]);
@@ -36,7 +48,7 @@ export default function History() {
     return data.map((item) => ({
       image: item.cover_image,
       name: item.title,
-      date: formatLastEditedDate(item.date),
+      date: formatLastEditedDate(item.created_at),
       totalParticipants: item.total_participants,
       action: <span></span>,
     }));

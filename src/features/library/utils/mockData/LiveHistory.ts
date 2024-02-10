@@ -1,7 +1,7 @@
 export const liveHistoryData: ILiveHistoryData[] = [
   {
     id: "1",
-    date: "2024-02-01T15:57:49.114064+07:00",
+    created_at: "2024-02-01T15:57:49.114064+07:00",
     title: "Math Quiz",
     cover_image:
       "https://media.discordapp.net/attachments/988486551275200573/1205172567317422140/math-102023-1281244731-01.png?ex=65d7676b&is=65c4f26b&hm=abb030152e1b2add37bf9dacb0625a259e58a257066c4d72c17c2dfa172859d5&=&format=webp&quality=lossless&width=1750&height=1170",
@@ -9,7 +9,7 @@ export const liveHistoryData: ILiveHistoryData[] = [
   },
   {
     id: "2",
-    date: "2024-02-02T15:57:49.114064+07:00",
+    created_at: "2024-02-02T15:57:49.114064+07:00",
     title: "Englist Quiz",
     cover_image:
       "https://media.discordapp.net/attachments/988486551275200573/1205172679750197340/1000_F_280126582_Ig4OLIbbSryXwe2S63aBu2TKY0Bj9WjH.png?ex=65d76785&is=65c4f285&hm=76ff7ae313d2714d078d2c63b1888fa987937a515c2babcf69ccb33f8ce47a53&=&format=webp&quality=lossless&width=1756&height=1170",
@@ -17,7 +17,7 @@ export const liveHistoryData: ILiveHistoryData[] = [
   },
   {
     id: "3",
-    date: "2024-01-01T15:57:49.114064+07:00",
+    created_at: "2024-01-01T15:57:49.114064+07:00",
     title: "Science Quiz",
     cover_image:
       "https://media.discordapp.net/attachments/988486551275200573/1205172750059175998/20231222_cpub_bii_header-1703185204173.png?ex=65d76796&is=65c4f296&hm=a219bbe1ee37025cb609c50b934105a14118dbb998f81dbc8b383b38322b88c8&=&format=webp&quality=lossless&width=1770&height=1170",
@@ -25,7 +25,7 @@ export const liveHistoryData: ILiveHistoryData[] = [
   },
   {
     id: "4",
-    date: "2024-01-14T15:57:49.114064+07:00",
+    created_at: "2024-01-14T15:57:49.114064+07:00",
     title: "Art Quiz",
     cover_image:
       "https://media.discordapp.net/attachments/988486551275200573/1205172809425489940/main-pic-1.png?ex=65d767a4&is=65c4f2a4&hm=3d5dd312d54fe28bac7474f01679ceb662dec870e28a0f16da9cefa3710edd53&=&format=webp&quality=lossless&width=1674&height=1170",
@@ -162,7 +162,7 @@ export const participantsHistoryDetailData = {
 
 export interface ILiveHistoryData {
   id: string;
-  date: string;
+  created_at: string;
   title: string;
   cover_image: string;
   total_participants: string;

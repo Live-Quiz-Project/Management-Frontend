@@ -84,14 +84,14 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
         {data.map((row, index) => (
           <div
             key={index}
-            className="flex rounded-xl bg-peach my-2 border-2 border-transparent hover:border-pastel-orange"
+            className="flex p-4 rounded-xl bg-peach my-2 border-2 border-transparent hover:border-pastel-orange"
             style={{ cursor: onRowClick ? "pointer" : "default" }}
             onClick={() => onRowClick && onRowClick(row, index)}
           >
             {columns.map((column) => (
               <div
                 key={column.key}
-                className={`p-4 ${column.key === "image" ? null : "pt-12"}`}
+                className={` ${column.key === "image" ? null : "pt-9"}`}
                 style={{ width: column.width }}
               >
                 {column.key === "image" ? (
