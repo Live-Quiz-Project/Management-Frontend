@@ -8,10 +8,11 @@ import CustomHistoryDetailTable from "./CustomHistoryDetailTable";
 
 interface QuestionItemProps {
   title: string;
+  questionNo: number;
   data: CityPopulation[];
 }
 
-const QuestionItem: React.FC<QuestionItemProps> = ({ title }) => {
+const QuestionItem: React.FC<QuestionItemProps> = ({ title, questionNo }) => {
   const [chartType, setChartType] = useState<
     "BarChart" | "PieChart" | "ListChart" | "LineChart"
   >("BarChart");
@@ -101,7 +102,9 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title }) => {
   return (
     <div className="w-full rounded-xl bg-peach p-4 mb-2 mt-2">
       <Flex className="justify-between">
-        <h2 className="font-serif">{title}</h2>
+        <h2 className="font-serif">
+          {questionNo}. {title}
+        </h2>
         {buildChartTypesButton()}
       </Flex>
       {chartType === "LineChart" ? (

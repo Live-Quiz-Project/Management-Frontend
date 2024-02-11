@@ -16,6 +16,7 @@ export default function HistoryDetail() {
   const [sortingFiltered, setSortingFiltered] = useState(
     defaultSortingFilteredFiltered
   );
+  const [dashboardQuestionsData, setDashboardQuestionsData] = useState([]);
 
   const columns: HistoryPaticipantsDetailTableColumn[] = [
     { key: "displayName", header: "Display Name", width: "25%" },
@@ -31,8 +32,8 @@ export default function HistoryDetail() {
 
   async function fetchDashboard() {
     try {
-      const dashboardData = await http.get(`/dashboard/answer/${id}`);
-      console.log("dashboardData: ", dashboardData.data);
+      const dashboardData = await http.get(`/dashboard/question/${id}`);
+      setDashboardQuestionsData(dashboardData.data.questions);
     } catch (e) {
       console.log(e);
     }
@@ -127,18 +128,19 @@ export default function HistoryDetail() {
           />
         </div>
       </div>
-      <div className="overflow-y-auto" style={{ maxHeight: "780px" }}>
+      <div className="overflow-y-auto" style={{ maxHeight: "85vh" }}>
         {viewTypeFiltered.viewTypeSelected === 0 ? (
-          <div>
-            <QuestionItem
-              title="What is the capital city of Thailand"
-              data={[]}
-            />
-            <QuestionItem
-              title="What is the capital city of Sigpore"
-              data={[]}
-            />
-          </div>
+          dashboardQuestionsData.map((item, index) => {
+            return (
+              <div className="pb-2">
+                <QuestionItem
+                  title={item.content}
+                  questionNo={index + 1}
+                  data={item.options}
+                />
+              </div>
+            );
+          })
         ) : (
           <div>
             <CustomParticipantsDashboardTable
