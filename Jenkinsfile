@@ -51,7 +51,6 @@ spec:
   
   //Start Pipeline
   stages {
-      
       // ***** Stage Clone *****
       stage('Clone reviews source code') {
         steps {
@@ -106,6 +105,5 @@ spec:
               }
           }
       }
-
   }// End stages
 }// End pipeline
