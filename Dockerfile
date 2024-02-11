@@ -5,7 +5,7 @@ FROM --platform=linux/amd64 node:21.6.1
 WORKDIR /app
 
 # Install pnpm globally
-RUN npm install -g pnpm
+RUN corepack enable
 
 # Copy package.json and pnpm-lock.yaml to the container
 COPY package.json pnpm-lock.yaml ./
