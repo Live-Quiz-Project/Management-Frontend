@@ -131,7 +131,12 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
 
     inputObject.forEach((option) => {
       const content = option.content;
-      const participantCount = option.participants.length;
+      let participantCount = 0;
+      if (option.participants == null) {
+        participantCount = 0;
+      } else {
+        participantCount = option.participants.length;
+      }
 
       const color = colors[colorIndex % colors.length];
       colorIndex++;
@@ -143,7 +148,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     return chartData;
   }
 
-  const buildChoiceChart = () => {
+  const buildMultiTypeChart = () => {
     const chartData = transformChoiceData(questionData);
     return (
       <Chart
@@ -160,18 +165,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     return <div></div>;
   };
 
-  const buildFillBlankChart = () => {
-    return <div></div>;
-  };
-
-  const buildParagraphChart = () => {
-    return <div></div>;
-  };
-
-  const buildTrueFalseChart = () => {
-    return <div></div>;
-  };
-
   const buildMatchingChart = () => {
     return <div></div>;
   };
@@ -179,15 +172,15 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const buildChart = () => {
     switch (questionType) {
       case "CHOICE":
-        return buildChoiceChart();
+        return buildMultiTypeChart();
       case "POOL":
         return buildPoolChart();
       case "FILL_BLANK":
-        return buildFillBlankChart();
+        return buildMultiTypeChart();
       case "PARAGRAPH":
-        return buildParagraphChart();
+        return buildMultiTypeChart();
       case "TRUE_FALSE":
-        return buildTrueFalseChart();
+        return buildMultiTypeChart();
       case "MATCHING":
         return buildMatchingChart();
       default:

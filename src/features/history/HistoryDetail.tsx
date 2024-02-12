@@ -134,10 +134,10 @@ export default function HistoryDetail() {
             return (
               <div className="pb-2">
                 <QuestionItem
-                  title={item.content}
+                  title={item["content"]}
                   questionNo={index + 1}
-                  questionType={item.type}
-                  questionData={item.options}
+                  questionType={item["type"]}
+                  questionData={item["options"]}
                 />
               </div>
             );
