@@ -9,22 +9,20 @@ import CustomHistoryDetailTable from "./CustomHistoryDetailTable";
 interface QuestionItemProps {
   title: string;
   questionNo: number;
-  data: CityPopulation[];
+  questionData: CityPopulation[];
+  questionType: string;
 }
 
-const QuestionItem: React.FC<QuestionItemProps> = ({ title, questionNo }) => {
+const QuestionItem: React.FC<QuestionItemProps> = ({
+  title,
+  questionNo,
+  questionType,
+  questionData,
+}) => {
   const [chartType, setChartType] = useState<
     "BarChart" | "PieChart" | "ListChart" | "LineChart"
   >("BarChart");
   const [isListChartState, setIsListChartState] = useState(false);
-  const chartData = [
-    ["", "", { role: "style" }],
-    ["Bangsean", 0, "#FFAAAA"],
-    ["Chiangmai", 0, "#FFCA7A"],
-    ["Bankok", 17, "#C7DAB0"],
-    ["Pattaya", 1, "#C8DAF5"],
-    ["Ayutthaya", 2, "#DDD1E1"],
-  ];
 
   const chartOptions = {
     chartArea: { width: "80%", height: "80%" },
@@ -99,6 +97,104 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title, questionNo }) => {
     );
   };
 
+  const getQuestionTypeDescription = (questionType: string) => {
+    switch (questionType) {
+      case "CHOICE":
+        return "Choice";
+      case "POOL":
+        return "Pool";
+      case "FILL_BLANK":
+        return "Fill in the blank";
+      case "PARAGRAPH":
+        return "Paragraph";
+      case "TRUE_FALSE":
+        return "True or False";
+      case "MATCHING":
+        return "Matching";
+      default:
+        return "Unknown Type";
+    }
+  };
+
+  const buildQuestionTypeBadge = (type: string) => {
+    return (
+      <div className="inline-flex px-2 py-1 bg-pastel-orange rounded-xl">
+        {getQuestionTypeDescription(type)}
+      </div>
+    );
+  };
+
+  function transformChoiceData(inputObject) {
+    const chartData = [["", "", { role: "style" }]];
+    const colors = ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"];
+    let colorIndex = 0;
+
+    inputObject.forEach((option) => {
+      const content = option.content;
+      const participantCount = option.participants.length;
+
+      const color = colors[colorIndex % colors.length];
+      colorIndex++;
+
+      chartData.push([content, participantCount, color]);
+    });
+
+    console.log("chartData: ", chartData);
+    return chartData;
+  }
+
+  const buildChoiceChart = () => {
+    const chartData = transformChoiceData(questionData);
+    return (
+      <Chart
+        chartType={chartType}
+        data={chartData}
+        options={chartOptions}
+        width="100%"
+        height="400px"
+      />
+    );
+  };
+
+  const buildPoolChart = () => {
+    return <div></div>;
+  };
+
+  const buildFillBlankChart = () => {
+    return <div></div>;
+  };
+
+  const buildParagraphChart = () => {
+    return <div></div>;
+  };
+
+  const buildTrueFalseChart = () => {
+    return <div></div>;
+  };
+
+  const buildMatchingChart = () => {
+    return <div></div>;
+  };
+
+  const buildChart = () => {
+    switch (questionType) {
+      case "CHOICE":
+        return buildChoiceChart();
+      case "POOL":
+        return buildPoolChart();
+      case "FILL_BLANK":
+        return buildFillBlankChart();
+      case "PARAGRAPH":
+        return buildParagraphChart();
+      case "TRUE_FALSE":
+        return buildTrueFalseChart();
+      case "MATCHING":
+        return buildMatchingChart();
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="w-full rounded-xl bg-peach p-4 mb-2 mt-2">
       <Flex className="justify-between">
@@ -107,6 +203,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title, questionNo }) => {
         </h2>
         {buildChartTypesButton()}
       </Flex>
+      {buildQuestionTypeBadge(questionType)}
       {chartType === "LineChart" ? (
         <div>
           <CustomHistoryDetailTable
@@ -122,15 +219,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({ title, questionNo }) => {
           />
         </div>
       ) : (
-        <div className="py-4">
-          <Chart
-            chartType={chartType}
-            data={chartData}
-            options={chartOptions}
-            width="100%"
-            height="400px"
-          />
-        </div>
+        <div className="py-4">{buildChart()}</div>
       )}
     </div>
   );

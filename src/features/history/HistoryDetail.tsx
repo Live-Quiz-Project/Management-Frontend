@@ -136,7 +136,8 @@ export default function HistoryDetail() {
                 <QuestionItem
                   title={item.content}
                   questionNo={index + 1}
-                  data={item.options}
+                  questionType={item.type}
+                  questionData={item.options}
                 />
               </div>
             );
