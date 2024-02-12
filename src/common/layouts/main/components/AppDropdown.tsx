@@ -53,7 +53,7 @@ function AppDropdown({
       >
         <a
           className={`border-[1px] ${
-            errorMessage ? 'border-status-error' : 'border-gray-stroke'
+            errorMessage ? 'border-status-error' : 'border-pastel-orange'
           } ${
             newMenu?.find(item => item.key === indexSelected?.toString())
               ? ''

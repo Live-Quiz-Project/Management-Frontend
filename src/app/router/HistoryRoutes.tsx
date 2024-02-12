@@ -16,7 +16,11 @@ const HistoryRoutes: RouteObject[] = [
   },
   {
     path: "history-detail",
-    element: <HistoryDetail />,
+    element: (
+      <MainLayout>
+        <HistoryDetail />
+      </MainLayout>
+    ),
   },
 ];
 
