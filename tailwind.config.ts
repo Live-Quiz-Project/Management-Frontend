@@ -19,8 +19,11 @@ export default {
       dune: "#322F2D",
       "regent-gray": "#919EA8",
       "quill-gray": "#E3E3E0",
+      "light-gray": "#F7F7F7",
       beige: "#faf7ee",
       white: "#FFF",
+      "pastel-orange": "#FFCC70",
+      "peach": "#FFFADD",
     },
     fontFamily: {
       serif: ["Young Serif", "Chonburi", "serif"],
