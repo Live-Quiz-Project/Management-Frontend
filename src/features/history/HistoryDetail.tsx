@@ -52,7 +52,7 @@ export default function HistoryDetail() {
     }
   }
 
-  const mapParticipantsToDetailItems = (participants) => {
+  const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
     return participants.map((participant) => ({
       displayName: participant.name,
       mark: `${participant.marks}/${participant.total_marks}`,
@@ -87,7 +87,7 @@ export default function HistoryDetail() {
   }, [defaultViewType]);
 
   const filteredQuestions = useMemo(() => {
-    return dashboardQuestionsData.filter((item) =>
+    return dashboardQuestionsData.filter((item: IQuestionItem) =>
       item.content.toLowerCase().includes(searchKeyword.toLowerCase())
     );
   }, [dashboardQuestionsData, searchKeyword]);
@@ -244,3 +244,48 @@ export interface HistoryPaticipantsDetailTableColumn {
   header: string;
   width: string;
 }
+
+interface IParticipantDetail {
+  id: string;
+  user_id: string;
+  name: string;
+  marks: number;
+  corrects: number;
+  incorrects: number;
+  unanswered: number;
+  total_questions: number;
+  total_marks: number;
+  questions: Question[];
+}
+
+interface IQuestionItem {
+  id: string;
+  order: number;
+  content: string;
+  type: QuestionType;
+  note: string;
+  media: string;
+  use_template: boolean;
+  time_limit: number;
+  have_time_factor: boolean;
+  time_factor: number;
+  font_size: number;
+  select_up_to: number;
+  options: Option[];
+}
+
+interface Option {
+  id: string;
+  order: number;
+  content: string;
+  mark: number;
+  correct: boolean;
+}
+
+type QuestionType =
+  | "CHOICE"
+  | "TRUE_FALSE"
+  | "PARAGRAPH"
+  | "MATCHING"
+  | "FILL_BLANK"
+  | "POOL";
