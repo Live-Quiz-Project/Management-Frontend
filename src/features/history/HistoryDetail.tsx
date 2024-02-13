@@ -258,7 +258,7 @@ interface IParticipantDetail {
   questions: Question[];
 }
 
-interface IQuestionItem {
+export interface IQuestionItem {
   id: string;
   order: number;
   content: string;
@@ -271,15 +271,22 @@ interface IQuestionItem {
   time_factor: number;
   font_size: number;
   select_up_to: number;
-  options: Option[];
+  options: IOption[];
 }
 
-interface Option {
+export interface IOption {
   id: string;
   order: number;
   content: string;
   mark: number;
   correct: boolean;
+  participants: Participant[];
+}
+
+interface Participant {
+  id: string;
+  user_id: string;
+  name: string;
 }
 
 type QuestionType =
