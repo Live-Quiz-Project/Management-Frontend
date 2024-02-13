@@ -138,8 +138,7 @@ export default function History() {
     setIsTotalParticipantsAscending(!isTotalParticipantsAscending);
   };
 
-  const handleRowClick = (rowData: IHistoryItem, rowIndex: number) => {
-    console.log("Row Clicked:", rowData, rowIndex);
+  const handleRowClick = (rowData: IHistoryItem) => {
     navigate(`/history/history-detail?id=${rowData.id}`);
   };
 

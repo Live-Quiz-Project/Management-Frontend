@@ -13,8 +13,8 @@ const http = axios.create({
 });
 
 const privateHttp = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL || "",
-  // baseURL: "https://backend.dev.livequizplatform.online/v1",
+  // baseURL: import.meta.env.VITE_BACKEND_URL || "",
+  baseURL: "https://backend.dev.livequizplatform.online/v1",
   withCredentials: true,
 });
 
