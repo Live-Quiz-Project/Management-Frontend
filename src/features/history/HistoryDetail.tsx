@@ -4,7 +4,6 @@ import QuestionItem from "./components/QuestionItem";
 import { useEffect, useMemo, useState } from "react";
 import { MenuProps } from "antd";
 import CustomParticipantsDashboardTable from "./components/CustomParticipantsDashboardTable";
-import { participantsHistoryDetailData } from "../library/utils/mockData/LiveHistory";
 import { privateHttp as http } from "@/common/services/axios";
 
 export default function HistoryDetail() {
@@ -17,6 +16,9 @@ export default function HistoryDetail() {
     defaultSortingFilteredFiltered
   );
   const [dashboardQuestionsData, setDashboardQuestionsData] = useState([]);
+  const [dashboardAnswerData, setDashboardAnswerData] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [liveHistoryTitle, setLiveHistoryData] = useState("");
 
   const columns: HistoryPaticipantsDetailTableColumn[] = [
     { key: "displayName", header: "Display Name", width: "25%" },
@@ -27,19 +29,30 @@ export default function HistoryDetail() {
   ];
 
   useEffect(() => {
-    fetchDashboard();
+    fetchQuestionDashboard();
+    fetchAnswerDashboard();
   }, []);
 
-  async function fetchDashboard() {
+  async function fetchQuestionDashboard() {
     try {
       const dashboardData = await http.get(`/dashboard/question/${id}`);
       setDashboardQuestionsData(dashboardData.data.questions);
+      setLiveHistoryData(dashboardData.data.title);
     } catch (e) {
       console.log(e);
     }
   }
 
-  const mapParticipantsToDetailItems = (participants) => {
+  async function fetchAnswerDashboard() {
+    try {
+      const dashboardData = await http.get(`/dashboard/answer/${id}`);
+      setDashboardAnswerData(dashboardData.data.participants);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
     return participants.map((participant) => ({
       displayName: participant.name,
       mark: `${participant.marks}/${participant.total_marks}`,
@@ -58,10 +71,8 @@ export default function HistoryDetail() {
     }));
   };
 
-  const { participants } = participantsHistoryDetailData;
-
   const historyParticipantsDetailItems =
-    mapParticipantsToDetailItems(participants);
+    mapParticipantsToDetailItems(dashboardAnswerData);
 
   const viewTypeDropdownData = useMemo<MenuProps["items"]>(() => {
     const newRowDropdown = defaultViewType.map((item) => ({
@@ -74,6 +85,12 @@ export default function HistoryDetail() {
 
     return [...newRowDropdown];
   }, [defaultViewType]);
+
+  const filteredQuestions = useMemo(() => {
+    return dashboardQuestionsData.filter((item: IQuestionItem) =>
+      item.content.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+  }, [dashboardQuestionsData, searchKeyword]);
 
   const handleViewTypeDropdownChange = (key: string, fieldName: string) => {
     setViewTypeFiltered((prevState) => ({
@@ -102,15 +119,15 @@ export default function HistoryDetail() {
   };
 
   return (
-    <div className="flex w-full mx-12 mt-24 flex-col">
-      <p className="text-2xl pb-4 font-serif">English Quiz</p>
+    <div className="flex w-full mx-6 mt-20 flex-col">
+      <p className="text-2xl pb-4 font-serif">{liveHistoryTitle}</p>
       <div className="flex pb-4">
         <div className="pr-2">
           <SearchField
             className=""
-            onSearch={() => {}}
-            keyword={""}
-            setKeyword={() => {}}
+            onSearch={(value) => setSearchKeyword(value)}
+            keyword={searchKeyword}
+            setKeyword={setSearchKeyword}
           />
         </div>
         <div className="pr-2">
@@ -130,9 +147,9 @@ export default function HistoryDetail() {
       </div>
       <div className="overflow-y-auto" style={{ maxHeight: "85vh" }}>
         {viewTypeFiltered.viewTypeSelected === 0 ? (
-          dashboardQuestionsData.map((item, index) => {
+          filteredQuestions.map((item, index) => {
             return (
-              <div className="pb-2">
+              <div className="pb-2" key={item["id"]}>
                 <QuestionItem
                   title={item["content"]}
                   questionNo={index + 1}
@@ -227,3 +244,55 @@ export interface HistoryPaticipantsDetailTableColumn {
   header: string;
   width: string;
 }
+
+interface IParticipantDetail {
+  id: string;
+  user_id: string;
+  name: string;
+  marks: number;
+  corrects: number;
+  incorrects: number;
+  unanswered: number;
+  total_questions: number;
+  total_marks: number;
+  questions: Question[];
+}
+
+export interface IQuestionItem {
+  id: string;
+  order: number;
+  content: string;
+  type: QuestionType;
+  note: string;
+  media: string;
+  use_template: boolean;
+  time_limit: number;
+  have_time_factor: boolean;
+  time_factor: number;
+  font_size: number;
+  select_up_to: number;
+  options: IOption[];
+}
+
+export interface IOption {
+  id: string;
+  order: number;
+  content: string;
+  mark: number;
+  correct: boolean;
+  participants: Participant[];
+}
+
+interface Participant {
+  id: string;
+  user_id: string;
+  name: string;
+}
+
+type QuestionType =
+  | "CHOICE"
+  | "TRUE_FALSE"
+  | "PARAGRAPH"
+  | "MATCHING"
+  | "FILL_BLANK"
+  | "POOL";

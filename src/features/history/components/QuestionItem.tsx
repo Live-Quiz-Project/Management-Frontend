@@ -5,11 +5,12 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import PieChartIcon from "@mui/icons-material/PieChart";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import CustomHistoryDetailTable from "./CustomHistoryDetailTable";
+import { IOption } from "../HistoryDetail";
 
 interface QuestionItemProps {
   title: string;
   questionNo: number;
-  questionData: CityPopulation[];
+  questionData: IOption[];
   questionType: string;
 }
 
@@ -20,7 +21,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   questionData,
 }) => {
   const [chartType, setChartType] = useState<
-    "BarChart" | "PieChart" | "ListChart" | "LineChart"
+    "BarChart" | "PieChart" | "LineChart"
   >("BarChart");
   const [isListChartState, setIsListChartState] = useState(false);
 
@@ -124,17 +125,18 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     );
   };
 
-  function transformChoiceData(inputObject) {
-    const chartData = [["", "", { role: "style" }]];
+  function transformData(inputObject: IOption[]) {
+    const chartData: (string | number | { role: string })[][] = [
+      ["", "", { role: "style" }],
+    ];
+
     const colors = ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"];
     let colorIndex = 0;
 
     inputObject.forEach((option) => {
       const content = option.content;
       let participantCount = 0;
-      if (option.participants == null) {
-        participantCount = 0;
-      } else {
+      if (option.participants != null) {
         participantCount = option.participants.length;
       }
 
@@ -144,12 +146,11 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
       chartData.push([content, participantCount, color]);
     });
 
-    console.log("chartData: ", chartData);
     return chartData;
   }
 
   const buildMultiTypeChart = () => {
-    const chartData = transformChoiceData(questionData);
+    const chartData = transformData(questionData);
     return (
       <Chart
         chartType={chartType}
@@ -219,11 +220,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
 };
 
 export default QuestionItem;
-
-export interface CityPopulation {
-  city: string;
-  population: number;
-}
 
 export interface IHistoryDetailItem {
   displayName: string;
