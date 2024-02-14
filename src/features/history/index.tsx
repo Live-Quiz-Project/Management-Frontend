@@ -39,11 +39,6 @@ export default function History() {
     }
   }
 
-  useEffect(() => {
-    const transformedData = mapDataToIHistoryItem(liveHistoryData);
-    setSortedData(transformedData);
-  }, [liveHistoryData]);
-
   const mapDataToIHistoryItem = (data: ILiveHistoryData[]) => {
     return data.map((item) => ({
       id: item.id,
@@ -54,6 +49,11 @@ export default function History() {
       action: <span></span>,
     }));
   };
+
+  useEffect(() => {
+    const transformedData = mapDataToIHistoryItem(liveHistoryData);
+    setSortedData(transformedData);
+  }, [liveHistoryData]);
 
   const formatLastEditedDate = (dateString: string): string => {
     const inputDate = new Date(dateString);
@@ -105,8 +105,8 @@ export default function History() {
     setSortedData((prevData) => {
       const sorted = [...prevData];
       sorted.sort((a, b) => {
-        const dateA = convertToDate(a.date);
-        const dateB = convertToDate(b.date);
+        const dateA = convertToDate(a.date).getTime();
+        const dateB = convertToDate(b.date).getTime();
 
         return isDateAscending ? dateA - dateB : dateB - dateA;
       });
@@ -117,9 +117,14 @@ export default function History() {
     setIsTotalParticipantsAscending(false);
   };
 
-  const convertToDate = (dateString) => {
+  const convertToDate = (dateString: string) => {
     const parts = dateString.split("/");
-    const date = new Date(parts[2], parts[1] - 1, parts[0]);
+
+    const date = new Date(
+      parseInt(parts[2]),
+      parseInt(parts[1]) - 1,
+      parseInt(parts[0])
+    );
     return date;
   };
 
@@ -138,8 +143,7 @@ export default function History() {
     setIsTotalParticipantsAscending(!isTotalParticipantsAscending);
   };
 
-  const handleRowClick = (rowData: IHistoryItem, rowIndex: number) => {
-    console.log("Row Clicked:", rowData, rowIndex);
+  const handleRowClick = (rowData: IHistoryItem) => {
     navigate(`/history/history-detail?id=${rowData.id}`);
   };
 
