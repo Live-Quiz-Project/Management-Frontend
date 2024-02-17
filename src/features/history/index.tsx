@@ -51,7 +51,7 @@ export default function History() {
   };
 
   useEffect(() => {
-    const transformedData = mapDataToIHistoryItem(liveHistoryData);
+    const transformedData = mapDataToIHistoryItem(liveHistoryData ?? []);
     setSortedData(transformedData);
   }, [liveHistoryData]);
 

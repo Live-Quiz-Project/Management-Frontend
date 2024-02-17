@@ -63,7 +63,7 @@ export default function Login() {
 
   async function handleOnGoogleLogin(token: string) {
     try {
-      const { data, status: _ } = await http.post("/google-signin", {
+      const { data } = await http.post("/google-signin", {
         token,
       });
       console.log(data);
