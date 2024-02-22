@@ -1,21 +1,28 @@
 import TextInput from "@/common/layouts/auth/components/TextInput";
 import { http } from "@/common/services/axios";
-import { FormEvent, useState} from "react";
+import { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { logIn } from "./store/slice";
-import { GoogleLogin, GoogleOAuthProvider} from "@react-oauth/google";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+import { logIn } from "@/features/auth/store/slice";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 export default function Login() {
   const dispatch = useDispatch<StoreDispatch>();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams, _] = useSearchParams();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
-  async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!email) {
@@ -39,7 +46,7 @@ export default function Login() {
         console.log(data);
         dispatch(
           logIn({
-            token: data.accessToken,
+            token: data.token,
             user: {
               id: data.id,
               name: data.name,
@@ -54,15 +61,15 @@ export default function Login() {
     }
   }
 
-  async function handleOnGoogleLogin(token : string) {
+  async function handleOnGoogleLogin(token: string) {
     try {
-      const { data, status: _ } = await http.post("/google-signin", {
-        token
+      const { data } = await http.post("/google-signin", {
+        token,
       });
-      console.log(data)
+      console.log(data);
       dispatch(
         logIn({
-          token: data.accessToken,
+          token: data.token,
           user: {
             id: data.id,
             name: data.name,
@@ -70,6 +77,16 @@ export default function Login() {
           },
         })
       );
+      if (searchParams.get("code")) {
+        window.location.href = `${import.meta.env.VITE_LIVE_QUIZ_URL}?token=${
+          data.token
+        }&code=${searchParams.get("code")}`;
+        return;
+      }
+      if (location.state?.from?.pathname) {
+        navigate(location.state?.from?.pathname);
+        return;
+      }
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -78,7 +95,7 @@ export default function Login() {
 
   return (
     <form
-      onSubmit={handleOnSubmit}
+      onSubmit={onSubmit}
       className="flex flex-col justify-center items-center w-full h-dscreen"
     >
       <div className="w-1/2 flex flex-col items-center space-y-10">
@@ -88,36 +105,54 @@ export default function Login() {
             type="email"
             label="Email"
             value={email}
-            handleOnInput={(e) => setEmail(e.currentTarget.value)}
+            onInput={(e) => setEmail(e.currentTarget.value)}
           />
-          {emailError && <p style={{ color: 'red', fontSize: '12px', textAlign: 'left', marginTop: '4px' }}>{emailError}</p>}
+          {emailError && (
+            <p
+              style={{
+                color: "red",
+                fontSize: "12px",
+                textAlign: "left",
+                marginTop: "4px",
+              }}
+            >
+              {emailError}
+            </p>
+          )}
           <TextInput
             type="password"
             label="Password"
             value={password}
-            handleOnInput={(e) => setPassword(e.currentTarget.value)}
-          />{passwordError && <p style={{ color: 'red', fontSize: '12px', textAlign: 'left', marginTop: '4px'}}>{passwordError}</p>}
-          </div>
-          <div className="w-full flex flex-col justify-center items-center space-y-4 relative">
-          <Link
-            className="hover:text-pastel-orange hover:underline"
-            to="/forgot"
-          >
+            onInput={(e) => setPassword(e.currentTarget.value)}
+          />
+          {passwordError && (
+            <p
+              style={{
+                color: "red",
+                fontSize: "12px",
+                textAlign: "left",
+                marginTop: "4px",
+              }}
+            >
+              {passwordError}
+            </p>
+          )}
+        </div>
+        <div className="w-full flex flex-col justify-center items-center space-y-4 relative">
+          <Link className="hover:text-koromiko hover:underline" to="/forgot">
             Forgot password
           </Link>
           <p className="">
             Don't have an account?&nbsp;
             <Link
-              className="hover:text-pastel-orange hover:underline"
+              className="hover:text-koromiko hover:underline"
               to="/register"
             >
               Create one
             </Link>
           </p>
-          </div>
-          
-        
-        <button className="w-max py-2 px-8 bg-pastel-orange text-white rounded-lg">
+        </div>
+        <button className="w-max py-2 px-8 bg-koromiko text-white rounded-lg">
           Log In
         </button>
         <GoogleOAuthProvider clientId={googleClientId}>

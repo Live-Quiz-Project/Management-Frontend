@@ -1,0 +1,24 @@
+apps:
+  namespace: prd
+  image: ghcr.io/phurits/oqp-mgmt-frontend
+  tag: prd
+  replicas: 1
+  imagePullSecrets: ghcr-registry
+  port: 5173
+  targetPort: 5173
+ingress:
+  host: inquesto.livequizplatform.online
+  path: /
+  serviceType: ClusterIP
+  tlsSecretName: tls-mgmt-frontend-prd
+extraEnv:
+  VITE_BACKEND_URL: 'https://backend.livequizplatform.online/v1'
+  VITE_LIVE_QUIZ_URL: https://live.inquesto.livequizplatform.online
+  VITE_FIREBASE_API_KEY: 'AIzaSyAT-X4QXDTSj86Gv1lmL8LRIVf9xdu8dcM'
+  VITE_FIREBASE_AUTH_DOMAIN: 'inspired-muse-410110.firebaseapp.com'
+  VITE_FIREBASE_PROJECT_ID: 'inspired-muse-410110'
+  VITE_FIREBASE_STORAGE_BUCKET: 'inspired-muse-410110.appspot.com'
+  VITE_FIREBASE_MESSAGING_SENDER_ID: '806759701400'
+  VITE_FIREBASE_APP_ID: '1:806759701400:web:9f23b535d50f54f6a669ed'
+  VITE_FIREBASE_MEASUREMENT_ID: 'G-DH5Q8J4S7R'
+  VITE_GOOGLE_CLIENT_ID: '1048387093330-488nf8o6cm1ufh1g26lbs6456anjpgc9.apps.googleusercontent.com'

@@ -5,9 +5,9 @@ type Props = {
 export default function LeftPanel({ page = "login" }: Props) {
   return (
     <div
-      className={`h-dscreen ${page === "login" && "bg-pastel-orange"} ${
-        page === "register" && "bg-ocean-blue"
-      } ${(page === "forgot" || page === "reset") && "bg-sky-blue"}`}
+      className={`h-dscreen ${page === "login" && "bg-koromiko"} ${
+        page === "register" && "bg-denim"
+      } ${(page === "forgot" || page === "reset") && "bg-jordy-blue"}`}
     ></div>
   );
 }

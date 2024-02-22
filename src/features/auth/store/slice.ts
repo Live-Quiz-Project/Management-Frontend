@@ -30,9 +30,12 @@ export const auth = createSlice({
     },
     createUser: (state, action: PayloadAction<User>) => {
       state.value.user = action.payload;
-    }
+    },
+    refreshToken: (state, action: PayloadAction<string>) => {
+      state.value.token = action.payload;
+    },
   },
 });
 
-export const { logOut, logIn, createUser } = auth.actions;
+export const { logOut, logIn, createUser, refreshToken } = auth.actions;
 export default auth.reducer;

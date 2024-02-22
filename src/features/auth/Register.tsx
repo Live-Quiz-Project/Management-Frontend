@@ -17,7 +17,7 @@ export default function Register() {
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
 
-  async function handleOnSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (!email) {
@@ -74,7 +74,7 @@ export default function Register() {
 
   return (
     <form
-      onSubmit={handleOnSubmit}
+      onSubmit={onSubmit}
       className="flex flex-col justify-center items-center w-full h-dscreen"
     >
       <div className="w-1/2 flex flex-col items-center space-y-10">
@@ -84,7 +84,7 @@ export default function Register() {
             type="email"
             label="Email"
             value={email}
-            handleOnInput={(e) => setEmail(e.currentTarget.value)}
+            onInput={(e) => setEmail(e.currentTarget.value)}
           />
           {emailError && (
             <p
@@ -101,7 +101,7 @@ export default function Register() {
           <TextInput
             label="Name"
             value={name}
-            handleOnInput={(e) => setName(e.currentTarget.value)}
+            onInput={(e) => setName(e.currentTarget.value)}
           />
           {nameError && (
             <p
@@ -119,7 +119,7 @@ export default function Register() {
             type="password"
             label="Password"
             value={password}
-            handleOnInput={(e) => setPassword(e.currentTarget.value)}
+            onInput={(e) => setPassword(e.currentTarget.value)}
           />
           {passwordError && (
             <p
@@ -137,7 +137,7 @@ export default function Register() {
             type="password"
             label="Confirm Password"
             value={confirmPassword}
-            handleOnInput={(e) => setConfirmPassword(e.currentTarget.value)}
+            onInput={(e) => setConfirmPassword(e.currentTarget.value)}
           />
           {confirmPasswordError && (
             <p
@@ -154,16 +154,13 @@ export default function Register() {
           <div className="w-full flex flex-col justify-center items-center space-y-4 relative">
             <p className="">
               Already have an account?&nbsp;
-              <Link
-                className="hover:text-ocean-blue hover:underline"
-                to="/login"
-              >
+              <Link className="hover:text-denim hover:underline" to="/login">
                 Log In
               </Link>
             </p>
           </div>
         </div>
-        <button className="w-max py-2 px-8 bg-ocean-blue text-white rounded-lg">
+        <button className="w-max py-2 px-8 bg-denim text-white rounded-lg">
           Register
         </button>
       </div>
