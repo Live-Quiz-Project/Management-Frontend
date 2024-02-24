@@ -12,7 +12,7 @@ export default function VerifyOTP() {
       await http.post("/verify-otp", {
         otp: otpNumber,
       });
-      navigate("/reset");
+      navigate("/reset", { state: { otp: otpNumber } });
     } catch (error) {
       console.error(error);
     }

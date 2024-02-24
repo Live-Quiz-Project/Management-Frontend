@@ -1,17 +1,21 @@
 import TextInput from "@/common/layouts/auth/components/TextInput";
 import { http } from "@/common/services/axios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [passsword, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const otp: string = location.state ? location.state.otp : "";
 
   async function handleOnSubmit() {
     try {
       await http.post("/reset-password", {
+        otp: otp,
+        email: email,
         password: confirmPassword,
       });
       navigate("/login");
