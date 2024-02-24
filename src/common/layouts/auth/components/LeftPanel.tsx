@@ -10,7 +10,8 @@ export default function LeftPanel({ page = "login" }: Props) {
       className={`h-dscreen flex items-center justify-center ${
         page === "login" && "bg-koromiko"
       } ${page === "register" && "bg-denim"} ${
-        (page === "forgot" || page === "reset") && "bg-jordy-blue"
+        (page === "forgot" || page === "reset" || page === "verify-otp") &&
+        "bg-jordy-blue"
       }`}
     >
       <div className="flex justify-center items-center w-2/3">
