@@ -47,15 +47,17 @@ spec:
         GIT_SSH = "git@github.com:Live-Quiz-Project/Management-Frontend.git"
         APP_NAME = "oqp-mgmt-frontend"
         IMAGE = "ghcr.io/phurits/${APP_NAME}"
-
-        DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1206992399855915018/dDGW5LsjfSHmaQ3DuSBI_iyCXi416cgg3D_XzncP2wU_fsIR8n8YrhhRkNO_f9VTTb91"
     }
   
   //Start Pipeline
   stages {
       stage('Notify Pipeline Start') {
           steps{
-              discordSend description: "Jenkins Pipeline Build", footer: "Start Build", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
+              script {
+                  withCredentials([string(credentialsId: 'discord-webhook', variable: 'DISCORD_WEBHOOK')]) {
+                      discordSend description: "Jenkins Pipeline Build", footer: "Start Build", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
+                  }
+              }
           }
       }
       
@@ -120,13 +122,21 @@ spec:
       }
   }// End stages
 
-    post {
+  post {
     success {
-        discordSend description: "Jenkins Pipeline Build", footer: "Finish Build", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
+      script {
+          withCredentials([string(credentialsId: 'discord-webhook', variable: 'DISCORD_WEBHOOK')]) {
+              discordSend description: "Jenkins Pipeline Build", footer: "Finish Build", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
+          }
+      }
     }
     
     failure {
-        discordSend description: "Jenkins Pipeline Build", footer: "Failed", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
+      script {
+          withCredentials([string(credentialsId: 'discord-webhook', variable: 'DISCORD_WEBHOOK')]) {
+              discordSend description: "Jenkins Pipeline Build", footer: "Failed", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
+          }
+      }
     }
   }
 }// End pipeline
