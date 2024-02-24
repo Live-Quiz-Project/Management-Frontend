@@ -8,7 +8,13 @@ type Props = {
 
 export default function AuthLayout({ children }: Props) {
   const location = useLocation();
-  const routes = ["/login", "/register", "/forgot", "/reset"].map((path) => ({
+  const routes = [
+    "/login",
+    "/register",
+    "/forgot",
+    "/reset",
+    "/verify-otp",
+  ].map((path) => ({
     path,
   }));
   const [{ route }] = matchRoutes(routes, location) as { route: RouteProps }[];
