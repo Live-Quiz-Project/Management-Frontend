@@ -52,6 +52,16 @@ export default function HistoryDetail() {
     }
   }
 
+  const filteredPoolQuestions = useMemo(() => {
+    const poolQuestions = dashboardQuestionsData.filter(
+      (item) => item["pool_oder"] !== -1 && item["type"] !== "POOL"
+    );
+
+    return poolQuestions.filter((item: IQuestionItem) =>
+      item.content.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+  }, [dashboardQuestionsData, searchKeyword]);
+
   const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
     return participants.map((participant) => ({
       displayName: participant.name,
@@ -155,6 +165,8 @@ export default function HistoryDetail() {
                   questionNo={index + 1}
                   questionType={item["type"]}
                   questionData={item["options"]}
+                  poolOrder={item["pool_order"]}
+                  poolQuestionData={filteredPoolQuestions}
                 />
               </div>
             );

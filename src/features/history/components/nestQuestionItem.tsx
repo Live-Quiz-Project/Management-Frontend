@@ -4,24 +4,19 @@ import Chart from "react-google-charts";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import PieChartIcon from "@mui/icons-material/PieChart";
 import { IOption } from "../HistoryDetail";
-import NestQuestionItem from "./nestQuestionItem";
 
-interface QuestionItemProps {
+interface NestQuestionItemProps {
   title: string;
   questionNo: number;
   questionData: IOption[];
-  poolQuestionData: [];
   questionType: string;
-  poolOrder: number;
 }
 
-const QuestionItem: React.FC<QuestionItemProps> = ({
+const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
   title,
   questionNo,
   questionType,
   questionData,
-  poolQuestionData,
-  poolOrder,
 }) => {
   const [chartType, setChartType] = useState<"BarChart" | "PieChart">(
     "BarChart"
@@ -30,7 +25,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const chartOptions = {
     chartArea: { width: "80%", height: "80%" },
     colors: ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"],
-    backgroundColor: "#FFFADD",
+    backgroundColor: "#FFF",
   };
 
   const buildChartTypesButton = () => {
@@ -124,27 +119,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     );
   };
 
-  const buildPoolChart = (order: number) => {
-    return (
-      <div className="pb-0">
-        {poolQuestionData.map((item, index) => {
-          return (
-            <div className="pb-0" key={item["id"]}>
-              {item["pool_order"] == order ? (
-                <NestQuestionItem
-                  title={item["content"]}
-                  questionNo={index + 1}
-                  questionType={item["type"]}
-                  questionData={item["options"]}
-                />
-              ) : null}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-
   const buildMatchingChart = () => {
     return <div></div>;
   };
@@ -153,8 +127,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     switch (questionType) {
       case "CHOICE":
         return buildMultiTypeChart();
-      case "POOL":
-        return buildPoolChart(poolOrder);
       case "FILL_BLANK":
         return buildMultiTypeChart();
       case "PARAGRAPH":
@@ -169,12 +141,12 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   };
 
   return (
-    <div className="w-full rounded-xl bg-peach p-4 mb-2 mt-2">
+    <div className="w-full rounded-xl bg-white p-4 mb-2">
       <Flex className="justify-between">
         <h2 className="font-serif">
           {questionNo}. {title}
         </h2>
-        {questionType === "POOL" ? null : buildChartTypesButton()}
+        {buildChartTypesButton()}
       </Flex>
       {buildQuestionTypeBadge(questionType)}
       <div className="py-4">{buildChart()}</div>
@@ -182,7 +154,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   );
 };
 
-export default QuestionItem;
+export default NestQuestionItem;
 
 export interface IHistoryDetailItem {
   displayName: string;
