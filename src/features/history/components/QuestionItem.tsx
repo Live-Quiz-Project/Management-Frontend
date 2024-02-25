@@ -31,6 +31,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     chartArea: { width: "80%", height: "80%" },
     colors: ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"],
     backgroundColor: "#FFFADD",
+    hAxis: { format: "0" },
   };
 
   const buildChartTypesButton = () => {
