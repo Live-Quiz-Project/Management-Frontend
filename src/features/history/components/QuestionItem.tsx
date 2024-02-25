@@ -20,10 +20,9 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   questionType,
   questionData,
 }) => {
-  const [chartType, setChartType] = useState<
-    "BarChart" | "PieChart" | "LineChart"
-  >("BarChart");
-  const [isListChartState, setIsListChartState] = useState(false);
+  const [chartType, setChartType] = useState<"BarChart" | "PieChart">(
+    "BarChart"
+  );
 
   const chartOptions = {
     chartArea: { width: "80%", height: "80%" },
@@ -68,7 +67,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
           } mr-1`}
           onClick={() => {
             setChartType("BarChart");
-            setIsListChartState(false);
           }}
         >
           <BarChartIcon style={{ fontSize: 18 }} />
@@ -79,21 +77,9 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
           }`}
           onClick={() => {
             setChartType("PieChart");
-            setIsListChartState(false);
           }}
         >
           <PieChartIcon style={{ fontSize: 18 }} />
-        </button>
-        <button
-          className={`rounded-sm px-2 ${
-            isListChartState === true ? "bg-white" : null
-          }`}
-          onClick={() => {
-            setIsListChartState(true);
-            setChartType("LineChart");
-          }}
-        >
-          <FormatListNumberedIcon style={{ fontSize: 18 }} />
         </button>
       </div>
     );
@@ -199,23 +185,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
         {buildChartTypesButton()}
       </Flex>
       {buildQuestionTypeBadge(questionType)}
-      {chartType === "LineChart" ? (
-        <div>
-          <CustomHistoryDetailTable
-            columns={columns}
-            data={data}
-            onRowClick={() => {}}
-            sortName={() => {}}
-            sortCreator={() => {}}
-            sortLastEdited={() => {}}
-            isNameAscending={false}
-            isCreatorAscending={false}
-            isLastEditedAscending={false}
-          />
-        </div>
-      ) : (
-        <div className="py-4">{buildChart()}</div>
-      )}
+      <div className="py-4">{buildChart()}</div>
     </div>
   );
 };
