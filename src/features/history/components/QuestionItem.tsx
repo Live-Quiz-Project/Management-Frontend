@@ -134,7 +134,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
             questionNumbers[item["pool_order"]] = 1;
           }
           const questionNo = questionNumbers[item["pool_order"]]++;
-
           return (
             <div className="pb-0" key={item["id"]}>
               {item["pool_order"] === order && (

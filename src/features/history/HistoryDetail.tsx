@@ -100,8 +100,8 @@ export default function HistoryDetail() {
     return dashboardQuestionsData.filter(
       (item: IQuestionItem) =>
         (item.content.toLowerCase().includes(searchKeyword.toLowerCase()) &&
-          item["pool_order"] === -1) ||
-        (item["pool_order"] !== -1 && item.type === "POOL")
+          item.pool_order === -1) ||
+        (item.pool_order !== -1 && item.type === "POOL")
     );
   }, [dashboardQuestionsData, searchKeyword]);
 
@@ -162,15 +162,17 @@ export default function HistoryDetail() {
         {viewTypeFiltered.viewTypeSelected === 0 ? (
           filteredQuestions.map((item, index) => {
             return (
-              <div className="pb-2" key={item["id"]}>
-                <QuestionItem
-                  title={item["content"]}
-                  questionNo={index + 1}
-                  questionType={item["type"]}
-                  questionData={item["options"]}
-                  poolOrder={item["pool_order"]}
-                  poolQuestionData={filteredPoolQuestions}
-                />
+              <div>
+                <div className="pb-2" key={item["id"]}>
+                  <QuestionItem
+                    title={item["content"]}
+                    questionNo={index + 1}
+                    questionType={item["type"]}
+                    questionData={item["options"]}
+                    poolOrder={item["pool_order"]}
+                    poolQuestionData={filteredPoolQuestions}
+                  />
+                </div>
               </div>
             );
           })
@@ -277,6 +279,7 @@ export interface IQuestionItem {
   id: string;
   order: number;
   content: string;
+  pool_order: number;
   type: QuestionType;
   note: string;
   media: string;
