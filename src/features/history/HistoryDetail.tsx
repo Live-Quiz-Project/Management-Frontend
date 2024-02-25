@@ -297,8 +297,11 @@ export interface IOption {
   order: number;
   content: string;
   mark: number;
+  option_content: string;
+  prompt_content: string;
   correct: boolean;
   participants: Participant[];
+  Participants: Participant[];
 }
 
 interface Participant {

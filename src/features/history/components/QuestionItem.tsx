@@ -87,7 +87,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     );
   };
 
-  function transformData(inputObject: IOption[]) {
+  function transformMultiTypesData(inputObject: IOption[]) {
     const chartData: (string | number | { role: string })[][] = [
       ["", "", { role: "style" }],
     ];
@@ -111,8 +111,32 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     return chartData;
   }
 
+  function transformMatchingTypeData(inputObject: IOption[]) {
+    const chartData: (string | number | { role: string })[][] = [
+      ["", "", { role: "style" }],
+    ];
+
+    const colors = ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"];
+    let colorIndex = 0;
+
+    inputObject.forEach((option) => {
+      const content = `${option.option_content} - ${option.prompt_content}`;
+      let participantCount = 0;
+      if (option.Participants != null) {
+        participantCount = option.Participants.length;
+      }
+
+      const color = colors[colorIndex % colors.length];
+      colorIndex++;
+
+      chartData.push([content, participantCount, color]);
+    });
+
+    return chartData;
+  }
+
   const buildMultiTypeChart = () => {
-    const chartData = transformData(questionData);
+    const chartData = transformMultiTypesData(questionData);
     return (
       <Chart
         chartType={chartType}
@@ -152,7 +176,18 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   };
 
   const buildMatchingChart = () => {
-    return <div></div>;
+    const chartData = transformMatchingTypeData(questionData);
+    return (
+      <div>
+        <Chart
+          chartType={chartType}
+          data={chartData}
+          options={chartOptions}
+          width="100%"
+          height="400px"
+        />
+      </div>
+    );
   };
 
   const buildChart = () => {
