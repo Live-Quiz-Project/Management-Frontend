@@ -129,7 +129,7 @@ export default function HistoryDetail() {
   };
 
   return (
-    <div className="flex w-full mx-6 mt-20 flex-col">
+    <div className="flex w-full mx-6 mt-2 flex-col">
       <p className="text-2xl pb-4 font-serif">{liveHistoryTitle}</p>
       <div className="flex pb-4">
         <div className="pr-2">
