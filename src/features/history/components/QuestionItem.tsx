@@ -125,19 +125,26 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   };
 
   const buildPoolChart = (order: number) => {
+    const questionNumbers: { [key: number]: number } = {};
+
     return (
       <div className="pb-0">
-        {poolQuestionData.map((item, index) => {
+        {poolQuestionData.map((item) => {
+          if (!questionNumbers[item["pool_order"]]) {
+            questionNumbers[item["pool_order"]] = 1;
+          }
+          const questionNo = questionNumbers[item["pool_order"]]++;
+
           return (
             <div className="pb-0" key={item["id"]}>
-              {item["pool_order"] == order ? (
+              {item["pool_order"] === order && (
                 <NestQuestionItem
                   title={item["content"]}
-                  questionNo={index + 1}
+                  questionNo={questionNo}
                   questionType={item["type"]}
                   questionData={item["options"]}
                 />
-              ) : null}
+              )}
             </div>
           );
         })}

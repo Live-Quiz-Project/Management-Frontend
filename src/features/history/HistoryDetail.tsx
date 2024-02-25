@@ -97,8 +97,11 @@ export default function HistoryDetail() {
   }, [defaultViewType]);
 
   const filteredQuestions = useMemo(() => {
-    return dashboardQuestionsData.filter((item: IQuestionItem) =>
-      item.content.toLowerCase().includes(searchKeyword.toLowerCase())
+    return dashboardQuestionsData.filter(
+      (item: IQuestionItem) =>
+        (item.content.toLowerCase().includes(searchKeyword.toLowerCase()) &&
+          item["pool_order"] === -1) ||
+        (item["pool_order"] !== -1 && item.type === "POOL")
     );
   }, [dashboardQuestionsData, searchKeyword]);
 

@@ -90,7 +90,7 @@ const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
     const colors = ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"];
     let colorIndex = 0;
 
-    inputObject.forEach((option) => {
+    inputObject?.forEach((option) => {
       const content = option.content;
       let participantCount = 0;
       if (option.participants != null) {
