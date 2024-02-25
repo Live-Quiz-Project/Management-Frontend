@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import Chart from "react-google-charts";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import PieChartIcon from "@mui/icons-material/PieChart";
-import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
-import CustomHistoryDetailTable from "./CustomHistoryDetailTable";
 import { IOption } from "../HistoryDetail";
 
 interface QuestionItemProps {
@@ -29,34 +27,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     colors: ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"],
     backgroundColor: "#FFFADD",
   };
-
-  const columns: HistoryDetailTableColumn[] = [
-    { key: "displayName", header: "Display Name", width: "25%" },
-    { key: "answer", header: "Answer", width: "25%" },
-    { key: "mark", header: "Mark", width: "25%" },
-    { key: "totalMarks", header: "Total Marks", width: "25%" },
-  ];
-
-  const data: IHistoryDetailItem[] = [
-    {
-      displayName: "Kittiphon Singchom",
-      answer: "will",
-      mark: "5",
-      totalMarks: "5",
-    },
-    {
-      displayName: "Chanikan Singchom",
-      answer: "you",
-      mark: "5",
-      totalMarks: "5",
-    },
-    {
-      displayName: "Lawan Singchom",
-      answer: "marry",
-      mark: "7",
-      totalMarks: "7",
-    },
-  ];
 
   const buildChartTypesButton = () => {
     return (
