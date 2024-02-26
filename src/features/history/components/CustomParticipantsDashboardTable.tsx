@@ -2,7 +2,10 @@ import { Flex } from "antd";
 import React from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { HistoryPaticipantsDetailTableColumn, IHistoryPaticipantsDetailItem } from "../HistoryDetail";
+import {
+  HistoryPaticipantsDetailTableColumn,
+  IHistoryPaticipantsDetailItem,
+} from "../HistoryDetail";
 
 interface CustomParticipantsDashboardTableProps {
   columns: HistoryPaticipantsDetailTableColumn[];
@@ -19,7 +22,9 @@ interface CustomParticipantsDashboardTableProps {
   isLastEditedAscending: boolean;
 }
 
-const CustomParticipantsDashboardTable: React.FC<CustomParticipantsDashboardTableProps> = ({
+const CustomParticipantsDashboardTable: React.FC<
+  CustomParticipantsDashboardTableProps
+> = ({
   columns,
   data,
   onRowClick,
@@ -83,24 +88,24 @@ const CustomParticipantsDashboardTable: React.FC<CustomParticipantsDashboardTabl
       </Flex>
       <Flex className="flex-col">
         {data.map((row, index) => (
-          <div
-            key={index}
-            className="flex rounded-lg bg-peach my-2 border-2 border-transparent hover:border-pastel-orange"
-            style={{ cursor: onRowClick ? "pointer" : "default" }}
-            onClick={() => onRowClick && onRowClick(row, index)}
-          >
-            {columns.map((column) => (
-              <div
-                key={column.key}
-                className={`py-6`}
-                style={{ width: column.width }}
-              >
-                {
-                  row[column.key]
-                }
-              </div>
-            ))}
-          </div>
+          <Flex className="flex-col rounded-lg bg-regent-gray my-2 ">
+            <div
+              key={index}
+              className="flex rounded-lg bg-peach pl-2 border-2 border-transparent hover:border-pastel-orange"
+              style={{ cursor: onRowClick ? "pointer" : "default" }}
+              onClick={() => onRowClick && onRowClick(row, index)}
+            >
+              {columns.map((column) => (
+                <div
+                  key={column.key}
+                  className={`py-6`}
+                  style={{ width: column.width }}
+                >
+                  {row[column.key]}
+                </div>
+              ))}
+            </div>
+          </Flex>
         ))}
       </Flex>
     </div>

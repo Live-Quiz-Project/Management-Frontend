@@ -258,6 +258,7 @@ export interface IHistoryPaticipantsDetailItem {
   corrects: string;
   incorrects: string;
   unanswered: string;
+  questions: ParticipantQuestion[];
 }
 
 export interface HistoryPaticipantsDetailTableColumn {
@@ -313,11 +314,3 @@ interface Participant {
   user_id: string;
   name: string;
 }
-
-type QuestionType =
-  | "CHOICE"
-  | "TRUE_FALSE"
-  | "PARAGRAPH"
-  | "MATCHING"
-  | "FILL_BLANK"
-  | "POOL";
