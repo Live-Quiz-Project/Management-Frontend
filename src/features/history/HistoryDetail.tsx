@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { MenuProps } from "antd";
 import CustomParticipantsDashboardTable from "./components/CustomParticipantsDashboardTable";
 import { privateHttp as http } from "@/common/services/axios";
+import Topbar from "@/common/layouts/main/components/Topbar";
 
 export default function HistoryDetail() {
   const queryParams = new URLSearchParams(location.search);
@@ -123,68 +124,70 @@ export default function HistoryDetail() {
   };
 
   return (
-    <div className="flex w-full mx-6 mt-2 flex-col">
-      <p className="text-2xl pb-4 font-serif">{liveHistoryTitle}</p>
-      <div className="flex pb-4">
-        <div className="pr-2">
-          <SearchField
-            className=""
-            onSearch={(value) => setSearchKeyword(value)}
-            keyword={searchKeyword}
-            setKeyword={setSearchKeyword}
-          />
-        </div>
-        <div className="pr-2">
-          <AppDropdown
-            items={viewTypeDropdownData}
-            indexSelected={viewTypeFiltered.viewTypeSelected}
-            minWidth={130}
-          />
-        </div>
-        {/* <div className="pr-2">
+    <Topbar>
+      <div className="flex w-full mt-2 flex-col">
+        <p className="text-2xl pb-4 font-serif">{liveHistoryTitle}</p>
+        <div className="flex pb-4">
+          <div className="pr-2">
+            <SearchField
+              className=""
+              onSearch={(value) => setSearchKeyword(value)}
+              keyword={searchKeyword}
+              setKeyword={setSearchKeyword}
+            />
+          </div>
+          <div className="pr-2">
+            <AppDropdown
+              items={viewTypeDropdownData}
+              indexSelected={viewTypeFiltered.viewTypeSelected}
+              minWidth={130}
+            />
+          </div>
+          {/* <div className="pr-2">
           <AppDropdown
             items={sortingDropdownData}
             indexSelected={sortingFiltered.sortingSelected}
             minWidth={100}
           />
         </div> */}
-      </div>
-      <div className="overflow-y-auto" style={{ maxHeight: "85vh" }}>
-        {viewTypeFiltered.viewTypeSelected === 0 ? (
-          filteredQuestions.map((item, index) => {
-            return (
-              <div>
-                <div className="pb-2" key={item["id"]}>
-                  <QuestionItem
-                    title={item["content"]}
-                    questionNo={index + 1}
-                    questionType={item["type"]}
-                    questionData={item["options"]}
-                    poolOrder={item["pool_order"]}
-                    poolQuestionData={filteredPoolQuestions}
-                  />
+        </div>
+        <div className="overflow-y-auto" style={{ maxHeight: "85vh" }}>
+          {viewTypeFiltered.viewTypeSelected === 0 ? (
+            filteredQuestions.map((item, index) => {
+              return (
+                <div>
+                  <div className="pb-2" key={item["id"]}>
+                    <QuestionItem
+                      title={item["content"]}
+                      questionNo={index + 1}
+                      questionType={item["type"]}
+                      questionData={item["options"]}
+                      poolOrder={item["pool_order"]}
+                      poolQuestionData={filteredPoolQuestions}
+                    />
+                  </div>
                 </div>
-              </div>
-            );
-          })
-        ) : (
-          <div>
-            <CustomParticipantsDashboardTable
-              participantColumns={participantColumns}
-              questionColumns={questionColumns}
-              data={dashboardAnswerData}
-              onRowClick={handleRowClick}
-              sortName={() => {}}
-              sortCreator={() => {}}
-              sortLastEdited={() => {}}
-              isNameAscending={false}
-              isCreatorAscending={false}
-              isLastEditedAscending={false}
-            />
-          </div>
-        )}
+              );
+            })
+          ) : (
+            <div>
+              <CustomParticipantsDashboardTable
+                participantColumns={participantColumns}
+                questionColumns={questionColumns}
+                data={dashboardAnswerData}
+                onRowClick={handleRowClick}
+                sortName={() => {}}
+                sortCreator={() => {}}
+                sortLastEdited={() => {}}
+                isNameAscending={false}
+                isCreatorAscending={false}
+                isLastEditedAscending={false}
+              />
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </Topbar>
   );
 }
 
