@@ -131,6 +131,10 @@ export default function HistoryDetail() {
     }));
   };
 
+  const handleRowClick = (rowData: IHistoryPaticipantsDetailItem) => {
+    console.log(rowData.displayName);
+  };
+
   return (
     <div className="flex w-full mx-6 mt-2 flex-col">
       <p className="text-2xl pb-4 font-serif">{liveHistoryTitle}</p>
@@ -181,7 +185,7 @@ export default function HistoryDetail() {
             <CustomParticipantsDashboardTable
               columns={columns}
               data={historyParticipantsDetailItems}
-              onRowClick={() => {}}
+              onRowClick={handleRowClick}
               sortName={() => {}}
               sortCreator={() => {}}
               sortLastEdited={() => {}}
