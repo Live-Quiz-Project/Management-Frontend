@@ -52,6 +52,16 @@ export default function HistoryDetail() {
     }
   }
 
+  const filteredPoolQuestions = useMemo(() => {
+    const poolQuestions = dashboardQuestionsData.filter(
+      (item) => item["pool_oder"] !== -1 && item["type"] !== "POOL"
+    );
+
+    return poolQuestions.filter((item: IQuestionItem) =>
+      item.content.toLowerCase().includes(searchKeyword.toLowerCase())
+    );
+  }, [dashboardQuestionsData, searchKeyword]);
+
   const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
     return participants.map((participant) => ({
       displayName: participant.name,
@@ -87,8 +97,11 @@ export default function HistoryDetail() {
   }, [defaultViewType]);
 
   const filteredQuestions = useMemo(() => {
-    return dashboardQuestionsData.filter((item: IQuestionItem) =>
-      item.content.toLowerCase().includes(searchKeyword.toLowerCase())
+    return dashboardQuestionsData.filter(
+      (item: IQuestionItem) =>
+        (item.content.toLowerCase().includes(searchKeyword.toLowerCase()) &&
+          item.pool_order === -1) ||
+        (item.pool_order !== -1 && item.type === "POOL")
     );
   }, [dashboardQuestionsData, searchKeyword]);
 
@@ -118,8 +131,12 @@ export default function HistoryDetail() {
     }));
   };
 
+  const handleRowClick = (rowData: IHistoryPaticipantsDetailItem) => {
+    console.log(rowData.displayName);
+  };
+
   return (
-    <div className="flex w-full mx-6 mt-20 flex-col">
+    <div className="flex w-full mx-6 mt-2 flex-col">
       <p className="text-2xl pb-4 font-serif">{liveHistoryTitle}</p>
       <div className="flex pb-4">
         <div className="pr-2">
@@ -149,13 +166,17 @@ export default function HistoryDetail() {
         {viewTypeFiltered.viewTypeSelected === 0 ? (
           filteredQuestions.map((item, index) => {
             return (
-              <div className="pb-2" key={item["id"]}>
-                <QuestionItem
-                  title={item["content"]}
-                  questionNo={index + 1}
-                  questionType={item["type"]}
-                  questionData={item["options"]}
-                />
+              <div>
+                <div className="pb-2" key={item["id"]}>
+                  <QuestionItem
+                    title={item["content"]}
+                    questionNo={index + 1}
+                    questionType={item["type"]}
+                    questionData={item["options"]}
+                    poolOrder={item["pool_order"]}
+                    poolQuestionData={filteredPoolQuestions}
+                  />
+                </div>
               </div>
             );
           })
@@ -164,7 +185,7 @@ export default function HistoryDetail() {
             <CustomParticipantsDashboardTable
               columns={columns}
               data={historyParticipantsDetailItems}
-              onRowClick={() => {}}
+              onRowClick={handleRowClick}
               sortName={() => {}}
               sortCreator={() => {}}
               sortLastEdited={() => {}}
@@ -262,6 +283,7 @@ export interface IQuestionItem {
   id: string;
   order: number;
   content: string;
+  pool_order: number;
   type: QuestionType;
   note: string;
   media: string;
@@ -279,8 +301,11 @@ export interface IOption {
   order: number;
   content: string;
   mark: number;
+  option_content: string;
+  prompt_content: string;
   correct: boolean;
   participants: Participant[];
+  Participants: Participant[];
 }
 
 interface Participant {
