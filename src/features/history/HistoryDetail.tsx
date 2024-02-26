@@ -28,12 +28,12 @@ export default function HistoryDetail() {
   ];
 
   const questionColumns: HistoryQesutionDetailTableColumn[] = [
-    { key: "order", header: "No.", width: "16%" },
+    { key: "order", header: "No.", width: "5%" },
     { key: "questionType", header: "Question Type", width: "16%" },
-    { key: "content", header: "Question", width: "16%" },
-    { key: "answer", header: "Answer", width: "16%" },
-    { key: "mark", header: "Mark", width: "16%" },
-    { key: "timeUsed", header: "Time used", width: "16%" },
+    { key: "content", header: "Question", width: "30%" },
+    { key: "answer", header: "Answer", width: "25%" },
+    { key: "mark", header: "Mark", width: "10%" },
+    { key: "timeUsed", header: "Time used", width: "10%" },
   ];
 
   useEffect(() => {
