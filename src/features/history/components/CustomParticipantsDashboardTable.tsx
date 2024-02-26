@@ -101,7 +101,7 @@ const CustomParticipantsDashboardTable: React.FC<
                   className={`py-6`}
                   style={{ width: column.width }}
                 >
-                  {row[column.key]}
+                  {String(row[column.key])}
                 </div>
               ))}
             </div>
