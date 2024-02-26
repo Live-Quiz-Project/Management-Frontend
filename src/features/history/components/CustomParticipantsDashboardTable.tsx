@@ -6,14 +6,13 @@ import {
   HistoryPaticipantsDetailTableColumn,
   HistoryQesutionDetailTableColumn,
   IHistoryPaticipantsDetailItem,
-  IHistoryQuestionsDetailItem,
+  IParticipantDetail,
 } from "../HistoryDetail";
 
 interface CustomParticipantsDashboardTableProps {
   participantColumns: HistoryPaticipantsDetailTableColumn[];
   questionColumns: HistoryQesutionDetailTableColumn[];
-  participantsData: IHistoryPaticipantsDetailItem[];
-  questionsData: IHistoryQuestionsDetailItem[];
+  data: [];
   onRowClick?: (
     rowData: IHistoryPaticipantsDetailItem,
     rowIndex: number
@@ -30,9 +29,8 @@ const CustomParticipantsDashboardTable: React.FC<
   CustomParticipantsDashboardTableProps
 > = ({
   participantColumns,
-  participantsData,
   questionColumns,
-  questionsData,
+  data,
   onRowClick,
   sortName,
   sortCreator,
@@ -80,6 +78,27 @@ const CustomParticipantsDashboardTable: React.FC<
     }
   };
 
+  const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
+    return participants.map((participant) => ({
+      displayName: participant.name,
+      mark: `${participant.marks}/${participant.total_marks}`,
+      corrects: `${participant.corrects}/${participant.total_questions}  (${
+        (participant.corrects * 100) /
+        (participant.total_questions - participant.unanswered)
+      }%)`,
+      incorrects: `${participant.incorrects}/${participant.total_questions} (${
+        (participant.incorrects * 100) /
+        (participant.total_questions - participant.unanswered)
+      }%)`,
+      unanswered: `${participant.unanswered}/${participant.total_questions} (${
+        (participant.unanswered * 100) /
+        (participant.total_questions - participant.unanswered)
+      }%)`,
+    }));
+  };
+
+  const historyParticipantsDetailItems = mapParticipantsToDetailItems(data);
+
   return (
     <div>
       <Flex className="justify-around border-b border-pastel-orange">
@@ -93,7 +112,7 @@ const CustomParticipantsDashboardTable: React.FC<
         ))}
       </Flex>
       <Flex className="flex-col">
-        {participantsData.map((row, index) => (
+        {historyParticipantsDetailItems.map((row, index) => (
           <Flex className="flex-col rounded-lg bg-quill-gray my-2 ">
             <div
               key={index}
@@ -107,7 +126,7 @@ const CustomParticipantsDashboardTable: React.FC<
                   className={`py-6`}
                   style={{ width: column.width }}
                 >
-                  {String(row[column.key])}
+                  {row[column.key]}
                 </div>
               ))}
             </div>

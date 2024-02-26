@@ -71,28 +71,6 @@ export default function HistoryDetail() {
     );
   }, [dashboardQuestionsData, searchKeyword]);
 
-  const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
-    return participants.map((participant) => ({
-      displayName: participant.name,
-      mark: `${participant.marks}/${participant.total_marks}`,
-      corrects: `${participant.corrects}/${participant.total_questions}  (${
-        (participant.corrects * 100) /
-        (participant.total_questions - participant.unanswered)
-      }%)`,
-      incorrects: `${participant.incorrects}/${participant.total_questions} (${
-        (participant.incorrects * 100) /
-        (participant.total_questions - participant.unanswered)
-      }%)`,
-      unanswered: `${participant.unanswered}/${participant.total_questions} (${
-        (participant.unanswered * 100) /
-        (participant.total_questions - participant.unanswered)
-      }%)`,
-    }));
-  };
-
-  const historyParticipantsDetailItems =
-    mapParticipantsToDetailItems(dashboardAnswerData);
-
   const viewTypeDropdownData = useMemo<MenuProps["items"]>(() => {
     const newRowDropdown = defaultViewType.map((item) => ({
       key: item.id.toString(),
@@ -194,8 +172,7 @@ export default function HistoryDetail() {
             <CustomParticipantsDashboardTable
               participantColumns={participantColumns}
               questionColumns={questionColumns}
-              participantsData={historyParticipantsDetailItems}
-              questionsData={[]}
+              data={dashboardAnswerData}
               onRowClick={handleRowClick}
               sortName={() => {}}
               sortCreator={() => {}}
@@ -292,7 +269,7 @@ export interface HistoryQesutionDetailTableColumn {
   width: string;
 }
 
-interface IParticipantDetail {
+export interface IParticipantDetail {
   id: string;
   user_id: string;
   name: string;
