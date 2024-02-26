@@ -102,7 +102,7 @@ const CustomParticipantsDashboardTable: React.FC<
 
   return (
     <div>
-      <Flex className="justify-around border-b border-pastel-orange">
+      <Flex className="pl-2 justify-around border-b border-pastel-orange">
         {participantColumns.map((column) => (
           <span key={column.key} style={{ width: column.width }}>
             {column.header}
@@ -131,7 +131,7 @@ const CustomParticipantsDashboardTable: React.FC<
                 </div>
               ))}
             </div>
-            <Flex className="justify-center">
+            <Flex className="pl-4 py-2 bg-quill-gray">
               {questionColumns.map((column) => (
                 <span key={column.key} style={{ width: column.width }}>
                   {column.header}
@@ -140,7 +140,7 @@ const CustomParticipantsDashboardTable: React.FC<
             </Flex>
             <Flex className="flex-col">
               {row["questions"].map((row, index) => (
-                <Flex className="flex-col rounded-lg bg-light-gray">
+                <Flex className="pl-4 flex-col rounded-lg bg-light-gray">
                   <div key={index} className="flex">
                     {questionColumns.map((column) => (
                       <div
