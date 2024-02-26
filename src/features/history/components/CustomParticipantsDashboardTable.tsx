@@ -1,5 +1,5 @@
 import { Flex } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import {
@@ -39,6 +39,17 @@ const CustomParticipantsDashboardTable: React.FC<
   isCreatorAscending,
   isLastEditedAscending,
 }) => {
+  const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>(
+    {}
+  );
+
+  const toggleRow = (index: number) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
   const renderSortIcon = (columnKey: string) => {
     if (columnKey === "name") {
       return isNameAscending ? (
@@ -119,7 +130,10 @@ const CustomParticipantsDashboardTable: React.FC<
               key={index}
               className="flex rounded-lg bg-peach pl-2 border-2 border-transparent hover:border-pastel-orange"
               style={{ cursor: onRowClick ? "pointer" : "default" }}
-              onClick={() => onRowClick && onRowClick(row, index)}
+              onClick={() => {
+                onRowClick && onRowClick(row, index);
+                toggleRow(index);
+              }}
             >
               {participantColumns.map((column) => (
                 <div
@@ -131,30 +145,34 @@ const CustomParticipantsDashboardTable: React.FC<
                 </div>
               ))}
             </div>
-            <Flex className="pl-4 py-2 bg-quill-gray">
-              {questionColumns.map((column) => (
-                <span key={column.key} style={{ width: column.width }}>
-                  {column.header}
-                </span>
-              ))}
-            </Flex>
-            <Flex className="flex-col">
-              {row["questions"].map((row, index) => (
-                <Flex className="pl-4 flex-col rounded-lg bg-light-gray">
-                  <div key={index} className="flex">
-                    {questionColumns.map((column) => (
-                      <div
-                        key={column.key}
-                        className={`py-6`}
-                        style={{ width: column.width }}
-                      >
-                        {String(row[column.key])}
-                      </div>
-                    ))}
-                  </div>
+            {expandedRows[index] && (
+              <>
+                <Flex className="pl-4 py-2 bg-quill-gray">
+                  {questionColumns.map((column) => (
+                    <span key={column.key} style={{ width: column.width }}>
+                      {column.header}
+                    </span>
+                  ))}
                 </Flex>
-              ))}
-            </Flex>
+                <Flex className="flex-col">
+                  {row.questions.map((rowData, rowIndex) => (
+                    <Flex className="pl-4 flex-col rounded-lg bg-light-gray">
+                      <div key={rowIndex} className="flex">
+                        {questionColumns.map((column) => (
+                          <div
+                            key={column.key}
+                            className={`py-6`}
+                            style={{ width: column.width }}
+                          >
+                            {String(rowData[column.key])}
+                          </div>
+                        ))}
+                      </div>
+                    </Flex>
+                  ))}
+                </Flex>
+              </>
+            )}
           </Flex>
         ))}
       </Flex>
