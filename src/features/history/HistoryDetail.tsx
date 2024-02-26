@@ -28,12 +28,12 @@ export default function HistoryDetail() {
   ];
 
   const questionColumns: HistoryQesutionDetailTableColumn[] = [
-    { key: "order", header: "No.", width: "5%" },
-    { key: "questionType", header: "Question Type", width: "16%" },
+    { key: "order", header: "No.", width: "6%" },
+    { key: "type", header: "Question Type", width: "15%" },
     { key: "content", header: "Question", width: "30%" },
     { key: "answer", header: "Answer", width: "25%" },
     { key: "mark", header: "Mark", width: "10%" },
-    { key: "timeUsed", header: "Time used", width: "10%" },
+    { key: "use_time", header: "Time used", width: "10%" },
   ];
 
   useEffect(() => {
@@ -249,12 +249,12 @@ export interface IHistoryPaticipantsDetailItem {
 }
 
 export interface IHistoryQuestionsDetailItem {
-  questionType: string;
+  type: string;
   order: number;
   content: string;
   answer: string;
   mark: number;
-  timeUsed: number;
+  use_time: number;
 }
 
 export interface HistoryPaticipantsDetailTableColumn {
