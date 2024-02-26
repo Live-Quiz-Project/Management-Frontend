@@ -94,6 +94,7 @@ const CustomParticipantsDashboardTable: React.FC<
         (participant.unanswered * 100) /
         (participant.total_questions - participant.unanswered)
       }%)`,
+      questions: participant.questions,
     }));
   };
 
@@ -126,7 +127,7 @@ const CustomParticipantsDashboardTable: React.FC<
                   className={`py-6`}
                   style={{ width: column.width }}
                 >
-                  {row[column.key]}
+                  {String(row[column.key])}
                 </div>
               ))}
             </div>
@@ -135,6 +136,23 @@ const CustomParticipantsDashboardTable: React.FC<
                 <span key={column.key} style={{ width: column.width }}>
                   {column.header}
                 </span>
+              ))}
+            </Flex>
+            <Flex className="flex-col">
+              {row["questions"].map((row, index) => (
+                <Flex className="flex-col rounded-lg bg-quill-gray">
+                  <div key={index} className="flex">
+                    {questionColumns.map((column) => (
+                      <div
+                        key={column.key}
+                        className={`py-6`}
+                        style={{ width: column.width }}
+                      >
+                        {String(row[column.key])}
+                      </div>
+                    ))}
+                  </div>
+                </Flex>
               ))}
             </Flex>
           </Flex>
