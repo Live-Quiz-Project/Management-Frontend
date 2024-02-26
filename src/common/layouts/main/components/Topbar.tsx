@@ -1,5 +1,4 @@
 import { IoArrowBack } from "react-icons/io5";
-import { FaRegBell } from "react-icons/fa";
 
 type Props = {
   children: React.ReactNode;
@@ -20,9 +19,6 @@ export default function Topbar({ children, backable = false }: Props) {
           </button>
         )}
         <div className="flex items-center space-x-3">
-          <button className="">
-            <FaRegBell className="w-5 h-5" />
-          </button>
           <div className="w-10 h-10 bg-quill-gray rounded-full"></div>
         </div>
       </div>
