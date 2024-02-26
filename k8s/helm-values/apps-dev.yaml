@@ -7,7 +7,7 @@ apps:
   port: 5173
   targetPort: 5173
 ingress:
-  host: inquesto.dev.livequizplatform.online
+  host: dev.inquesto.online
   path: /
   serviceType: ClusterIP
   tlsSecretName: tls-mgmt-frontend-dev
