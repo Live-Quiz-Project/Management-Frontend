@@ -20,12 +20,21 @@ export default function HistoryDetail() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [liveHistoryTitle, setLiveHistoryData] = useState("");
 
-  const columns: HistoryPaticipantsDetailTableColumn[] = [
+  const participantColumns: HistoryPaticipantsDetailTableColumn[] = [
     { key: "displayName", header: "Display Name", width: "25%" },
     // { key: "mark", header: "Mark", width: "25%" },
     { key: "corrects", header: "Corrects", width: "25%" },
     { key: "incorrects", header: "Incorrects", width: "25%" },
     { key: "unanswered", header: "Unanswered", width: "25%" },
+  ];
+
+  const questionColumns: HistoryQesutionDetailTableColumn[] = [
+    { key: "order", header: "No.", width: "16%" },
+    { key: "questionType", header: "Question Type", width: "16%" },
+    { key: "content", header: "Question", width: "16%" },
+    { key: "answer", header: "Answer", width: "16%" },
+    { key: "mark", header: "Mark", width: "16%" },
+    { key: "timeUsed", header: "Time used", width: "16%" },
   ];
 
   useEffect(() => {
@@ -183,8 +192,10 @@ export default function HistoryDetail() {
         ) : (
           <div>
             <CustomParticipantsDashboardTable
-              columns={columns}
-              data={historyParticipantsDetailItems}
+              participantColumns={participantColumns}
+              questionColumns={questionColumns}
+              participantsData={historyParticipantsDetailItems}
+              questionsData={[]}
               onRowClick={handleRowClick}
               sortName={() => {}}
               sortCreator={() => {}}
@@ -261,8 +272,23 @@ export interface IHistoryPaticipantsDetailItem {
   questions: ParticipantQuestion[];
 }
 
+export interface IHistoryQuestionsDetailItem {
+  questionType: string;
+  order: number;
+  content: string;
+  answer: string;
+  mark: number;
+  timeUsed: number;
+}
+
 export interface HistoryPaticipantsDetailTableColumn {
   key: keyof IHistoryPaticipantsDetailItem;
+  header: string;
+  width: string;
+}
+
+export interface HistoryQesutionDetailTableColumn {
+  key: keyof IHistoryQuestionsDetailItem;
   header: string;
   width: string;
 }

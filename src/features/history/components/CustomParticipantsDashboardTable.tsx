@@ -4,12 +4,16 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import {
   HistoryPaticipantsDetailTableColumn,
+  HistoryQesutionDetailTableColumn,
   IHistoryPaticipantsDetailItem,
+  IHistoryQuestionsDetailItem,
 } from "../HistoryDetail";
 
 interface CustomParticipantsDashboardTableProps {
-  columns: HistoryPaticipantsDetailTableColumn[];
-  data: IHistoryPaticipantsDetailItem[];
+  participantColumns: HistoryPaticipantsDetailTableColumn[];
+  questionColumns: HistoryQesutionDetailTableColumn[];
+  participantsData: IHistoryPaticipantsDetailItem[];
+  questionsData: IHistoryQuestionsDetailItem[];
   onRowClick?: (
     rowData: IHistoryPaticipantsDetailItem,
     rowIndex: number
@@ -25,8 +29,10 @@ interface CustomParticipantsDashboardTableProps {
 const CustomParticipantsDashboardTable: React.FC<
   CustomParticipantsDashboardTableProps
 > = ({
-  columns,
-  data,
+  participantColumns,
+  participantsData,
+  questionColumns,
+  questionsData,
   onRowClick,
   sortName,
   sortCreator,
@@ -77,7 +83,7 @@ const CustomParticipantsDashboardTable: React.FC<
   return (
     <div>
       <Flex className="justify-around border-b border-pastel-orange">
-        {columns.map((column) => (
+        {participantColumns.map((column) => (
           <span key={column.key} style={{ width: column.width }}>
             {column.header}
             <button onClick={() => handleSort(column.key)}>
@@ -87,15 +93,15 @@ const CustomParticipantsDashboardTable: React.FC<
         ))}
       </Flex>
       <Flex className="flex-col">
-        {data.map((row, index) => (
-          <Flex className="flex-col rounded-lg bg-regent-gray my-2 ">
+        {participantsData.map((row, index) => (
+          <Flex className="flex-col rounded-lg bg-quill-gray my-2 ">
             <div
               key={index}
               className="flex rounded-lg bg-peach pl-2 border-2 border-transparent hover:border-pastel-orange"
               style={{ cursor: onRowClick ? "pointer" : "default" }}
               onClick={() => onRowClick && onRowClick(row, index)}
             >
-              {columns.map((column) => (
+              {participantColumns.map((column) => (
                 <div
                   key={column.key}
                   className={`py-6`}
@@ -105,6 +111,13 @@ const CustomParticipantsDashboardTable: React.FC<
                 </div>
               ))}
             </div>
+            <Flex className="justify-center px-12">
+              {questionColumns.map((column) => (
+                <span key={column.key} style={{ width: column.width }}>
+                  {column.header}
+                </span>
+              ))}
+            </Flex>
           </Flex>
         ))}
       </Flex>
