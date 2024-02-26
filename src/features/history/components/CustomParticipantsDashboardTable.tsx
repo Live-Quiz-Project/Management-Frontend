@@ -1,12 +1,18 @@
 import { Flex } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { HistoryPaticipantsDetailTableColumn, IHistoryPaticipantsDetailItem } from "../HistoryDetail";
+import {
+  HistoryPaticipantsDetailTableColumn,
+  HistoryQesutionDetailTableColumn,
+  IHistoryPaticipantsDetailItem,
+  IParticipantDetail,
+} from "../HistoryDetail";
 
 interface CustomParticipantsDashboardTableProps {
-  columns: HistoryPaticipantsDetailTableColumn[];
-  data: IHistoryPaticipantsDetailItem[];
+  participantColumns: HistoryPaticipantsDetailTableColumn[];
+  questionColumns: HistoryQesutionDetailTableColumn[];
+  data: [];
   onRowClick?: (
     rowData: IHistoryPaticipantsDetailItem,
     rowIndex: number
@@ -19,8 +25,11 @@ interface CustomParticipantsDashboardTableProps {
   isLastEditedAscending: boolean;
 }
 
-const CustomParticipantsDashboardTable: React.FC<CustomParticipantsDashboardTableProps> = ({
-  columns,
+const CustomParticipantsDashboardTable: React.FC<
+  CustomParticipantsDashboardTableProps
+> = ({
+  participantColumns,
+  questionColumns,
   data,
   onRowClick,
   sortName,
@@ -30,6 +39,17 @@ const CustomParticipantsDashboardTable: React.FC<CustomParticipantsDashboardTabl
   isCreatorAscending,
   isLastEditedAscending,
 }) => {
+  const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>(
+    {}
+  );
+
+  const toggleRow = (index: number) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
   const renderSortIcon = (columnKey: string) => {
     if (columnKey === "name") {
       return isNameAscending ? (
@@ -69,10 +89,32 @@ const CustomParticipantsDashboardTable: React.FC<CustomParticipantsDashboardTabl
     }
   };
 
+  const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
+    return participants.map((participant) => ({
+      displayName: participant.name,
+      mark: `${participant.marks}/${participant.total_marks}`,
+      corrects: `${participant.corrects}/${participant.total_questions}  (${
+        (participant.corrects * 100) /
+        (participant.total_questions - participant.unanswered)
+      }%)`,
+      incorrects: `${participant.incorrects}/${participant.total_questions} (${
+        (participant.incorrects * 100) /
+        (participant.total_questions - participant.unanswered)
+      }%)`,
+      unanswered: `${participant.unanswered}/${participant.total_questions} (${
+        (participant.unanswered * 100) /
+        (participant.total_questions - participant.unanswered)
+      }%)`,
+      questions: participant.questions,
+    }));
+  };
+
+  const historyParticipantsDetailItems = mapParticipantsToDetailItems(data);
+
   return (
     <div>
-      <Flex className="justify-around border-b border-pastel-orange">
-        {columns.map((column) => (
+      <Flex className="pl-2 justify-around border-b border-pastel-orange">
+        {participantColumns.map((column) => (
           <span key={column.key} style={{ width: column.width }}>
             {column.header}
             <button onClick={() => handleSort(column.key)}>
@@ -82,25 +124,56 @@ const CustomParticipantsDashboardTable: React.FC<CustomParticipantsDashboardTabl
         ))}
       </Flex>
       <Flex className="flex-col">
-        {data.map((row, index) => (
-          <div
-            key={index}
-            className="flex rounded-lg bg-peach my-2 border-2 border-transparent hover:border-pastel-orange"
-            style={{ cursor: onRowClick ? "pointer" : "default" }}
-            onClick={() => onRowClick && onRowClick(row, index)}
-          >
-            {columns.map((column) => (
-              <div
-                key={column.key}
-                className={`py-6`}
-                style={{ width: column.width }}
-              >
-                {
-                  row[column.key]
-                }
-              </div>
-            ))}
-          </div>
+        {historyParticipantsDetailItems.map((row, index) => (
+          <Flex className="flex-col rounded-lg bg-light-gray my-2 ">
+            <div
+              key={index}
+              className="flex rounded-lg bg-peach pl-2 border-2 border-transparent hover:border-pastel-orange"
+              style={{ cursor: onRowClick ? "pointer" : "default" }}
+              onClick={() => {
+                onRowClick && onRowClick(row, index);
+                toggleRow(index);
+              }}
+            >
+              {participantColumns.map((column) => (
+                <div
+                  key={column.key}
+                  className={`py-6`}
+                  style={{ width: column.width }}
+                >
+                  {String(row[column.key])}
+                </div>
+              ))}
+            </div>
+            {expandedRows[index] && (
+              <>
+                <Flex className="pl-4 py-2 bg-quill-gray">
+                  {questionColumns.map((column) => (
+                    <span key={column.key} style={{ width: column.width }}>
+                      {column.header}
+                    </span>
+                  ))}
+                </Flex>
+                <Flex className="flex-col">
+                  {row.questions.map((rowData, rowIndex) => (
+                    <Flex className="pl-4 flex-col rounded-lg bg-light-gray">
+                      <div key={rowIndex} className="flex">
+                        {questionColumns.map((column) => (
+                          <div
+                            key={column.key}
+                            className={`py-6`}
+                            style={{ width: column.width }}
+                          >
+                            {String(rowData[column.key])}
+                          </div>
+                        ))}
+                      </div>
+                    </Flex>
+                  ))}
+                </Flex>
+              </>
+            )}
+          </Flex>
         ))}
       </Flex>
     </div>
