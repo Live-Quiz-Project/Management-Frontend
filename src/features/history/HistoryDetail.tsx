@@ -141,13 +141,13 @@ export default function HistoryDetail() {
             minWidth={130}
           />
         </div>
-        <div className="pr-2">
+        {/* <div className="pr-2">
           <AppDropdown
             items={sortingDropdownData}
             indexSelected={sortingFiltered.sortingSelected}
             minWidth={100}
           />
-        </div>
+        </div> */}
       </div>
       <div className="overflow-y-auto" style={{ maxHeight: "85vh" }}>
         {viewTypeFiltered.viewTypeSelected === 0 ? (
