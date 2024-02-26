@@ -22,7 +22,6 @@ export default function HistoryDetail() {
 
   const participantColumns: HistoryPaticipantsDetailTableColumn[] = [
     { key: "displayName", header: "Display Name", width: "25%" },
-    // { key: "mark", header: "Mark", width: "25%" },
     { key: "corrects", header: "Corrects", width: "25%" },
     { key: "incorrects", header: "Incorrects", width: "25%" },
     { key: "unanswered", header: "Unanswered", width: "25%" },
@@ -55,6 +54,7 @@ export default function HistoryDetail() {
   async function fetchAnswerDashboard() {
     try {
       const dashboardData = await http.get(`/dashboard/answer/${id}`);
+      console.log(dashboardData.data.participants);
       setDashboardAnswerData(dashboardData.data.participants);
     } catch (e) {
       console.log(e);
@@ -265,7 +265,6 @@ const defaultSorting: ISorting[] = [
 
 export interface IHistoryPaticipantsDetailItem {
   displayName: string;
-  // mark: string;
   corrects: string;
   incorrects: string;
   unanswered: string;
