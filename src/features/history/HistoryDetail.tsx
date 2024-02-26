@@ -20,12 +20,20 @@ export default function HistoryDetail() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [liveHistoryTitle, setLiveHistoryData] = useState("");
 
-  const columns: HistoryPaticipantsDetailTableColumn[] = [
+  const participantColumns: HistoryPaticipantsDetailTableColumn[] = [
     { key: "displayName", header: "Display Name", width: "25%" },
-    // { key: "mark", header: "Mark", width: "25%" },
     { key: "corrects", header: "Corrects", width: "25%" },
     { key: "incorrects", header: "Incorrects", width: "25%" },
     { key: "unanswered", header: "Unanswered", width: "25%" },
+  ];
+
+  const questionColumns: HistoryQesutionDetailTableColumn[] = [
+    { key: "order", header: "No.", width: "8%" },
+    { key: "type", header: "Question Type", width: "15%" },
+    { key: "content", header: "Question", width: "30%" },
+    { key: "answer", header: "Answer", width: "25%" },
+    { key: "mark", header: "Mark", width: "10%" },
+    { key: "use_time", header: "Time used", width: "12%" },
   ];
 
   useEffect(() => {
@@ -46,6 +54,7 @@ export default function HistoryDetail() {
   async function fetchAnswerDashboard() {
     try {
       const dashboardData = await http.get(`/dashboard/answer/${id}`);
+      console.log(dashboardData.data.participants);
       setDashboardAnswerData(dashboardData.data.participants);
     } catch (e) {
       console.log(e);
@@ -61,28 +70,6 @@ export default function HistoryDetail() {
       item.content.toLowerCase().includes(searchKeyword.toLowerCase())
     );
   }, [dashboardQuestionsData, searchKeyword]);
-
-  const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
-    return participants.map((participant) => ({
-      displayName: participant.name,
-      mark: `${participant.marks}/${participant.total_marks}`,
-      corrects: `${participant.corrects}/${participant.total_questions}  (${
-        (participant.corrects * 100) /
-        (participant.total_questions - participant.unanswered)
-      }%)`,
-      incorrects: `${participant.incorrects}/${participant.total_questions} (${
-        (participant.incorrects * 100) /
-        (participant.total_questions - participant.unanswered)
-      }%)`,
-      unanswered: `${participant.unanswered}/${participant.total_questions} (${
-        (participant.unanswered * 100) /
-        (participant.total_questions - participant.unanswered)
-      }%)`,
-    }));
-  };
-
-  const historyParticipantsDetailItems =
-    mapParticipantsToDetailItems(dashboardAnswerData);
 
   const viewTypeDropdownData = useMemo<MenuProps["items"]>(() => {
     const newRowDropdown = defaultViewType.map((item) => ({
@@ -154,13 +141,13 @@ export default function HistoryDetail() {
             minWidth={130}
           />
         </div>
-        <div className="pr-2">
+        {/* <div className="pr-2">
           <AppDropdown
             items={sortingDropdownData}
             indexSelected={sortingFiltered.sortingSelected}
             minWidth={100}
           />
-        </div>
+        </div> */}
       </div>
       <div className="overflow-y-auto" style={{ maxHeight: "85vh" }}>
         {viewTypeFiltered.viewTypeSelected === 0 ? (
@@ -183,8 +170,9 @@ export default function HistoryDetail() {
         ) : (
           <div>
             <CustomParticipantsDashboardTable
-              columns={columns}
-              data={historyParticipantsDetailItems}
+              participantColumns={participantColumns}
+              questionColumns={questionColumns}
+              data={dashboardAnswerData}
               onRowClick={handleRowClick}
               sortName={() => {}}
               sortCreator={() => {}}
@@ -254,10 +242,19 @@ const defaultSorting: ISorting[] = [
 
 export interface IHistoryPaticipantsDetailItem {
   displayName: string;
-  // mark: string;
   corrects: string;
   incorrects: string;
   unanswered: string;
+  questions: ParticipantQuestion[];
+}
+
+export interface IHistoryQuestionsDetailItem {
+  type: string;
+  order: number;
+  content: string;
+  answer: string;
+  mark: number;
+  use_time: number;
 }
 
 export interface HistoryPaticipantsDetailTableColumn {
@@ -266,7 +263,13 @@ export interface HistoryPaticipantsDetailTableColumn {
   width: string;
 }
 
-interface IParticipantDetail {
+export interface HistoryQesutionDetailTableColumn {
+  key: keyof IHistoryQuestionsDetailItem;
+  header: string;
+  width: string;
+}
+
+export interface IParticipantDetail {
   id: string;
   user_id: string;
   name: string;
@@ -313,11 +316,3 @@ interface Participant {
   user_id: string;
   name: string;
 }
-
-type QuestionType =
-  | "CHOICE"
-  | "TRUE_FALSE"
-  | "PARAGRAPH"
-  | "MATCHING"
-  | "FILL_BLANK"
-  | "POOL";
