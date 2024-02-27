@@ -151,7 +151,7 @@ export default function HistoryDetail() {
           />
         </div> */}
         </div>
-        <div className="overflow-y-auto" style={{ maxHeight: "85vh" }}>
+        <div className="overflow-y-auto" style={{ maxHeight: "73vh" }}>
           {viewTypeFiltered.viewTypeSelected === 0 ? (
             filteredQuestions.map((item, index) => {
               return (
