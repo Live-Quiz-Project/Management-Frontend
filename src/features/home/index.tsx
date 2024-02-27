@@ -1,5 +1,6 @@
 import FilledButton from "@/common/components/buttons/FilledButton";
 import useTypedSelector from "@/common/hooks/useTypedSelector";
+import Topbar from "@/common/layouts/main/components/Topbar";
 import { Flex } from "antd";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,10 +18,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="">
-      <h1 className="">Home</h1>
+    <Topbar>
       <FilledButton
-        className="bg-koromiko"
+        className="w-fit bg-koromiko"
         onClick={() =>
           window.open(
             `${import.meta.env.VITE_LIVE_QUIZ_URL}?token=${auth.value.token}`
@@ -79,6 +79,6 @@ export default function Home() {
           />
         </Flex>
       </div>
-    </div>
+    </Topbar>
   );
 }
