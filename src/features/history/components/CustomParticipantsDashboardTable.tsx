@@ -89,6 +89,23 @@ const CustomParticipantsDashboardTable: React.FC<
     }
   };
 
+  const convertQuestionType = (type: string) => {
+    switch (type) {
+      case "CHOICE":
+        return "Choice";
+      case "FILL_BLANK":
+        return "Fill in the blanks";
+      case "PARAGRAPH":
+        return "Paragraph";
+      case "TRUE_FALSE":
+        return "True or False";
+      case "MATCHING":
+        return "Matching";
+      default:
+        break;
+    }
+  };
+
   const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
     return participants.map((participant) => ({
       displayName: participant.name,
@@ -164,7 +181,9 @@ const CustomParticipantsDashboardTable: React.FC<
                             className={`py-6`}
                             style={{ width: column.width }}
                           >
-                            {String(rowData[column.key])}
+                            {column.key == "type"
+                              ? convertQuestionType(String(rowData[column.key]))
+                              : String(rowData[column.key])}
                           </div>
                         ))}
                       </div>
