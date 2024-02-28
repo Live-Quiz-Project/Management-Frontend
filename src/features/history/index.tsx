@@ -149,7 +149,7 @@ export default function History() {
 
   return (
     <Topbar>
-      <div>
+      <div style={{ maxHeight: "73vh" }}>
         <p className="font-serif text-2xl">Live History</p>
         <div className="pr-2 py-2">
           <SearchField
