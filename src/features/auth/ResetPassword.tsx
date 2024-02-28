@@ -13,7 +13,7 @@ export default function ResetPassword() {
 
   async function handleOnSubmit() {
     try {
-      await http.post("/reset-password", {
+      await http.patch("/reset-password", {
         otp: otp,
         email: email,
         password: confirmPassword,
