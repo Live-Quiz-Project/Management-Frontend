@@ -89,6 +89,23 @@ const CustomParticipantsDashboardTable: React.FC<
     }
   };
 
+  const convertQuestionType = (type: string) => {
+    switch (type) {
+      case "CHOICE":
+        return "Choice";
+      case "FILL_BLANK":
+        return "Fill in the blanks";
+      case "PARAGRAPH":
+        return "Paragraph";
+      case "TRUE_FALSE":
+        return "True or False";
+      case "MATCHING":
+        return "Matching";
+      default:
+        break;
+    }
+  };
+
   const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
     return participants.map((participant) => ({
       displayName: participant.name,
@@ -124,57 +141,68 @@ const CustomParticipantsDashboardTable: React.FC<
         ))}
       </Flex>
       <Flex className="flex-col">
-        {historyParticipantsDetailItems.map((row, index) => (
-          <Flex className="flex-col rounded-lg bg-light-gray my-2 ">
-            <div
-              key={index}
-              className="flex rounded-lg bg-peach pl-2 border-2 border-transparent hover:border-pastel-orange"
-              style={{ cursor: onRowClick ? "pointer" : "default" }}
-              onClick={() => {
-                onRowClick && onRowClick(row, index);
-                toggleRow(index);
-              }}
-            >
-              {participantColumns.map((column) => (
-                <div
-                  key={column.key}
-                  className={`py-6`}
-                  style={{ width: column.width }}
-                >
-                  {String(row[column.key])}
-                </div>
-              ))}
-            </div>
-            {expandedRows[index] && (
-              <>
-                <Flex className="pl-4 py-2 bg-quill-gray">
-                  {questionColumns.map((column) => (
-                    <span key={column.key} style={{ width: column.width }}>
-                      {column.header}
-                    </span>
-                  ))}
-                </Flex>
-                <Flex className="flex-col">
-                  {row.questions.map((rowData, rowIndex) => (
-                    <Flex className="pl-4 flex-col rounded-lg bg-light-gray">
-                      <div key={rowIndex} className="flex">
-                        {questionColumns.map((column) => (
-                          <div
-                            key={column.key}
-                            className={`py-6`}
-                            style={{ width: column.width }}
-                          >
-                            {String(rowData[column.key])}
-                          </div>
-                        ))}
-                      </div>
-                    </Flex>
-                  ))}
-                </Flex>
-              </>
-            )}
+        {historyParticipantsDetailItems === null ||
+        historyParticipantsDetailItems.length === 0 ? (
+          <Flex className="pt-5 justify-center">
+            <p className="font-semibold">Data not found.</p>
           </Flex>
-        ))}
+        ) : (
+          historyParticipantsDetailItems.map((row, index) => (
+            <Flex className="flex-col rounded-lg bg-light-gray my-2 ">
+              <div
+                key={index}
+                className="flex rounded-lg bg-peach pl-2 border-2 border-transparent hover:border-pastel-orange"
+                style={{ cursor: onRowClick ? "pointer" : "default" }}
+                onClick={() => {
+                  onRowClick && onRowClick(row, index);
+                  toggleRow(index);
+                }}
+              >
+                {participantColumns.map((column) => (
+                  <div
+                    key={column.key}
+                    className={`py-6`}
+                    style={{ width: column.width }}
+                  >
+                    {String(row[column.key])}
+                  </div>
+                ))}
+              </div>
+              {expandedRows[index] && (
+                <>
+                  <Flex className="pl-4 py-2 bg-quill-gray">
+                    {questionColumns.map((column) => (
+                      <span key={column.key} style={{ width: column.width }}>
+                        {column.header}
+                      </span>
+                    ))}
+                  </Flex>
+                  <Flex className="flex-col">
+                    {row.questions.map((rowData, rowIndex) => (
+                      <Flex className="pl-4 flex-col rounded-lg bg-light-gray">
+                        <div key={rowIndex} className="flex">
+                          {questionColumns.map((column) => (
+                            <div
+                              key={column.key}
+                              className={`py-6`}
+                              style={{ width: column.width }}
+                            >
+                              {column.key == "type"
+                                ? convertQuestionType(
+                                    String(rowData[column.key])
+                                  )
+                                : String(rowData[column.key])}
+                            </div>
+                          ))}
+                        </div>
+                      </Flex>
+                    ))}
+                  </Flex>
+                </>
+              )}
+            </Flex>
+          ))
+        )}
       </Flex>
     </div>
   );
