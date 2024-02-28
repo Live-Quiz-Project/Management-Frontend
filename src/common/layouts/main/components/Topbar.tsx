@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logOut } from "@/features/auth/store/slice";
 import { useNavigate } from "react-router-dom";
+import useTypedSelector from "@/common/hooks/useTypedSelector";
 
 type Props = {
   children: React.ReactNode;
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export default function Topbar({ children, backable = false }: Props) {
+  const auth = useTypedSelector((state) => state.auth);
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -32,6 +34,10 @@ export default function Topbar({ children, backable = false }: Props) {
             className="w-14 h-14 bg-quill-gray rounded-full cursor-pointer relative border-2 border-transparent hover:border-pastel-orange"
             onClick={() => setIsExpanded((prev) => !prev)}
           >
+            <img
+              src={auth.value.user.image}
+              className="w-full h-full object-cover rounded-full"
+            />
             <ExpandedUserDropdown
               isExpanded={isExpanded}
               setIsExpanded={setIsExpanded}
@@ -53,6 +59,7 @@ function ExpandedUserDropdown({
   isExpanded,
   setIsExpanded,
 }: IExpandedUserDropdown) {
+  const auth = useTypedSelector((state) => state.auth);
   const dispatch = useDispatch<StoreDispatch>();
   const navigate = useNavigate();
 
@@ -79,6 +86,9 @@ function ExpandedUserDropdown({
       ref={ref}
       className="w-[150px] bg-main-white rounded-md shadow-md absolute top-12 right-0 overflow-clip"
     >
+      <div className="w-full flex-col justify-start items-center px-4 py-3 gap-2 bg-main-white">
+        <div className="font-light">{auth.value.user.name}</div>
+      </div>
       <div
         className="w-full flex justify-start items-center px-4 py-3 gap-2 bg-main-white hover:bg-light-gray"
         onClick={logout}

@@ -1,5 +1,6 @@
 import { TbHome, TbListDetails, TbHistory } from "react-icons/tb";
 import { Link, useLocation } from "react-router-dom";
+import appLogo from "../../../assets/app_logo.png";
 
 type Props = {
   className?: string;
@@ -42,7 +43,7 @@ export default function Sidebar({ className = "" }: Props) {
       className={`flex flex-col h-full bg-quill-gray p-2 rounded-xl justify-between text-body-1 ${className}`}
     >
       <ul className="space-y-1">
-        {/* <img src="" alt="logo" className="" /> */}
+        {/* <img src={appLogo} alt="logo" className="w-1/12" /> */}
         {menus &&
           menus.map((menu, i) => (
             <li key={i}>
