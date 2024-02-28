@@ -167,7 +167,7 @@ export default function History() {
           sortTotalParticipants={toggleSortByTotalParticipants}
           isNameAscending={isNameAscending}
           isDateAscending={isDateAscending}
-          isTotalParticipantsAscending={isTotalParticipantsAscending}
+          // isTotalParticipantsAscending={isTotalParticipantsAscending}
         />
       </div>
     </Topbar>

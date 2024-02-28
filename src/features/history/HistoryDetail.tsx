@@ -6,10 +6,12 @@ import { Flex, MenuProps } from "antd";
 import CustomParticipantsDashboardTable from "./components/CustomParticipantsDashboardTable";
 import { privateHttp as http } from "@/common/services/axios";
 import Topbar from "@/common/layouts/main/components/Topbar";
+import { useNavigate } from "react-router-dom";
 
 export default function HistoryDetail() {
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
+  const navigate = useNavigate();
   const [viewTypeFiltered, setViewTypeFiltered] = useState(
     defaultViewTypeFiltered
   );
@@ -123,8 +125,12 @@ export default function HistoryDetail() {
     console.log(rowData.displayName);
   };
 
+  const onBack = () => {
+    navigate(`/history`);
+  };
+
   return (
-    <Topbar>
+    <Topbar backable={true} backFunction={onBack}>
       <div className="flex w-full mt-2 flex-col">
         <p className="text-2xl pb-4 font-serif">{liveHistoryTitle}</p>
         <div className="flex pb-4">
