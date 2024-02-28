@@ -2,7 +2,7 @@ import AppDropdown from "@/common/layouts/main/components/AppDropdown";
 import SearchField from "@/common/layouts/main/components/SearchField";
 import QuestionItem from "./components/QuestionItem";
 import { useEffect, useMemo, useState } from "react";
-import { MenuProps } from "antd";
+import { Flex, MenuProps } from "antd";
 import CustomParticipantsDashboardTable from "./components/CustomParticipantsDashboardTable";
 import { privateHttp as http } from "@/common/services/axios";
 import Topbar from "@/common/layouts/main/components/Topbar";
@@ -63,11 +63,11 @@ export default function HistoryDetail() {
   }
 
   const filteredPoolQuestions = useMemo(() => {
-    const poolQuestions = dashboardQuestionsData.filter(
+    const poolQuestions = dashboardQuestionsData?.filter(
       (item) => item["pool_oder"] !== -1 && item["type"] !== "POOL"
     );
 
-    return poolQuestions.filter((item: IQuestionItem) =>
+    return poolQuestions?.filter((item: IQuestionItem) =>
       item.content.toLowerCase().includes(searchKeyword.toLowerCase())
     );
   }, [dashboardQuestionsData, searchKeyword]);
@@ -85,7 +85,7 @@ export default function HistoryDetail() {
   }, [defaultViewType]);
 
   const filteredQuestions = useMemo(() => {
-    return dashboardQuestionsData.filter(
+    return dashboardQuestionsData?.filter(
       (item: IQuestionItem) =>
         (item.content.toLowerCase().includes(searchKeyword.toLowerCase()) &&
           item.pool_order === -1) ||
@@ -101,11 +101,11 @@ export default function HistoryDetail() {
   };
 
   const sortingDropdownData = useMemo<MenuProps["items"]>(() => {
-    const newRowDropdown = defaultSorting.map((item) => ({
-      key: item.id.toString(),
+    const newRowDropdown = defaultSorting?.map((item) => ({
+      key: item.id?.toString(),
       label: <div className="text-sm ">{item.viewType}</div>,
       onClick: () => {
-        handleSortingDropdownChange(item.id.toString(), "sortingSelected");
+        handleSortingDropdownChange(item.id?.toString(), "sortingSelected");
       },
     }));
 
@@ -153,28 +153,34 @@ export default function HistoryDetail() {
         </div>
         <div className="overflow-y-auto" style={{ maxHeight: "73vh" }}>
           {viewTypeFiltered.viewTypeSelected === 0 ? (
-            filteredQuestions.map((item, index) => {
-              return (
-                <div>
-                  <div className="pb-2" key={item["id"]}>
-                    <QuestionItem
-                      title={item["content"]}
-                      questionNo={index + 1}
-                      questionType={item["type"]}
-                      questionData={item["options"]}
-                      poolOrder={item["pool_order"]}
-                      poolQuestionData={filteredPoolQuestions}
-                    />
+            filteredQuestions == null || filteredQuestions.length === 0 ? (
+              <Flex className="justify-center">
+                <p className="font-semibold">Data not found.</p>
+              </Flex>
+            ) : (
+              filteredQuestions?.map((item, index) => {
+                return (
+                  <div>
+                    <div className="pb-2" key={item["id"]}>
+                      <QuestionItem
+                        title={item["content"]}
+                        questionNo={index + 1}
+                        questionType={item["type"]}
+                        questionData={item["options"]}
+                        poolOrder={item["pool_order"]}
+                        poolQuestionData={filteredPoolQuestions}
+                      />
+                    </div>
                   </div>
-                </div>
-              );
-            })
+                );
+              })
+            )
           ) : (
             <div>
               <CustomParticipantsDashboardTable
                 participantColumns={participantColumns}
                 questionColumns={questionColumns}
-                data={dashboardAnswerData}
+                data={dashboardAnswerData ?? []}
                 onRowClick={handleRowClick}
                 sortName={() => {}}
                 sortCreator={() => {}}
