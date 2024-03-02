@@ -17,12 +17,14 @@ interface CustomParticipantsDashboardTableProps {
     rowData: IHistoryPaticipantsDetailItem,
     rowIndex: number
   ) => void;
-  sortName?: () => void;
-  sortCreator?: () => void;
-  sortLastEdited?: () => void;
+  sortByName?: () => void;
+  sortCorrects?: () => void;
+  sortIncorrects?: () => void;
+  sortUnanswered?: () => void;
   isNameAscending: boolean;
-  isCreatorAscending: boolean;
-  isLastEditedAscending: boolean;
+  isCorrectsAscending: boolean;
+  isInCorrectsAscending: boolean;
+  isUnAnsweredAscending: boolean;
 }
 
 const CustomParticipantsDashboardTable: React.FC<
@@ -32,12 +34,14 @@ const CustomParticipantsDashboardTable: React.FC<
   questionColumns,
   data,
   onRowClick,
-  sortName,
-  sortCreator,
-  sortLastEdited,
+  sortByName,
+  sortCorrects,
+  sortIncorrects,
+  sortUnanswered,
   isNameAscending,
-  isCreatorAscending,
-  isLastEditedAscending,
+  isCorrectsAscending,
+  isInCorrectsAscending,
+  isUnAnsweredAscending,
 }) => {
   const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>(
     {}
@@ -51,20 +55,26 @@ const CustomParticipantsDashboardTable: React.FC<
   };
 
   const renderSortIcon = (columnKey: string) => {
-    if (columnKey === "name") {
+    if (columnKey === "displayName") {
       return isNameAscending ? (
         <KeyboardArrowUpIcon />
       ) : (
         <KeyboardArrowDownIcon />
       );
-    } else if (columnKey === "creator") {
-      return isCreatorAscending ? (
+    } else if (columnKey === "corrects") {
+      return isCorrectsAscending ? (
         <KeyboardArrowUpIcon />
       ) : (
         <KeyboardArrowDownIcon />
       );
-    } else if (columnKey === "lastEdited") {
-      return isLastEditedAscending ? (
+    } else if (columnKey === "incorrects") {
+      return isInCorrectsAscending ? (
+        <KeyboardArrowUpIcon />
+      ) : (
+        <KeyboardArrowDownIcon />
+      );
+    } else if (columnKey === "unanswered") {
+      return isUnAnsweredAscending ? (
         <KeyboardArrowUpIcon />
       ) : (
         <KeyboardArrowDownIcon />
@@ -75,14 +85,17 @@ const CustomParticipantsDashboardTable: React.FC<
 
   const handleSort = (columnKey: string) => {
     switch (columnKey) {
-      case "name":
-        sortName && sortName();
+      case "displayName":
+        sortByName && sortByName();
         break;
-      case "creator":
-        sortCreator && sortCreator();
+      case "corrects":
+        sortCorrects && sortCorrects();
         break;
-      case "lastEdited":
-        sortLastEdited && sortLastEdited();
+      case "incorrects":
+        sortIncorrects && sortIncorrects();
+        break;
+      case "unanswered":
+        sortUnanswered && sortUnanswered();
         break;
       default:
         break;
@@ -169,8 +182,8 @@ const CustomParticipantsDashboardTable: React.FC<
                 ))}
               </div>
               {expandedRows[index] && (
-                <>
-                  <Flex className="pl-4 py-2 bg-quill-gray">
+                <div className=" border-2 border-pastel-orange rounded-lg">
+                  <Flex className="pl-4 py-2 bg-pastel-orange">
                     {questionColumns.map((column) => (
                       <span key={column.key} style={{ width: column.width }}>
                         {column.header}
@@ -179,15 +192,20 @@ const CustomParticipantsDashboardTable: React.FC<
                   </Flex>
                   <Flex className="flex-col">
                     {row.questions.map((rowData, rowIndex) => (
-                      <Flex className="pl-4 flex-col rounded-lg bg-light-gray">
-                        <div key={rowIndex} className="flex">
+                      <Flex
+                        key={rowIndex}
+                        className={`pl-4 flex-col ${
+                          rowIndex % 2 === 0 ? "bg-light-gray" : "bg-white"
+                        }`}
+                      >
+                        <div className="flex">
                           {questionColumns.map((column) => (
                             <div
                               key={column.key}
                               className={`py-6`}
                               style={{ width: column.width }}
                             >
-                              {column.key == "type"
+                              {column.key === "type"
                                 ? convertQuestionType(
                                     String(rowData[column.key])
                                   )
@@ -198,7 +216,7 @@ const CustomParticipantsDashboardTable: React.FC<
                       </Flex>
                     ))}
                   </Flex>
-                </>
+                </div>
               )}
             </Flex>
           ))

@@ -15,13 +15,14 @@ export default function HistoryDetail() {
   const [viewTypeFiltered, setViewTypeFiltered] = useState(
     defaultViewTypeFiltered
   );
-  const [sortingFiltered, setSortingFiltered] = useState(
-    defaultSortingFilteredFiltered
-  );
   const [dashboardQuestionsData, setDashboardQuestionsData] = useState([]);
   const [dashboardAnswerData, setDashboardAnswerData] = useState([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [liveHistoryTitle, setLiveHistoryData] = useState("");
+  const [isNameAscending, setIsNameAscending] = useState(false);
+  const [isCorrectsAscending, setIsCorrectsAscending] = useState(false);
+  const [isInCorrectsAscending, setIsInCorrectsAscending] = useState(false);
+  const [isUnAnsweredAscending, setIsUnAnsweredAscending] = useState(false);
 
   const participantColumns: HistoryPaticipantsDetailTableColumn[] = [
     { key: "displayName", header: "Display Name", width: "25%" },
@@ -102,23 +103,76 @@ export default function HistoryDetail() {
     }));
   };
 
-  const sortingDropdownData = useMemo<MenuProps["items"]>(() => {
-    const newRowDropdown = defaultSorting?.map((item) => ({
-      key: item.id?.toString(),
-      label: <div className="text-sm ">{item.viewType}</div>,
-      onClick: () => {
-        handleSortingDropdownChange(item.id?.toString(), "sortingSelected");
-      },
-    }));
+  const sortByName = () => {
+    setIsNameAscending(!isNameAscending);
+    setIsCorrectsAscending(false);
+    setIsInCorrectsAscending(false);
+    setIsUnAnsweredAscending(false);
+    setDashboardAnswerData((prevData) => {
+      const sortedData = [...prevData];
+      sortedData.sort((a, b) => {
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+        return isNameAscending
+          ? nameA.localeCompare(nameB)
+          : nameB.localeCompare(nameA);
+      });
+      return sortedData;
+    });
+  };
 
-    return [...newRowDropdown];
-  }, [defaultViewType]);
+  const sortCorrects = () => {
+    setIsNameAscending(false);
+    setIsCorrectsAscending(!isCorrectsAscending);
+    setIsInCorrectsAscending(false);
+    setIsUnAnsweredAscending(false);
+    setDashboardAnswerData((prevData) => {
+      const sortedData = [...prevData];
+      sortedData.sort((a, b) => {
+        const correctsA = a.corrects;
+        const correctsB = b.corrects;
+        return isCorrectsAscending
+          ? correctsA - correctsB
+          : correctsB - correctsA;
+      });
+      return sortedData;
+    });
+  };
 
-  const handleSortingDropdownChange = (key: string, fieldName: string) => {
-    setSortingFiltered((prevState) => ({
-      ...prevState,
-      [fieldName]: Number.parseInt(key),
-    }));
+  const sortIncorrects = () => {
+    setIsNameAscending(false);
+    setIsCorrectsAscending(false);
+    setIsInCorrectsAscending(!isInCorrectsAscending);
+    setIsUnAnsweredAscending(false);
+    setDashboardAnswerData((prevData) => {
+      const sortedData = [...prevData];
+      sortedData.sort((a, b) => {
+        const incorrectsA = a.incorrects;
+        const incorrectsB = b.incorrects;
+        return isInCorrectsAscending
+          ? incorrectsA - incorrectsB
+          : incorrectsB - incorrectsA;
+      });
+      return sortedData;
+    });
+  };
+
+  const sortUnanswered = () => {
+    setIsNameAscending(false);
+    setIsCorrectsAscending(false);
+    setIsInCorrectsAscending(false);
+    setIsUnAnsweredAscending(!isUnAnsweredAscending);
+    setDashboardAnswerData((prevData) => {
+      const sortedData = [...prevData];
+      sortedData.sort((a, b) => {
+        const unansweredA = a.unanswered;
+        const unansweredB = b.unanswered;
+        return isUnAnsweredAscending
+          ? unansweredA - unansweredB
+          : unansweredB - unansweredA;
+      });
+      return sortedData;
+    });
   };
 
   const handleRowClick = (rowData: IHistoryPaticipantsDetailItem) => {
@@ -149,15 +203,8 @@ export default function HistoryDetail() {
               minWidth={130}
             />
           </div>
-          {/* <div className="pr-2">
-          <AppDropdown
-            items={sortingDropdownData}
-            indexSelected={sortingFiltered.sortingSelected}
-            minWidth={100}
-          />
-        </div> */}
         </div>
-        <div className="overflow-y-auto" style={{ maxHeight: "73vh" }}>
+        <div style={{ maxHeight: "73vh" }}>
           {viewTypeFiltered.viewTypeSelected === 0 ? (
             filteredQuestions == null || filteredQuestions.length === 0 ? (
               <Flex className="justify-center">
@@ -188,12 +235,14 @@ export default function HistoryDetail() {
                 questionColumns={questionColumns}
                 data={dashboardAnswerData ?? []}
                 onRowClick={handleRowClick}
-                sortName={() => {}}
-                sortCreator={() => {}}
-                sortLastEdited={() => {}}
-                isNameAscending={false}
-                isCreatorAscending={false}
-                isLastEditedAscending={false}
+                sortByName={sortByName}
+                sortCorrects={sortCorrects}
+                sortIncorrects={sortIncorrects}
+                sortUnanswered={sortUnanswered}
+                isNameAscending={isNameAscending}
+                isCorrectsAscending={isCorrectsAscending}
+                isInCorrectsAscending={isInCorrectsAscending}
+                isUnAnsweredAscending={isUnAnsweredAscending}
               />
             </div>
           )}
@@ -226,32 +275,6 @@ const defaultViewType: IViewType[] = [
   {
     id: 1,
     viewType: "Paticipants",
-  },
-];
-
-interface ISortingFiltered {
-  sortingText: string;
-  sortingSelected: number;
-}
-
-const defaultSortingFilteredFiltered: ISortingFiltered = {
-  sortingText: "",
-  sortingSelected: 0,
-};
-
-interface ISorting {
-  id: number;
-  viewType: string;
-}
-
-const defaultSorting: ISorting[] = [
-  {
-    id: 0,
-    viewType: "Asc",
-  },
-  {
-    id: 1,
-    viewType: "Dsc",
   },
 ];
 
