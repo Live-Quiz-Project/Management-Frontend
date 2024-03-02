@@ -204,7 +204,7 @@ export default function HistoryDetail() {
             />
           </div>
         </div>
-        <div className="overflow-y-auto" style={{ maxHeight: "73vh" }}>
+        <div style={{ maxHeight: "73vh" }}>
           {viewTypeFiltered.viewTypeSelected === 0 ? (
             filteredQuestions == null || filteredQuestions.length === 0 ? (
               <Flex className="justify-center">
