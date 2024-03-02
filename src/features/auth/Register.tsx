@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { createUser } from "./store/slice";
-import RegistrationSuccessDialog from "./components/successfulDialog";
+import SuccessDialog from "../../common/components/dialogues/successfulDialog";
 
 export default function Register() {
   const dispatch = useDispatch<StoreDispatch>();
@@ -81,7 +81,8 @@ export default function Register() {
       className="flex flex-col justify-center items-center w-full h-dscreen"
     >
       {registrationSuccess ? (
-        <RegistrationSuccessDialog
+        <SuccessDialog
+          label="Registration Successful"
           onClose={() => {
             navigate("/login");
           }}
