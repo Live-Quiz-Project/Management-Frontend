@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { createUser } from "./store/slice";
+import SuccessDialog from "../../common/components/dialogues/successfulDialog";
 
 export default function Register() {
   const dispatch = useDispatch<StoreDispatch>();
@@ -16,6 +17,8 @@ export default function Register() {
   const [nameError, setNameError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
+  const [registrationSuccess, setRegistrationSuccess] =
+    useState<boolean>(false);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -65,7 +68,7 @@ export default function Register() {
         });
         console.log(data);
         dispatch(createUser(data));
-        navigate("/");
+        setRegistrationSuccess(true);
       } catch (error) {
         console.error(error);
       }
@@ -77,93 +80,60 @@ export default function Register() {
       onSubmit={onSubmit}
       className="flex flex-col justify-center items-center w-full h-dscreen"
     >
-      <div className="w-1/2 flex flex-col items-center space-y-10">
-        <h1 className="">Register</h1>
-        <div className="w-full flex flex-col justify-center items-start space-y-4 relative">
-          <TextInput
-            type="email"
-            label="Email"
-            value={email}
-            onInput={(e) => setEmail(e.currentTarget.value)}
-          />
-          {emailError && (
-            <p
-              style={{
-                color: "red",
-                fontSize: "12px",
-                textAlign: "left",
-                marginTop: "4px",
-              }}
-            >
-              {emailError}
-            </p>
-          )}
-          <TextInput
-            label="Name"
-            value={name}
-            onInput={(e) => setName(e.currentTarget.value)}
-          />
-          {nameError && (
-            <p
-              style={{
-                color: "red",
-                fontSize: "12px",
-                textAlign: "left",
-                marginTop: "4px",
-              }}
-            >
-              {nameError}
-            </p>
-          )}
-          <TextInput
-            type="password"
-            label="Password"
-            value={password}
-            onInput={(e) => setPassword(e.currentTarget.value)}
-          />
-          {passwordError && (
-            <p
-              style={{
-                color: "red",
-                fontSize: "12px",
-                textAlign: "left",
-                marginTop: "4px",
-              }}
-            >
-              {passwordError}
-            </p>
-          )}
-          <TextInput
-            type="password"
-            label="Confirm Password"
-            value={confirmPassword}
-            onInput={(e) => setConfirmPassword(e.currentTarget.value)}
-          />
-          {confirmPasswordError && (
-            <p
-              style={{
-                color: "red",
-                fontSize: "12px",
-                textAlign: "left",
-                marginTop: "4px",
-              }}
-            >
-              {confirmPasswordError}
-            </p>
-          )}
-          <div className="w-full flex flex-col justify-center items-center space-y-4 relative">
-            <p className="">
-              Already have an account?&nbsp;
-              <Link className="hover:text-denim hover:underline" to="/login">
-                Log In
-              </Link>
-            </p>
+      {registrationSuccess ? (
+        <SuccessDialog
+          label="Registration Successful"
+          onClose={() => {
+            navigate("/login");
+          }}
+        />
+      ) : (
+        <div className="w-1/2 flex flex-col items-center space-y-10">
+          <h1 className="">Register</h1>
+          <div className="w-full flex flex-col justify-center items-start space-y-4 relative">
+            <TextInput
+              type="email"
+              label="Email"
+              value={email}
+              onInput={(e) => setEmail(e.currentTarget.value)}
+            />
+            {emailError && <p className="text-red-600">{emailError}</p>}
+            <TextInput
+              label="Name"
+              value={name}
+              onInput={(e) => setName(e.currentTarget.value)}
+            />
+            {nameError && <p className="text-red-600">{nameError}</p>}
+            <TextInput
+              type="password"
+              label="Password"
+              value={password}
+              onInput={(e) => setPassword(e.currentTarget.value)}
+            />
+            {passwordError && <p className="text-red-600">{passwordError}</p>}
+            <TextInput
+              type="password"
+              label="Confirm Password"
+              value={confirmPassword}
+              onInput={(e) => setConfirmPassword(e.currentTarget.value)}
+            />
+            {confirmPasswordError && (
+              <p className="text-red-600">{confirmPasswordError}</p>
+            )}
+            <div className="w-full flex flex-col justify-center items-center space-y-4 relative">
+              <p className="">
+                Already have an account?&nbsp;
+                <Link className="hover:text-denim hover:underline" to="/login">
+                  Log In
+                </Link>
+              </p>
+            </div>
           </div>
+          <button className="w-max py-2 px-8 bg-denim text-white rounded-lg">
+            Register
+          </button>
         </div>
-        <button className="w-max py-2 px-8 bg-denim text-white rounded-lg">
-          Register
-        </button>
-      </div>
+      )}
     </form>
   );
 }
