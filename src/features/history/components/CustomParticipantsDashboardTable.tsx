@@ -169,8 +169,8 @@ const CustomParticipantsDashboardTable: React.FC<
                 ))}
               </div>
               {expandedRows[index] && (
-                <>
-                  <Flex className="pl-4 py-2 bg-quill-gray">
+                <div className=" border-2 border-pastel-orange rounded-lg">
+                  <Flex className="pl-4 py-2 bg-pastel-orange">
                     {questionColumns.map((column) => (
                       <span key={column.key} style={{ width: column.width }}>
                         {column.header}
@@ -179,15 +179,20 @@ const CustomParticipantsDashboardTable: React.FC<
                   </Flex>
                   <Flex className="flex-col">
                     {row.questions.map((rowData, rowIndex) => (
-                      <Flex className="pl-4 flex-col rounded-lg bg-light-gray">
-                        <div key={rowIndex} className="flex">
+                      <Flex
+                        key={rowIndex}
+                        className={`pl-4 flex-col ${
+                          rowIndex % 2 === 0 ? "bg-light-gray" : "bg-white"
+                        }`}
+                      >
+                        <div className="flex">
                           {questionColumns.map((column) => (
                             <div
                               key={column.key}
                               className={`py-6`}
                               style={{ width: column.width }}
                             >
-                              {column.key == "type"
+                              {column.key === "type"
                                 ? convertQuestionType(
                                     String(rowData[column.key])
                                   )
@@ -198,7 +203,7 @@ const CustomParticipantsDashboardTable: React.FC<
                       </Flex>
                     ))}
                   </Flex>
-                </>
+                </div>
               )}
             </Flex>
           ))
