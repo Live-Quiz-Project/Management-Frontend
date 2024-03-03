@@ -33,7 +33,7 @@ export default function QuizCard({ quiz }: Props) {
       onClick: () => console.log("Delete"),
     },
   ];
-  console.log(quiz.coverImg);
+  console.log(quiz);
   return (
     <div className="grid grid-cols-12 bg-egg-sour rounded-xl items-center">
       <img
@@ -42,7 +42,7 @@ export default function QuizCard({ quiz }: Props) {
         className="col-span-2 w-full aspect-video object-cover p-1 pr-8 rounded-lg"
       />
       <h1 className="col-span-4">{quiz.title}</h1>
-      <p className="col-span-3">{quiz.creatorId}</p>
+      <p className="col-span-3">{quiz.creatorName}</p>
       <div className="col-span-3 flex justify-between">
         <p className="">{quiz.description}</p>
         <div className="relative mr-2 flex items-center">

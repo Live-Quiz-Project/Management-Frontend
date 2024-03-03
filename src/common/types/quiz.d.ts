@@ -2,6 +2,7 @@ declare global {
   type Quiz = {
     id?: string;
     creatorId: string;
+    creatorName: string;
     title: string;
     description: string;
     coverImg: string;
