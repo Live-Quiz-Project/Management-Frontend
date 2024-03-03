@@ -65,7 +65,7 @@ export default function Home() {
     <Topbar title={`${greeting}, ${auth.value.user.name}!`}>
       <Flex>
         <FilledButton
-          className="w-fit bg-koromiko"
+          className="w-fit bg-green"
           onClick={() =>
             window.open(
               `${import.meta.env.VITE_LIVE_QUIZ_URL}?token=${auth.value.token}`

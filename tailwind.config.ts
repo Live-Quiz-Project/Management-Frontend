@@ -23,7 +23,9 @@ export default {
       beige: "#faf7ee",
       white: "#FFF",
       "pastel-orange": "#FFCC70",
-      "peach": "#FFFADD",
+      peach: "#FFFADD",
+      green: "#00C4B8",
+      "shade-green": "#B9E8E6",
     },
     fontFamily: {
       serif: ["Young Serif", "Chonburi", "serif"],
