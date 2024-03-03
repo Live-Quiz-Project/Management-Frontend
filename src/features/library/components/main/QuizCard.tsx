@@ -33,12 +33,12 @@ export default function QuizCard({ quiz }: Props) {
       onClick: () => console.log("Delete"),
     },
   ];
-
+  console.log(quiz.coverImg);
   return (
     <div className="grid grid-cols-12 bg-egg-sour rounded-xl items-center">
       <img
-        src=""
-        alt=""
+        src={quiz.coverImg}
+        alt="Cover image"
         className="col-span-2 w-full aspect-video object-cover p-1 pr-8 rounded-lg"
       />
       <h1 className="col-span-4">{quiz.title}</h1>
