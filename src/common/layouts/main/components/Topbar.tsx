@@ -43,7 +43,9 @@ export default function Topbar({
             onClick={() => setIsExpanded((prev) => !prev)}
           >
             <img
-              src={auth.value.user.image}
+              src={`${
+                import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
+              }/${encodeURIComponent(auth.value.user.image)}?alt=media`}
               className="w-full h-full object-cover rounded-full"
             />
             <ExpandedUserDropdown

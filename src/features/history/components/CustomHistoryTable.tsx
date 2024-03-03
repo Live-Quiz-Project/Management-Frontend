@@ -97,7 +97,9 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
               >
                 {column.key === "image" ? (
                   <img
-                    src={row["image"]}
+                    src={`${
+                      import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
+                    }/${encodeURIComponent(row["image"])}?alt=media`}
                     alt="Image"
                     className="object-cover h-24 w-36 rounded-xl border-2 border-pastel-orange"
                   />
