@@ -131,11 +131,13 @@ export default function History() {
   const toggleSortByTotalParticipants = () => {
     setSortedData((prevData) => {
       const sorted = [...prevData];
-      sorted.sort((a, b) =>
-        isTotalParticipantsAscending
-          ? a.totalParticipants.localeCompare(b.totalParticipants)
-          : b.totalParticipants.localeCompare(a.totalParticipants)
-      );
+      sorted.sort((a, b) => {
+        const totalParticipantsA = a.totalParticipants;
+        const totalParticipantsB = b.totalParticipants;
+        return isTotalParticipantsAscending
+          ? totalParticipantsA - totalParticipantsB
+          : totalParticipantsB - totalParticipantsA;
+      });
       return sorted;
     });
     setIsNameAscending(false);
@@ -167,7 +169,7 @@ export default function History() {
           sortTotalParticipants={toggleSortByTotalParticipants}
           isNameAscending={isNameAscending}
           isDateAscending={isDateAscending}
-          // isTotalParticipantsAscending={isTotalParticipantsAscending}
+          isTotalParticipantsAscending={isTotalParticipantsAscending}
         />
       </div>
     </Topbar>
@@ -179,7 +181,7 @@ const defaultHistoryItem: IHistoryItem = {
   image: "",
   name: "",
   date: "",
-  totalParticipants: "",
+  totalParticipants: 0,
   action: <span></span>,
 };
 
@@ -188,7 +190,7 @@ export interface IHistoryItem {
   image: string;
   name: string;
   date: string;
-  totalParticipants: string;
+  totalParticipants: number;
   action: JSX.Element;
 }
 
