@@ -28,6 +28,7 @@ export default function Library() {
           title: string;
           description: string;
           creator_id: string;
+          creator_name: string;
           cover_image: string;
           case_sensitive: boolean;
           font_size: number;
@@ -44,6 +45,7 @@ export default function Library() {
             title: quiz.title,
             description: quiz.description,
             creatorId: quiz.creator_id,
+            creatorName: quiz.creator_name,
             coverImg: quiz.cover_image,
             caseSensitive: quiz.case_sensitive,
             fontSize: quiz.font_size,
@@ -69,6 +71,7 @@ export default function Library() {
       setQuiz({
         id: newUuid,
         creatorId: auth.value.user.id,
+        creatorName: "",
         title: "Untitled Quiz",
         description: "",
         coverImg: "",
