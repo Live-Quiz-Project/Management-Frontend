@@ -7,14 +7,14 @@ import axios, {
 import { store } from "@/app/store";
 
 const http = axios.create({
-  // baseURL: import.meta.env.VITE_BACKEND_URL || "",
-  baseURL: "https://dev.backend.inquesto.online/v1",
+  baseURL: import.meta.env.VITE_BACKEND_URL || "",
+  // baseURL: "https://dev.backend.inquesto.online/v1",
   withCredentials: true,
 });
 
 const privateHttp = axios.create({
-  // baseURL: import.meta.env.VITE_BACKEND_URL || "",
-  baseURL: "https://dev.backend.inquesto.online/v1",
+  baseURL: import.meta.env.VITE_BACKEND_URL || "",
+  // baseURL: "https://dev.backend.inquesto.online/v1",
   withCredentials: true,
 });
 
