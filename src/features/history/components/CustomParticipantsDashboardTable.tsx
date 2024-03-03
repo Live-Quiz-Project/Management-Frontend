@@ -199,7 +199,7 @@ const CustomParticipantsDashboardTable: React.FC<
                         }`}
                       >
                         <div className="flex">
-                          {questionColumns.map((column) => (
+                          {questionColumns.map((column, index) => (
                             <div
                               key={column.key}
                               className={`py-6`}
@@ -209,6 +209,8 @@ const CustomParticipantsDashboardTable: React.FC<
                                 ? convertQuestionType(
                                     String(rowData[column.key])
                                   )
+                                : column.key === "order"
+                                ? String(rowIndex + 1)
                                 : String(rowData[column.key])}
                             </div>
                           ))}
