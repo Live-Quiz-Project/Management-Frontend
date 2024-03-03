@@ -23,12 +23,14 @@ export default function HistoryDetail() {
   const [isCorrectsAscending, setIsCorrectsAscending] = useState(false);
   const [isInCorrectsAscending, setIsInCorrectsAscending] = useState(false);
   const [isUnAnsweredAscending, setIsUnAnsweredAscending] = useState(false);
+  const [isTotalMarkAscending, setIsTotalMarkAscending] = useState(false);
 
   const participantColumns: HistoryPaticipantsDetailTableColumn[] = [
-    { key: "displayName", header: "Display Name", width: "25%" },
-    { key: "corrects", header: "Corrects", width: "25%" },
-    { key: "incorrects", header: "Incorrects", width: "25%" },
-    { key: "unanswered", header: "Unanswered", width: "25%" },
+    { key: "displayName", header: "Display Name", width: "20%" },
+    { key: "corrects", header: "Corrects", width: "20%" },
+    { key: "incorrects", header: "Incorrects", width: "20%" },
+    { key: "unanswered", header: "Unanswered", width: "20%" },
+    { key: "mark", header: "Total marks", width: "20%" },
   ];
 
   const questionColumns: HistoryQesutionDetailTableColumn[] = [
@@ -36,7 +38,7 @@ export default function HistoryDetail() {
     { key: "type", header: "Question Type", width: "15%" },
     { key: "content", header: "Question", width: "30%" },
     { key: "answer", header: "Answer", width: "25%" },
-    { key: "mark", header: "Mark", width: "10%" },
+    { key: "mark", header: "Marks", width: "10%" },
     { key: "use_time", header: "Time used", width: "12%" },
   ];
 
@@ -108,6 +110,7 @@ export default function HistoryDetail() {
     setIsCorrectsAscending(false);
     setIsInCorrectsAscending(false);
     setIsUnAnsweredAscending(false);
+    setIsTotalMarkAscending(false);
     setDashboardAnswerData((prevData) => {
       const sortedData = [...prevData];
       sortedData.sort((a, b) => {
@@ -126,6 +129,7 @@ export default function HistoryDetail() {
     setIsCorrectsAscending(!isCorrectsAscending);
     setIsInCorrectsAscending(false);
     setIsUnAnsweredAscending(false);
+    setIsTotalMarkAscending(false);
     setDashboardAnswerData((prevData) => {
       const sortedData = [...prevData];
       sortedData.sort((a, b) => {
@@ -144,6 +148,7 @@ export default function HistoryDetail() {
     setIsCorrectsAscending(false);
     setIsInCorrectsAscending(!isInCorrectsAscending);
     setIsUnAnsweredAscending(false);
+    setIsTotalMarkAscending(false);
     setDashboardAnswerData((prevData) => {
       const sortedData = [...prevData];
       sortedData.sort((a, b) => {
@@ -162,6 +167,7 @@ export default function HistoryDetail() {
     setIsCorrectsAscending(false);
     setIsInCorrectsAscending(false);
     setIsUnAnsweredAscending(!isUnAnsweredAscending);
+    setIsTotalMarkAscending(false);
     setDashboardAnswerData((prevData) => {
       const sortedData = [...prevData];
       sortedData.sort((a, b) => {
@@ -170,6 +176,23 @@ export default function HistoryDetail() {
         return isUnAnsweredAscending
           ? unansweredA - unansweredB
           : unansweredB - unansweredA;
+      });
+      return sortedData;
+    });
+  };
+
+  const sortTotalMark = () => {
+    setIsNameAscending(false);
+    setIsCorrectsAscending(false);
+    setIsInCorrectsAscending(false);
+    setIsUnAnsweredAscending(false);
+    setIsTotalMarkAscending(!isTotalMarkAscending);
+    setDashboardAnswerData((prevData) => {
+      const sortedData = [...prevData];
+      sortedData.sort((a, b) => {
+        const markA = a.marks;
+        const markB = b.marks;
+        return isTotalMarkAscending ? markA - markB : markB - markA;
       });
       return sortedData;
     });
@@ -239,10 +262,12 @@ export default function HistoryDetail() {
                 sortCorrects={sortCorrects}
                 sortIncorrects={sortIncorrects}
                 sortUnanswered={sortUnanswered}
+                sortTotalMark={sortTotalMark}
                 isNameAscending={isNameAscending}
                 isCorrectsAscending={isCorrectsAscending}
                 isInCorrectsAscending={isInCorrectsAscending}
                 isUnAnsweredAscending={isUnAnsweredAscending}
+                isTotalMarkAscending={isTotalMarkAscending}
               />
             </div>
           )}
@@ -283,6 +308,7 @@ export interface IHistoryPaticipantsDetailItem {
   corrects: string;
   incorrects: string;
   unanswered: string;
+  mark: string;
   questions: ParticipantQuestion[];
 }
 
