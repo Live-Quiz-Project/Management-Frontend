@@ -40,7 +40,7 @@ export default function Sidebar({ className = "" }: Props) {
 
   return (
     <div
-      className={`flex flex-col h-full bg-quill-gray p-2 rounded-xl justify-between text-body-1 ${className}`}
+      className={`flex flex-col h-full bg-pastel-orange p-2 rounded-xl justify-between text-body-1 ${className}`}
     >
       <ul className="space-y-1">
         {/* <img src={appLogo} alt="logo" className="w-1/12" /> */}
@@ -64,12 +64,12 @@ export default function Sidebar({ className = "" }: Props) {
                 }`}
               >
                 {menu.icon}
-                <p className="">{menu.label}</p>
+                <p className="font-serif font-semibold">{menu.label}</p>
               </Link>
             </li>
           ))}
       </ul>
-      <ul className="flex flex-col px-3 py-1 space-y-1">
+      {/* <ul className="flex flex-col px-3 py-1 space-y-1">
         <li>
           <Link to="/help" className="w-min">
             Help
@@ -80,7 +80,7 @@ export default function Sidebar({ className = "" }: Props) {
             Setting
           </Link>
         </li>
-      </ul>
+      </ul> */}
     </div>
   );
 }
