@@ -13,7 +13,7 @@ interface CustomHistoryTableProps {
   sortTotalParticipants?: () => void;
   isNameAscending: boolean;
   isDateAscending: boolean;
-  // isTotalParticipantsAscending: boolean;
+  isTotalParticipantsAscending: boolean;
 }
 
 const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
@@ -22,10 +22,10 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
   onRowClick,
   sortName,
   sortDate,
-  // sortTotalParticipants,
+  sortTotalParticipants,
   isNameAscending,
   isDateAscending,
-  // isTotalParticipantsAscending,
+  isTotalParticipantsAscending,
 }) => {
   const renderSortIcon = (columnKey: string) => {
     if (columnKey === "name") {
@@ -40,14 +40,13 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
       ) : (
         <KeyboardArrowDownIcon />
       );
+    } else if (columnKey === "totalParticipants") {
+      return isTotalParticipantsAscending ? (
+        <KeyboardArrowUpIcon />
+      ) : (
+        <KeyboardArrowDownIcon />
+      );
     }
-    // else if (columnKey === "totalParticipants") {
-    //   return isTotalParticipantsAscending ? (
-    //     <KeyboardArrowUpIcon />
-    //   ) : (
-    //     <KeyboardArrowDownIcon />
-    //   );
-    // }
     return <KeyboardArrowDownIcon />;
   };
 
@@ -59,9 +58,9 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
       case "date":
         sortDate && sortDate();
         break;
-      // case "totalParticipants":
-      //   sortTotalParticipants && sortTotalParticipants();
-      //   break;
+      case "totalParticipants":
+        sortTotalParticipants && sortTotalParticipants();
+        break;
       default:
         break;
     }
@@ -97,7 +96,9 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
               >
                 {column.key === "image" ? (
                   <img
-                    src={row["image"]}
+                    src={`${
+                      import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
+                    }/${encodeURIComponent(row["image"])}?alt=media`}
                     alt="Image"
                     className="object-cover h-24 w-36 rounded-xl border-2 border-pastel-orange"
                   />

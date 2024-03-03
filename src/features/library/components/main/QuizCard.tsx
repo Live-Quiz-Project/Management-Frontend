@@ -37,7 +37,9 @@ export default function QuizCard({ quiz }: Props) {
   return (
     <div className="grid grid-cols-12 bg-egg-sour rounded-xl items-center">
       <img
-        src={quiz.coverImg}
+        src={`${
+          import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
+        }/${encodeURIComponent(quiz.coverImg)}?alt=media`}
         alt="Cover image"
         className="col-span-2 w-full aspect-video object-cover p-1 pr-8 rounded-lg"
       />

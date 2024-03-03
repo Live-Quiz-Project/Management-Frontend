@@ -21,10 +21,12 @@ interface CustomParticipantsDashboardTableProps {
   sortCorrects?: () => void;
   sortIncorrects?: () => void;
   sortUnanswered?: () => void;
+  sortTotalMark?: () => void;
   isNameAscending: boolean;
   isCorrectsAscending: boolean;
   isInCorrectsAscending: boolean;
   isUnAnsweredAscending: boolean;
+  isTotalMarkAscending: boolean;
 }
 
 const CustomParticipantsDashboardTable: React.FC<
@@ -38,10 +40,12 @@ const CustomParticipantsDashboardTable: React.FC<
   sortCorrects,
   sortIncorrects,
   sortUnanswered,
+  sortTotalMark,
   isNameAscending,
   isCorrectsAscending,
   isInCorrectsAscending,
   isUnAnsweredAscending,
+  isTotalMarkAscending,
 }) => {
   const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>(
     {}
@@ -79,6 +83,12 @@ const CustomParticipantsDashboardTable: React.FC<
       ) : (
         <KeyboardArrowDownIcon />
       );
+    } else if (columnKey === "mark") {
+      return isTotalMarkAscending ? (
+        <KeyboardArrowUpIcon />
+      ) : (
+        <KeyboardArrowDownIcon />
+      );
     }
     return <KeyboardArrowDownIcon />;
   };
@@ -96,6 +106,9 @@ const CustomParticipantsDashboardTable: React.FC<
         break;
       case "unanswered":
         sortUnanswered && sortUnanswered();
+        break;
+      case "mark":
+        sortTotalMark && sortTotalMark();
         break;
       default:
         break;
