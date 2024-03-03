@@ -191,6 +191,27 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     );
   };
 
+  const buldParagraphChart = () => {
+    const colors = ["jordy-blue", "quartz", "peach", "sienna", "dune"];
+
+    return (
+      <div>
+        {questionData.map((item, index) => {
+          const colorIndex = index % colors.length;
+          const bgColor = colors[colorIndex];
+
+          return (
+            <div className="flex" key={item.content}>
+              <p className={`px-2 py-2 rounded-xl bg-${bgColor}`}>
+                {item.content}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   const buildChart = () => {
     switch (questionType) {
       case "CHOICE":
@@ -200,7 +221,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
       case "FILL_BLANK":
         return buildMultiTypeChart();
       case "PARAGRAPH":
-        return buildMultiTypeChart();
+        return buldParagraphChart();
       case "TRUE_FALSE":
         return buildMultiTypeChart();
       case "MATCHING":
@@ -216,7 +237,11 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
         <h2 className="font-serif">
           {questionNo}. {title}
         </h2>
-        {questionType === "POOL" ? null : buildChartTypesButton()}
+        {questionType === "POOL" || questionType === "PARAGRAPH" ? (
+          <></>
+        ) : (
+          buildChartTypesButton()
+        )}
       </Flex>
       {buildQuestionTypeBadge(questionType)}
       <div className="py-4">{buildChart()}</div>
