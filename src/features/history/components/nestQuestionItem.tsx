@@ -26,7 +26,10 @@ const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
     chartArea: { width: "80%", height: "80%" },
     colors: ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"],
     backgroundColor: "#FFF",
-    hAxis: { format: "0" },
+    hAxis: {
+      format: "0",
+      minValue: 0,
+    },
   };
 
   const buildChartTypesButton = () => {
@@ -170,7 +173,7 @@ const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
 
           return (
             <div className="flex" key={item.content}>
-              <p className={`px-2 py-2 rounded-xl bg-${bgColor}`}>
+              <p className={`px-2 py-2 rounded-xl border-2 border-${bgColor}`}>
                 {item.content}
               </p>
             </div>
