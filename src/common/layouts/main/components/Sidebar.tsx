@@ -43,7 +43,9 @@ export default function Sidebar({ className = "" }: Props) {
       className={`flex flex-col h-full bg-pastel-orange p-2 rounded-xl justify-between text-body-1 ${className}`}
     >
       <ul className="space-y-1">
-        {/* <img src={appLogo} alt="logo" className="w-1/12" /> */}
+        <div className="flex items-center w-36 mb-4 ml-4">
+          <img src={appLogo} alt="logo" />
+        </div>
         {menus &&
           menus.map((menu, i) => (
             <li key={i}>
