@@ -204,7 +204,7 @@ const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
     <div className="w-full rounded-xl bg-white p-4 mb-2">
       <Flex className="justify-between">
         <h2 className="font-serif">
-          {questionNo}. {title}
+          {questionNo}. {title.replace("|><|", "-")}
         </h2>
         {questionType === "PARAGRAPH" ? <></> : buildChartTypesButton()}
       </Flex>
