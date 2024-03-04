@@ -9,7 +9,7 @@ export default function History() {
   const [isCreatorAscending, setIsCreatorAscending] = useState(false);
   const [isLastEditedAscending, setIsLastEditedAscending] = useState(false);
 
-  const columns : TableColumn[] = [
+  const columns: TableColumn[] = [
     { key: "image", header: "", width: "20%" },
     { key: "name", header: "Name", width: "20%" },
     { key: "creator", header: "Creator", width: "20%" },
@@ -114,7 +114,7 @@ export default function History() {
           isNameAscending={isNameAscending}
           isCreatorAscending={isCreatorAscending}
           isLastEditedAscending={isLastEditedAscending}
-          />
+        />
       </div>
     </div>
   );

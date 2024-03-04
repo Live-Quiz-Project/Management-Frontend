@@ -141,8 +141,7 @@ export default function Choice({ className = "", canvasSize }: Props) {
           1
             ? "[&>*:nth-last-child(1)]:row-start-2"
             : ""
-        }
-              }`
+        }`
       : `${
           (
             editor.value.quiz!.questions[editor.value.curPage - 1]
@@ -355,9 +354,9 @@ export default function Choice({ className = "", canvasSize }: Props) {
             className="row-start-2 col-start-2 font-sans-serif"
             style={{ fontSize: responsiveFontSize * 0.5 }}
           >
-            &#42;&nbsp;Select from&nbsp;
+            &#42;&nbsp;Select at least&nbsp;
             {editor.value.quiz!.questions[editor.value.curPage - 1].selectMin}
-            &nbsp;up to&nbsp;
+            &nbsp;and up to&nbsp;
             {editor.value.quiz!.questions[editor.value.curPage - 1].selectMax}
             &nbsp;choices
           </p>

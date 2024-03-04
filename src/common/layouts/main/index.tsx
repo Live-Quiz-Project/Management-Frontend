@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import Sidebar from "@/common/layouts/main/components/Sidebar";
 
 type ComponentProps = {
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 export default function MainLayout({ children }: ComponentProps) {

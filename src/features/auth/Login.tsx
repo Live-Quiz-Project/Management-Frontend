@@ -54,6 +54,16 @@ export default function Login() {
             },
           })
         );
+        if (searchParams.get("code")) {
+          window.location.href = `${import.meta.env.VITE_LIVE_QUIZ_URL}?token=${
+            data.token
+          }&code=${searchParams.get("code")}`;
+          return;
+        }
+        if (location.state?.from?.pathname) {
+          navigate(location.state?.from?.pathname);
+          return;
+        }
         navigate("/");
       } catch (error) {
         console.error(error);

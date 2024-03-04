@@ -3,7 +3,6 @@ import SearchField from "@/common/layouts/main/components/SearchField";
 import QuestionItem from "./components/QuestionItem";
 
 export default function HistoryDetail() {
-
   const filterTypes = [
     { key: "1", label: "Questions" },
     { key: "2", label: "Paticipants" },
@@ -28,10 +27,7 @@ export default function HistoryDetail() {
           <AppDropdown items={sortingFilter} indexSelected={1} minWidth={100} />
         </div>
       </div>
-      <QuestionItem 
-      title="What is the capital city of Thailand"
-      data={[]}
-      />
+      <QuestionItem title="What is the capital city of Thailand" data={[]} />
     </div>
   );
 }

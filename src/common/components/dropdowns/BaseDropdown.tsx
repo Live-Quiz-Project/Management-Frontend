@@ -125,7 +125,7 @@ export default function BaseDropdown({
                     }}
                     onFocus={onFocus}
                     onBlur={onBlur}
-                    className="w-full h-10 xl:h-12 text-left"
+                    className="w-full min-h-12 xl:min-h-14 text-left py-1"
                   >
                     {option.label}
                   </button>
