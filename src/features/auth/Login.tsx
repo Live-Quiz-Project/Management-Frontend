@@ -10,6 +10,8 @@ import {
 } from "react-router-dom";
 import { logIn } from "@/features/auth/store/slice";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import BaseModal from "@/common/components/modals/BaseModal";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
 export default function Login() {
   const dispatch = useDispatch<StoreDispatch>();
@@ -20,6 +22,7 @@ export default function Login() {
   const [password, setPassword] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
+  const [errorLoginFailed, setErrorLoginFailed] = useState<boolean>(false);
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -33,6 +36,8 @@ export default function Login() {
 
     if (!password) {
       setPasswordError("Password is required");
+    } else if (password.length < 8) {
+      setPasswordError("Password must be at least 8 characters");
     } else {
       setPasswordError("");
     }
@@ -43,7 +48,6 @@ export default function Login() {
           email,
           password,
         });
-        console.log(data);
         dispatch(
           logIn({
             token: data.token,
@@ -68,6 +72,7 @@ export default function Login() {
         navigate("/");
       } catch (error) {
         console.error(error);
+        setErrorLoginFailed(error.response.data.error ? true : false);
       }
     }
   }
@@ -109,6 +114,21 @@ export default function Login() {
       onSubmit={onSubmit}
       className="flex flex-col justify-center items-center w-full h-dscreen"
     >
+      {errorLoginFailed ? (
+        <BaseModal
+          setIsOpen={setErrorLoginFailed}
+          className="!p-6 xl:!p-8 flex flex-col space-y-6  !rounded-3xl !bg-beige font-sans-serif"
+        >
+          <div className="flex justify-center">
+            <CancelOutlinedIcon style={{ fontSize: 44, color: "red" }} />
+          </div>
+          <p className="text-header-3 truncate text-center font-semibold leading-tight text-wrap">
+            Invalid email or password
+          </p>
+        </BaseModal>
+      ) : (
+        <></>
+      )}
       <div className="w-1/2 flex flex-col items-center space-y-10">
         <h1 className="font-serif font-semibold text-3xl">Log In</h1>
         <div className="w-full flex flex-col justify-center items-start space-y-4 relative">
