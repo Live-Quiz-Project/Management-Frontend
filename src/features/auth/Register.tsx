@@ -89,7 +89,7 @@ export default function Register() {
         />
       ) : (
         <div className="w-1/2 flex flex-col items-center space-y-10">
-          <h1 className="">Register</h1>
+          <h1 className="font-serif font-semibold text-2xl">Register</h1>
           <div className="w-full flex flex-col justify-center items-start space-y-4 relative">
             <TextInput
               type="email"

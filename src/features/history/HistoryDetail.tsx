@@ -34,12 +34,13 @@ export default function HistoryDetail() {
   ];
 
   const questionColumns: HistoryQesutionDetailTableColumn[] = [
+    { key: "is_correct", header: "", width: "7%" },
     { key: "order", header: "No.", width: "8%" },
-    { key: "type", header: "Question Type", width: "15%" },
+    { key: "type", header: "Question Type", width: "13%" },
     { key: "content", header: "Question", width: "30%" },
     { key: "answer", header: "Answer", width: "25%" },
     { key: "mark", header: "Marks", width: "10%" },
-    { key: "use_time", header: "Time used", width: "12%" },
+    { key: "use_time", header: "Time used", width: "8%" },
   ];
 
   useEffect(() => {
@@ -319,6 +320,7 @@ export interface IHistoryQuestionsDetailItem {
   answer: string;
   mark: number;
   use_time: number;
+  is_correct: boolean;
 }
 
 export interface HistoryPaticipantsDetailTableColumn {

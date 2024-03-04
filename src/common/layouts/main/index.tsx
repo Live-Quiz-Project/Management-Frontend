@@ -8,7 +8,7 @@ type ComponentProps = {
 export default function MainLayout({ children }: ComponentProps) {
   return (
     <div className="flex">
-      <div className="p-2 h-dscreen">
+      <div className="h-dscreen">
         <Sidebar />
       </div>
       {children}

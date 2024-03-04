@@ -132,6 +132,10 @@ const CustomParticipantsDashboardTable: React.FC<
     }
   };
 
+  const convertIsCorrect = (isCorrect: boolean) => {
+    return <div>{isCorrect ? <div>True</div> : <div>False</div>}</div>;
+  };
+
   const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
     return participants.map((participant) => ({
       displayName: participant.name,
@@ -224,6 +228,8 @@ const CustomParticipantsDashboardTable: React.FC<
                                   )
                                 : column.key === "order"
                                 ? String(rowIndex + 1)
+                                : column.key === "is_correct"
+                                ? convertIsCorrect(rowData[column.key])
                                 : String(rowData[column.key])}
                             </div>
                           ))}
