@@ -22,7 +22,7 @@ export default function Login() {
   const [password, setPassword] = useState<string>("");
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
-  const [errorLoginFailed, setErrorLoginFailed] = useState<boolean>(true);
+  const [errorLoginFailed, setErrorLoginFailed] = useState<boolean>(false);
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
