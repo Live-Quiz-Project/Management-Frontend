@@ -189,7 +189,7 @@ export default function Sidebar({ className }: Props) {
             <div className="space-y-1">
               <p className="truncate">Cover image</p>
               <FileUploader
-                folderName={id! + "/cover"}
+                folderName={`${id}/${editor.value.quiz!.versionId}/cover`}
                 onChange={(file) => {
                   dispatch(
                     setQuiz({
@@ -728,15 +728,11 @@ export default function Sidebar({ className }: Props) {
                   />
                 ) : (
                   <FileUploader
-                    folderName={
-                      id! +
-                      "/" +
-                      editor.value.quiz!.questions[
-                        editor.value.curPage - 1
-                      ].mediaType.toLowerCase() +
-                      "/" +
-                      editor.value.curPage
-                    }
+                    folderName={`${id}/${
+                      editor.value.quiz!.versionId
+                    }/${editor.value.quiz!.questions[
+                      editor.value.curPage - 1
+                    ].mediaType.toLowerCase()}/${editor.value.curPage}`}
                     acceptImage={
                       editor.value.quiz!.questions[editor.value.curPage - 1]
                         .mediaType === MediaTypesEnum.IMAGE

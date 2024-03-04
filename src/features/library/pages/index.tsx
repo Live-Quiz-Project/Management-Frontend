@@ -42,6 +42,7 @@ export default function Library() {
         }) => {
           q.push({
             id: quiz.id,
+            versionId: "",
             title: quiz.title,
             description: quiz.description,
             creatorId: quiz.creator_id,
@@ -64,12 +65,14 @@ export default function Library() {
 
   function onCreateQuiz(e: FormEvent<HTMLButtonElement>) {
     e.preventDefault();
-    const newUuid = uuid();
+    const newQuizId = uuid();
+    const newQuizVersionId = uuid();
     dispatch(setMode("create"));
     dispatch(setCurPage(0));
     dispatch(
       setQuiz({
-        id: newUuid,
+        id: newQuizId,
+        versionId: newQuizVersionId,
         creatorId: auth.value.user.id,
         creatorName: "",
         title: "Untitled Quiz",
@@ -85,7 +88,7 @@ export default function Library() {
         questions: [],
       })
     );
-    navigate(`/library/quiz/${newUuid}`);
+    navigate(`/library/quiz/${newQuizId}`);
   }
 
   return (

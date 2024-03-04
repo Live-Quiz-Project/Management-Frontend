@@ -477,7 +477,17 @@ function Prompt({ index }: { prompt: MatchingOptionPrompt; index: number }) {
                 ) as MatchingOptionOption[]
               ).map((o, i) => ({
                 label: String.fromCharCode(65 + i) + ". " + o.content,
-                value: i + 1,
+                value:
+                  (
+                    (
+                      editor.value.quiz!.questions[editor.value.curPage - 1]
+                        .options as MatchingOption[]
+                    ).filter(
+                      (p) => p.type === "MATCHING_PROMPT"
+                    ) as MatchingOptionPrompt[]
+                  ).length +
+                  i +
+                  1,
                 eliminate: o.eliminate,
               }))
             )

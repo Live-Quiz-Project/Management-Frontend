@@ -28,9 +28,8 @@ export default function Pool({ className = "", canvasSize }: Props) {
   const noteRef = useRef<HTMLDivElement>(null);
   const [imageURL, setImageURL] = useState<string>("");
   const [isNoteOpened, setIsNoteOpened] = useState<boolean>(false);
-  const [mode, setMode] = useState<"Pool Question" | "Subquestions">(
-    "Pool Question"
-  );
+  const [mode, setMode] = useState<number>(0);
+  const modes = ["Pool Question", "Subquestions"];
   const subquestions = editor.value
     .quiz!.questions.slice(
       editor.value.quiz!.questions[editor.value.curPage - 1].order
@@ -200,29 +199,27 @@ export default function Pool({ className = "", canvasSize }: Props) {
           <div className="relative h-full w-full">
             <span
               className={`block absolute top-1/2 -translate-y-1/2 text-transparent px-[1em] py-[0.5em] leading-tight bg-beige rounded-full w-max h-fit ${
-                mode === "Pool Question"
-                  ? "left-0"
-                  : "left-full -translate-x-full"
+                mode === 0 ? "left-0" : "left-full -translate-x-full"
               } transition-all duration-300`}
               style={{ fontSize: responsiveFontSize * 0.6 }}
             >
-              {mode}
+              {modes[mode]}
             </span>
             <button
               type="button"
               className="absolute top-1/2 left-0 -translate-y-1/2 px-[1em] w-max h-full flex items-center justify-center"
               style={{ fontSize: responsiveFontSize * 0.6 }}
-              onClick={() => setMode("Pool Question")}
+              onClick={() => setMode(0)}
             >
-              Pool Question
+              {modes[0]}
             </button>
             <button
               type="button"
               className="absolute top-1/2 right-0 -translate-y-1/2 px-[1em] w-max h-full flex items-center justify-center"
               style={{ fontSize: responsiveFontSize * 0.6 }}
-              onClick={() => setMode("Subquestions")}
+              onClick={() => setMode(1)}
             >
-              Subquestions
+              {modes[1]}
             </button>
           </div>
         </div>
@@ -281,7 +278,7 @@ export default function Pool({ className = "", canvasSize }: Props) {
           )}
         </div>
       </div>
-      {mode === "Pool Question" && (
+      {mode === 0 && (
         <div
           className={`overflow-auto p-[3%] pt-0 grid ${subquestionsContainerGridTemplate} bg-quartz rounded-b-lg sm:rounded-b-xl lg:rounded-b-2xl 2xl:rounded-b-3xl w-full h-full`}
           style={{
@@ -344,7 +341,7 @@ export default function Pool({ className = "", canvasSize }: Props) {
           </div>
         </div>
       )}
-      {mode === "Subquestions" && (
+      {mode === 1 && (
         <div
           className={`grid grid-cols-6 auto-rows-fr overflow-auto p-[3%] pt-0 bg-quartz rounded-b-lg sm:rounded-b-xl lg:rounded-b-2xl 2xl:rounded-b-3xl w-full h-full`}
           style={{ gap: responsiveSpaceX * 0.6 }}
