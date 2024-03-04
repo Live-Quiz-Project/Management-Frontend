@@ -92,7 +92,6 @@ export default function Display({ className }: Props) {
           <div
             ref={canvasRef}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-auto !border-regent-gray w-full aspect-video overflow-auto transition-all duration-300"
-            // className="fixed top-0 left-0 cursor-auto !border-regent-gray !w-screen !h-screen overflow-auto transition-all duration-300 z-10"
           >
             <div className="w-full h-full">
               {editor.value.quiz!.questions[editor.value.curPage - 1].type ===

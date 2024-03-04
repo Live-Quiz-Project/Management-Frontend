@@ -35,7 +35,9 @@ export default function EditableLabel({
   const inputRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    inputRef.current!.textContent = value;
+    if (inputRef.current) {
+      inputRef.current.textContent = value;
+    }
   }, [value]);
 
   return (

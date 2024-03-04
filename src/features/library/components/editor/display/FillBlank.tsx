@@ -168,19 +168,6 @@ export default function FillBlank({ className = "", canvasSize }: Props) {
         >
           Fill in the blanks.
         </p>
-        {editor.value.quiz!.questions[editor.value.curPage - 1].selectMax >
-          1 && (
-          <p
-            className="row-start-2 col-start-2 font-sans-serif"
-            style={{ fontSize: responsiveFontSize * 0.5 }}
-          >
-            &#42;&nbsp;Select from&nbsp;
-            {editor.value.quiz!.questions[editor.value.curPage - 1].selectMin}
-            &nbsp;up to&nbsp;
-            {editor.value.quiz!.questions[editor.value.curPage - 1].selectMax}
-            &nbsp;choices
-          </p>
-        )}
         <div className="relative w-full h-full flex items-center">
           <button onClick={() => setIsNoteOpened(!isNoteOpened)} type="button">
             {!isNoteOpened && (
@@ -251,7 +238,7 @@ export default function FillBlank({ className = "", canvasSize }: Props) {
             </div>
           )}
         <div
-          className={`inline tracking-wide leading-[2.5] w-full my-auto ${optionsContainerGridFotmat}`}
+          className={`inline tracking-wide font-medium leading-[2.5] w-full my-auto ${optionsContainerGridFotmat}`}
           style={{
             gap: responsiveSpaceX * 0.4,
             fontSize: responsiveFontSize * 0.75,
@@ -274,7 +261,7 @@ export default function FillBlank({ className = "", canvasSize }: Props) {
                 ].content.split(BLANK_IDENTIFIER).length -
                   1 !==
                   i && (
-                  <span className="inline-flex items-center justify-center min-w-[2em] max-h-[2em] rounded-full bg-beige border">
+                  <span className="inline-flex items-center justify-center min-w-[2em] max-h-[2em] rounded-full bg-beige border-2">
                     {String.fromCharCode(65 + i)}
                   </span>
                 )}
