@@ -1,0 +1,15 @@
+apps:
+  namespace: dev
+  image: ghcr.io/phurits/oqp-mgmt-frontend
+  tag: dev
+  replicas: 1
+  imagePullSecrets: ghcr-registry
+  port: 5173
+  targetPort: 5173
+ingress:
+  host: dev.inquesto.online
+  path: /
+  serviceType: ClusterIP
+  tlsSecretName: tls-mgmt-frontend-dev
+extraEnv:
+  secretName: oqp-mgmt-frontend-env

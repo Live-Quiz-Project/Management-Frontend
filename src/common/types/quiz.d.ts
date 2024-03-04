@@ -3,6 +3,7 @@ declare global {
     id?: string;
     versionId: string;
     creatorId: string;
+    creatorName: string;
     title: string;
     description: string;
     coverImg: string;
@@ -83,6 +84,22 @@ declare global {
     optionOrder: number;
     mark: string;
   };
+  type ParticipantQuestion = {
+    id: string;
+    type: string;
+    order: number;
+    content: string;
+    answer: string;
+    mark: number;
+    use_time: number;
+  };
+  type QuestionType =
+    | "CHOICE"
+    | "TRUE_FALSE"
+    | "PARAGRAPH"
+    | "MATCHING"
+    | "FILL_BLANK"
+    | "POOL";
 }
 
 export {};

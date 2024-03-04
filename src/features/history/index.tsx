@@ -1,134 +1,200 @@
 import SearchField from "@/common/layouts/main/components/SearchField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomizableTable from "./components/CustomTable";
+import CustomHistoryTable from "./components/CustomHistoryTable";
+import Topbar from "@/common/layouts/main/components/Topbar";
+import { ILiveHistoryData } from "../library/utils/mockData/LiveHistory";
+import { privateHttp as http } from "@/common/services/axios";
 
 export default function History() {
   const navigate = useNavigate();
   const [isNameAscending, setIsNameAscending] = useState(false);
-  const [isCreatorAscending, setIsCreatorAscending] = useState(false);
-  const [isLastEditedAscending, setIsLastEditedAscending] = useState(false);
+  const [isDateAscending, setIsDateAscending] = useState(false);
+  const [isTotalParticipantsAscending, setIsTotalParticipantsAscending] =
+    useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortedData, setSortedData] = useState<IHistoryItem[]>([
+    defaultHistoryItem,
+  ]);
+  const [liveHistoryData, setLiveHistoryData] = useState([]);
 
-  const columns: TableColumn[] = [
+  const columns: HistoryTableColumn[] = [
     { key: "image", header: "", width: "20%" },
-    { key: "name", header: "Name", width: "20%" },
-    { key: "creator", header: "Creator", width: "20%" },
-    { key: "lastEdited", header: "Last edited", width: "20%" },
-    { key: "action", header: "", width: "20%" },
+    { key: "name", header: "Name", width: "30%" },
+    { key: "date", header: "Date", width: "20%" },
+    { key: "totalParticipants", header: "Total Participants", width: "15%" },
+    { key: "action", header: "", width: "15%" },
   ];
 
-  const data: IHistoryItem[] = [
-    {
-      image:
-        "https://media.discordapp.net/attachments/988486551275200573/1115852890720972883/IMG_9028.jpg?ex=65b08b7c&is=659e167c&hm=62f766768e59e8ac0d4d426ab5120de2278cd0bd7fc33a70f9795ecf3eb8c9c7&=&format=webp&width=1560&height=1170",
-      name: "Kittiphon Singchom",
-      creator: "You",
-      lastEdited: "10 days ago.",
+  useEffect(() => {
+    fetchLiveHistory();
+  }, []);
+
+  async function fetchLiveHistory() {
+    try {
+      const liveHistoryResponse = await http.get("/dashboard");
+      setLiveHistoryData(liveHistoryResponse.data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const mapDataToIHistoryItem = (data: ILiveHistoryData[]) => {
+    return data.map((item) => ({
+      id: item.id,
+      image: item.cover_image,
+      name: item.title,
+      date: formatLastEditedDate(item.created_at),
+      totalParticipants: item.total_participants,
       action: <span></span>,
-    },
-    {
-      image:
-        "https://media.discordapp.net/attachments/988486551275200573/1149605252149026816/how-to-install-a-split-jamb-door-step-6.png?ex=65aa22d2&is=6597add2&hm=4f59872bca885805d274a5581790057cd43f694f784184bccc3215a7263519f1&=&format=webp&quality=lossless&width=1872&height=1170",
-      name: "Chanikan Singchom",
-      creator: "You",
-      lastEdited: "15 days ago.",
-      action: <span></span>,
-    },
-    {
-      image:
-        "https://media.discordapp.net/attachments/988486551275200573/1115852891832463390/IMG_6115.jpg?ex=65b08b7c&is=659e167c&hm=8924224afac46d2d02e9e8eb41418e3ed58c275258d0ca62f6a64e1d13b4189a&=&format=webp&width=878&height=1170",
-      name: "Chanikan Suechareon",
-      creator: "You",
-      lastEdited: "15 days ago.",
-      action: <span></span>,
-    },
-  ];
-  const [sortedData, setSortedData] = useState(data);
+    }));
+  };
+
+  useEffect(() => {
+    const transformedData = mapDataToIHistoryItem(liveHistoryData ?? []);
+    setSortedData(transformedData);
+  }, [liveHistoryData]);
+
+  const formatLastEditedDate = (dateString: string): string => {
+    const inputDate = new Date(dateString);
+
+    const day = inputDate.getDate().toString().padStart(2, "0");
+    const month = (inputDate.getMonth() + 1).toString().padStart(2, "0");
+    const year = inputDate.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
+
+  const getFilteredData = () => {
+    const filteredData = sortedData.filter((item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (isNameAscending) {
+      filteredData.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (!isNameAscending && searchTerm) {
+      filteredData.sort((a, b) => b.name.localeCompare(a.name));
+    }
+
+    return filteredData;
+  };
+
+  const filteredData = getFilteredData();
+
+  const handleSearch = (query: string) => {
+    setSearchTerm(query);
+  };
 
   const toggleSortByName = () => {
+    setIsNameAscending(!isNameAscending);
+    setIsDateAscending(false);
+    setIsTotalParticipantsAscending(false);
+
     setSortedData((prevData) => {
       const sorted = [...prevData];
       sorted.sort((a, b) =>
         isNameAscending
-          ? a.name.localeCompare(b.name)
-          : b.name.localeCompare(a.name)
+          ? b.name.localeCompare(a.name)
+          : a.name.localeCompare(b.name)
       );
       return sorted;
     });
-    setIsNameAscending(!isNameAscending);
-    setIsCreatorAscending(false);
-    setIsLastEditedAscending(false);
   };
 
-  const toggleSortByCraetor = () => {
+  const toggleSortByDate = () => {
     setSortedData((prevData) => {
       const sorted = [...prevData];
-      sorted.sort((a, b) =>
-        isCreatorAscending
-          ? a.creator.localeCompare(b.creator)
-          : b.creator.localeCompare(a.creator)
-      );
+      sorted.sort((a, b) => {
+        const dateA = convertToDate(a.date).getTime();
+        const dateB = convertToDate(b.date).getTime();
+
+        return isDateAscending ? dateA - dateB : dateB - dateA;
+      });
       return sorted;
     });
-    setIsCreatorAscending(!isCreatorAscending);
     setIsNameAscending(false);
-    setIsLastEditedAscending(false);
+    setIsDateAscending(!isDateAscending);
+    setIsTotalParticipantsAscending(false);
   };
 
-  const toggleSortByLastEdited = () => {
+  const convertToDate = (dateString: string) => {
+    const parts = dateString.split("/");
+
+    const date = new Date(
+      parseInt(parts[2]),
+      parseInt(parts[1]) - 1,
+      parseInt(parts[0])
+    );
+    return date;
+  };
+
+  const toggleSortByTotalParticipants = () => {
     setSortedData((prevData) => {
       const sorted = [...prevData];
-      sorted.sort((a, b) =>
-        isLastEditedAscending
-          ? a.lastEdited.localeCompare(b.lastEdited)
-          : b.lastEdited.localeCompare(a.lastEdited)
-      );
+      sorted.sort((a, b) => {
+        const totalParticipantsA = a.totalParticipants;
+        const totalParticipantsB = b.totalParticipants;
+        return isTotalParticipantsAscending
+          ? totalParticipantsA - totalParticipantsB
+          : totalParticipantsB - totalParticipantsA;
+      });
       return sorted;
     });
-    setIsLastEditedAscending(!isLastEditedAscending);
     setIsNameAscending(false);
-    setIsCreatorAscending(false);
+    setIsDateAscending(false);
+    setIsTotalParticipantsAscending(!isTotalParticipantsAscending);
   };
 
-  const handleRowClick = (rowData: IHistoryItem, rowIndex: number) => {
-    console.log("Row Clicked:", rowData, rowIndex);
-    navigate("/history/history-detail");
+  const handleRowClick = (rowData: IHistoryItem) => {
+    navigate(`/history/history-detail?id=${rowData.id}`);
   };
 
   return (
-    <div className="flex flex-col px-6 pt-2">
-      <p className="text-2xl">Live History</p>
-      <div className="flex">
-        <div className="pr-2">
-          <SearchField onSearch={() => {}} />
+    <Topbar>
+      <div style={{ maxHeight: "73vh" }}>
+        <p className="font-serif text-2xl">Live History</p>
+        <div className="pr-2 py-2">
+          <SearchField
+            onSearch={handleSearch}
+            keyword={searchTerm}
+            setKeyword={setSearchTerm}
+          />
         </div>
-      </div>
-      <div>
-        <CustomizableTable
+        <CustomHistoryTable
           columns={columns}
-          data={sortedData}
+          data={filteredData}
           onRowClick={handleRowClick}
           sortName={toggleSortByName}
-          sortCreator={toggleSortByCraetor}
-          sortLastEdited={toggleSortByLastEdited}
+          sortDate={toggleSortByDate}
+          sortTotalParticipants={toggleSortByTotalParticipants}
           isNameAscending={isNameAscending}
-          isCreatorAscending={isCreatorAscending}
-          isLastEditedAscending={isLastEditedAscending}
+          isDateAscending={isDateAscending}
+          isTotalParticipantsAscending={isTotalParticipantsAscending}
         />
       </div>
-    </div>
+    </Topbar>
   );
 }
 
+const defaultHistoryItem: IHistoryItem = {
+  id: "",
+  image: "",
+  name: "",
+  date: "",
+  totalParticipants: 0,
+  action: <span></span>,
+};
+
 export interface IHistoryItem {
+  id: string;
   image: string;
   name: string;
-  creator: string;
-  lastEdited: string;
+  date: string;
+  totalParticipants: number;
   action: JSX.Element;
 }
 
-export interface TableColumn {
+export interface HistoryTableColumn {
   key: keyof IHistoryItem;
   header: string;
   width: string;

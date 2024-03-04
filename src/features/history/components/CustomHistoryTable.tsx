@@ -2,33 +2,31 @@ import { Flex } from "antd";
 import React from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { IHistoryItem, TableColumn } from "..";
+import { IHistoryItem, HistoryTableColumn } from "..";
+import defaultImage from "../../../common/assets/default_image.png";
 
-interface CustomizableTableProps {
-  columns: TableColumn[];
+interface CustomHistoryTableProps {
+  columns: HistoryTableColumn[];
   data: IHistoryItem[];
-  onRowClick?: (
-    rowData: IHistoryItem,
-    rowIndex: number
-  ) => void;
+  onRowClick?: (rowData: IHistoryItem, rowIndex: number) => void;
   sortName?: () => void;
-  sortCreator?: () => void;
-  sortLastEdited?: () => void;
+  sortDate?: () => void;
+  sortTotalParticipants?: () => void;
   isNameAscending: boolean;
-  isCreatorAscending: boolean;
-  isLastEditedAscending: boolean;
+  isDateAscending: boolean;
+  isTotalParticipantsAscending: boolean;
 }
 
-const CustomizableTable: React.FC<CustomizableTableProps> = ({
+const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
   columns,
   data,
   onRowClick,
   sortName,
-  sortCreator,
-  sortLastEdited,
+  sortDate,
+  sortTotalParticipants,
   isNameAscending,
-  isCreatorAscending,
-  isLastEditedAscending,
+  isDateAscending,
+  isTotalParticipantsAscending,
 }) => {
   const renderSortIcon = (columnKey: string) => {
     if (columnKey === "name") {
@@ -37,14 +35,14 @@ const CustomizableTable: React.FC<CustomizableTableProps> = ({
       ) : (
         <KeyboardArrowDownIcon />
       );
-    } else if (columnKey === "creator") {
-      return isCreatorAscending ? (
+    } else if (columnKey === "date") {
+      return isDateAscending ? (
         <KeyboardArrowUpIcon />
       ) : (
         <KeyboardArrowDownIcon />
       );
-    } else if (columnKey === "lastEdited") {
-      return isLastEditedAscending ? (
+    } else if (columnKey === "totalParticipants") {
+      return isTotalParticipantsAscending ? (
         <KeyboardArrowUpIcon />
       ) : (
         <KeyboardArrowDownIcon />
@@ -58,14 +56,24 @@ const CustomizableTable: React.FC<CustomizableTableProps> = ({
       case "name":
         sortName && sortName();
         break;
-      case "creator":
-        sortCreator && sortCreator();
+      case "date":
+        sortDate && sortDate();
         break;
-      case "lastEdited":
-        sortLastEdited && sortLastEdited();
+      case "totalParticipants":
+        sortTotalParticipants && sortTotalParticipants();
         break;
       default:
         break;
+    }
+  };
+
+  const getCoverImage = (coverImage: string) => {
+    if (coverImage === null || coverImage === "") {
+      return defaultImage;
+    } else {
+      return `${
+        import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
+      }/${encodeURIComponent(coverImage)}?alt=media`;
     }
   };
 
@@ -87,22 +95,24 @@ const CustomizableTable: React.FC<CustomizableTableProps> = ({
         {data.map((row, index) => (
           <div
             key={index}
-            className="flex rounded-xl bg-peach my-2 border-2 border-transparent hover:border-pastel-orange"
+            className="flex p-4 rounded-xl bg-peach my-2 border-2 border-transparent hover:border-pastel-orange"
             style={{ cursor: onRowClick ? "pointer" : "default" }}
             onClick={() => onRowClick && onRowClick(row, index)}
           >
             {columns.map((column) => (
               <div
                 key={column.key}
-                className={`p-4 ${column.key === "image" ? null : "pt-12"}`}
+                className={` ${column.key === "image" ? null : "pt-9"}`}
                 style={{ width: column.width }}
               >
                 {column.key === "image" ? (
                   <img
-                    src={row["image"]}
+                    src={getCoverImage(row["image"])}
                     alt="Image"
-                    className="object-cover h-24 w-36 rounded-xl border-2 border-pastel-orange "
+                    className="object-cover h-24 w-36 rounded-xl border-2 border-pastel-orange"
                   />
+                ) : column.key === "date" ? (
+                  `${row[column.key]}`
                 ) : (
                   row[column.key]
                 )}
@@ -115,4 +125,4 @@ const CustomizableTable: React.FC<CustomizableTableProps> = ({
   );
 };
 
-export default CustomizableTable;
+export default CustomHistoryTable;

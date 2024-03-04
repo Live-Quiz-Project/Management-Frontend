@@ -4,24 +4,19 @@ import Chart from "react-google-charts";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import PieChartIcon from "@mui/icons-material/PieChart";
 import { IOption } from "../HistoryDetail";
-import NestQuestionItem from "./nestQuestionItem";
 
-interface QuestionItemProps {
+interface NestQuestionItemProps {
   title: string;
   questionNo: number;
   questionData: IOption[];
-  poolQuestionData: [];
   questionType: string;
-  poolOrder: number;
 }
 
-const QuestionItem: React.FC<QuestionItemProps> = ({
+const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
   title,
   questionNo,
   questionType,
   questionData,
-  poolQuestionData,
-  poolOrder,
 }) => {
   const [chartType, setChartType] = useState<"BarChart" | "PieChart">(
     "BarChart"
@@ -30,8 +25,11 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   const chartOptions = {
     chartArea: { width: "80%", height: "80%" },
     colors: ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"],
-    backgroundColor: "#FFFADD",
-    hAxis: { format: "0", minValue: 0 },
+    backgroundColor: "#FFF",
+    hAxis: {
+      format: "0",
+      minValue: 0,
+    },
   };
 
   const buildChartTypesButton = () => {
@@ -88,7 +86,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     );
   };
 
-  function transformMultiTypesData(inputObject: IOption[]) {
+  function transformData(inputObject: IOption[]) {
     const chartData: (string | number | { role: string })[][] = [
       ["", "", { role: "style" }],
     ];
@@ -96,7 +94,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     const colors = ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"];
     let colorIndex = 0;
 
-    inputObject.forEach((option) => {
+    inputObject?.forEach((option) => {
       const content = option.content;
       let participantCount = 0;
       if (option.participants != null) {
@@ -137,7 +135,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   }
 
   const buildMultiTypeChart = () => {
-    const chartData = transformMultiTypesData(questionData);
+    const chartData = transformData(questionData);
     return (
       <Chart
         chartType={chartType}
@@ -146,33 +144,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
         width="100%"
         height="400px"
       />
-    );
-  };
-
-  const buildPoolChart = (order: number) => {
-    const questionNumbers: { [key: number]: number } = {};
-
-    return (
-      <div className="pb-0">
-        {poolQuestionData.map((item) => {
-          if (!questionNumbers[item["pool_order"]]) {
-            questionNumbers[item["pool_order"]] = 1;
-          }
-          const questionNo = questionNumbers[item["pool_order"]]++;
-          return (
-            <div className="pb-0" key={item["id"]}>
-              {item["pool_order"] === order && (
-                <NestQuestionItem
-                  title={item["content"]}
-                  questionNo={questionNo}
-                  questionType={item["type"]}
-                  questionData={item["options"]}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
     );
   };
 
@@ -216,8 +187,6 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     switch (questionType) {
       case "CHOICE":
         return buildMultiTypeChart();
-      case "POOL":
-        return buildPoolChart(poolOrder);
       case "FILL_BLANK":
         return buildMultiTypeChart();
       case "PARAGRAPH":
@@ -232,16 +201,12 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   };
 
   return (
-    <div className="w-full rounded-xl bg-peach p-4 mb-2 mt-2">
+    <div className="w-full rounded-xl bg-white p-4 mb-2">
       <Flex className="justify-between">
         <h2 className="font-serif">
-          {questionNo}. {title}
+          {questionNo}. {title.replace("|><|", "-")}
         </h2>
-        {questionType === "POOL" || questionType === "PARAGRAPH" ? (
-          <></>
-        ) : (
-          buildChartTypesButton()
-        )}
+        {questionType === "PARAGRAPH" ? <></> : buildChartTypesButton()}
       </Flex>
       {buildQuestionTypeBadge(questionType)}
       <div className="py-4">{buildChart()}</div>
@@ -249,7 +214,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   );
 };
 
-export default QuestionItem;
+export default NestQuestionItem;
 
 export interface IHistoryDetailItem {
   displayName: string;

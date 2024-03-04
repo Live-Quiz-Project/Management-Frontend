@@ -51,6 +51,7 @@ export default function Login() {
               id: data.id,
               name: data.name,
               email: data.email,
+              image: data.image,
             },
           })
         );
@@ -73,7 +74,7 @@ export default function Login() {
 
   async function handleOnGoogleLogin(token: string) {
     try {
-      const { data, status: _ } = await http.post("/google-signin", {
+      const { data } = await http.post("/google-signin", {
         token,
       });
       console.log(data);
@@ -109,7 +110,7 @@ export default function Login() {
       className="flex flex-col justify-center items-center w-full h-dscreen"
     >
       <div className="w-1/2 flex flex-col items-center space-y-10">
-        <h1 className="">Log In</h1>
+        <h1 className="font-serif font-semibold text-3xl">Log In</h1>
         <div className="w-full flex flex-col justify-center items-start space-y-4 relative">
           <TextInput
             type="email"

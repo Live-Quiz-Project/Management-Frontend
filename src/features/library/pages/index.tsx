@@ -28,6 +28,7 @@ export default function Library() {
           title: string;
           description: string;
           creator_id: string;
+          creator_name: string;
           cover_image: string;
           case_sensitive: boolean;
           font_size: number;
@@ -45,6 +46,7 @@ export default function Library() {
             title: quiz.title,
             description: quiz.description,
             creatorId: quiz.creator_id,
+            creatorName: quiz.creator_name,
             coverImg: quiz.cover_image,
             caseSensitive: quiz.case_sensitive,
             fontSize: quiz.font_size,
@@ -72,6 +74,7 @@ export default function Library() {
         id: newQuizId,
         versionId: newQuizVersionId,
         creatorId: auth.value.user.id,
+        creatorName: "",
         title: "Untitled Quiz",
         description: "",
         coverImg: "",
@@ -90,7 +93,7 @@ export default function Library() {
 
   return (
     <Topbar>
-      <div className="space-y-4">
+      <div className="space-y-4" style={{ maxHeight: "73vh" }}>
         <p className="font-serif text-header-1">Library</p>
         <div className="flex justify-between">
           <FilledButton onClick={onCreateQuiz} className="bg-koromiko">

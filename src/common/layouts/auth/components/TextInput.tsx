@@ -22,7 +22,7 @@ export default function TextInput({
         type={type}
         onInput={onInput}
         value={value}
-        className="border border-regent-gray rounded-lg w-full h-10"
+        className="pl-2 border border-regent-gray rounded-lg w-full h-10"
       />
     </label>
   );

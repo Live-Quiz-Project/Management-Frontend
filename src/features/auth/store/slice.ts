@@ -7,6 +7,7 @@ const initState = {
       id: "",
       name: "",
       email: "",
+      image: "",
     },
   } as AuthStoreState,
 } as InitAuthStoreState;
@@ -25,6 +26,7 @@ export const auth = createSlice({
           id: action.payload.user.id,
           name: action.payload.user.name,
           email: action.payload.user.email,
+          image: action.payload.user.image,
         },
       };
     },

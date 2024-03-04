@@ -2,11 +2,11 @@ import "@/app/global.css";
 import { RouterProvider } from "react-router-dom";
 import router from "@/app/router";
 import { Suspense } from "react";
-import Loading from "@/features/Loading";
 import { store, persistor } from "@/app/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { MathJaxContext } from "better-react-mathjax";
+import { Loading } from "@/features/Loading";
 
 function App() {
   return (
