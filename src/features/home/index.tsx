@@ -82,7 +82,7 @@ export default function Home() {
       <div className="rounded-xl bg-white px-4 py-6 h-full">
         <div className="">
           <p className="font-serif text-xl pb-2">Recent lives</p>
-          <Flex className="justify-around rounded-xl bg-peach px-4 py-4">
+          <Flex className="justify-around rounded-xl px-4 py-4">
             <img
               src="https://media.discordapp.net/attachments/988486551275200573/1211589257601355827/article_210424_0.png?ex=65eebf6d&is=65dc4a6d&hm=d917db439475b278b0380848d9ff138a145c26b65539bc074d1fcc0bf1b7b571&=&format=webp&quality=lossless&width=1210&height=712"
               alt="Image"
@@ -111,7 +111,7 @@ export default function Home() {
         </div>
         <div className="pt-8 ">
           <p className="font-serif text-xl pb-2">My Quizes</p>
-          <Flex className="justify-around rounded-xl bg-peach px-4 py-4">
+          <Flex className="justify-around rounded-xl px-4 py-4">
             <img
               src="https://media.discordapp.net/attachments/988486551275200573/1211589257601355827/article_210424_0.png?ex=65eebf6d&is=65dc4a6d&hm=d917db439475b278b0380848d9ff138a145c26b65539bc074d1fcc0bf1b7b571&=&format=webp&quality=lossless&width=1210&height=712"
               alt="Image"

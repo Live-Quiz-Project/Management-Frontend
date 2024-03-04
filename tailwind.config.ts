@@ -26,6 +26,8 @@ export default {
       peach: "#FFFADD",
       green: "#00C4B8",
       "shade-green": "#B9E8E6",
+      "correct-green": "#8DFF70",
+      "false-red": "#FF7373",
     },
     fontFamily: {
       serif: ["Young Serif", "Chonburi", "serif"],

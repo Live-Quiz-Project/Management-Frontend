@@ -40,10 +40,10 @@ export default function Sidebar({ className = "" }: Props) {
 
   return (
     <div
-      className={`flex flex-col h-full bg-pastel-orange p-2 rounded-xl justify-between text-body-1 ${className}`}
+      className={`flex flex-col h-full bg-pastel-orange p-2 justify-between text-body-1 ${className}`}
     >
       <ul className="space-y-1">
-        <div className="flex items-center w-36 mb-4 ml-4">
+        <div className="flex items-center w-36 mb-4 ml-4 mt-6 pb-4">
           <img src={appLogo} alt="logo" />
         </div>
         {menus &&
