@@ -33,6 +33,8 @@ export default function Login() {
 
     if (!password) {
       setPasswordError("Password is required");
+    } else if (password.length < 8) {
+      setPasswordError("Password must be at least 8 characters");
     } else {
       setPasswordError("");
     }
