@@ -16,7 +16,9 @@ export default function HistoryDetail() {
     defaultViewTypeFiltered
   );
   const [dashboardQuestionsData, setDashboardQuestionsData] = useState([]);
-  const [dashboardAnswerData, setDashboardAnswerData] = useState([]);
+  const [dashboardAnswerData, setDashboardAnswerData] = useState<
+    IHistoryDetailItem[]
+  >([]);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [liveHistoryTitle, setLiveHistoryData] = useState("");
   const [isNameAscending, setIsNameAscending] = useState(false);
@@ -38,9 +40,9 @@ export default function HistoryDetail() {
     { key: "order", header: "No.", width: "8%" },
     { key: "type", header: "Question Type", width: "13%" },
     { key: "content", header: "Question", width: "30%" },
-    { key: "answer", header: "Answer", width: "25%" },
+    { key: "answer", header: "Answer", width: "20%" },
     { key: "mark", header: "Marks", width: "10%" },
-    { key: "use_time", header: "Time used", width: "8%" },
+    { key: "use_time", header: "Time used (s)", width: "13%" },
   ];
 
   useEffect(() => {
@@ -134,8 +136,8 @@ export default function HistoryDetail() {
     setDashboardAnswerData((prevData) => {
       const sortedData = [...prevData];
       sortedData.sort((a, b) => {
-        const correctsA = a.corrects;
-        const correctsB = b.corrects;
+        const correctsA = parseInt(a.corrects);
+        const correctsB = parseInt(b.corrects);
         return isCorrectsAscending
           ? correctsA - correctsB
           : correctsB - correctsA;
@@ -153,8 +155,8 @@ export default function HistoryDetail() {
     setDashboardAnswerData((prevData) => {
       const sortedData = [...prevData];
       sortedData.sort((a, b) => {
-        const incorrectsA = a.incorrects;
-        const incorrectsB = b.incorrects;
+        const incorrectsA = parseInt(a.incorrects);
+        const incorrectsB = parseInt(b.incorrects);
         return isInCorrectsAscending
           ? incorrectsA - incorrectsB
           : incorrectsB - incorrectsA;
@@ -172,8 +174,8 @@ export default function HistoryDetail() {
     setDashboardAnswerData((prevData) => {
       const sortedData = [...prevData];
       sortedData.sort((a, b) => {
-        const unansweredA = a.unanswered;
-        const unansweredB = b.unanswered;
+        const unansweredA = parseInt(a.unanswered);
+        const unansweredB = parseInt(b.unanswered);
         return isUnAnsweredAscending
           ? unansweredA - unansweredB
           : unansweredB - unansweredA;
@@ -191,8 +193,8 @@ export default function HistoryDetail() {
     setDashboardAnswerData((prevData) => {
       const sortedData = [...prevData];
       sortedData.sort((a, b) => {
-        const markA = a.marks;
-        const markB = b.marks;
+        const markA = parseInt(a.marks);
+        const markB = parseInt(b.marks);
         return isTotalMarkAscending ? markA - markB : markB - markA;
       });
       return sortedData;
@@ -311,6 +313,14 @@ export interface IHistoryPaticipantsDetailItem {
   unanswered: string;
   mark: string;
   questions: ParticipantQuestion[];
+}
+
+interface IHistoryDetailItem {
+  name: string;
+  corrects: string;
+  incorrects: string;
+  unanswered: string;
+  marks: string;
 }
 
 export interface IHistoryQuestionsDetailItem {

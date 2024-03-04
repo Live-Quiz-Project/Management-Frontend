@@ -2,6 +2,8 @@ import { Flex } from "antd";
 import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
 import {
   HistoryPaticipantsDetailTableColumn,
   HistoryQesutionDetailTableColumn,
@@ -133,13 +135,25 @@ const CustomParticipantsDashboardTable: React.FC<
   };
 
   const convertIsCorrect = (isCorrect: boolean) => {
-    return <div>{isCorrect ? <div>True</div> : <div>False</div>}</div>;
+    return (
+      <div>
+        {isCorrect ? (
+          <div className="w-1/2 py-2 flex justify-center bg-correct-green rounded-xl">
+            <CheckIcon style={{ fontSize: 28, color: "white" }} />
+          </div>
+        ) : (
+          <div className="w-1/2 py-2 flex justify-center bg-false-red rounded-xl">
+            <ClearIcon style={{ fontSize: 28, color: "white" }} />
+          </div>
+        )}
+      </div>
+    );
   };
 
   const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
     return participants.map((participant) => ({
       displayName: participant.name,
-      mark: `${participant.marks}/${participant.total_marks}`,
+      mark: `${participant.marks}`,
       corrects: `${participant.corrects}/${participant.total_questions}  (${
         (participant.corrects * 100) /
         (participant.total_questions - participant.unanswered)
@@ -216,7 +230,7 @@ const CustomParticipantsDashboardTable: React.FC<
                         }`}
                       >
                         <div className="flex">
-                          {questionColumns.map((column, index) => (
+                          {questionColumns.map((column) => (
                             <div
                               key={column.key}
                               className={`py-6`}
@@ -230,6 +244,8 @@ const CustomParticipantsDashboardTable: React.FC<
                                 ? String(rowIndex + 1)
                                 : column.key === "is_correct"
                                 ? convertIsCorrect(rowData[column.key])
+                                : column.key === "use_time"
+                                ? String(rowData[column.key] / 10)
                                 : String(rowData[column.key])}
                             </div>
                           ))}

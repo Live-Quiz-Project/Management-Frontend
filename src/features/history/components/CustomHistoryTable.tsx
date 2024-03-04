@@ -3,6 +3,7 @@ import React from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { IHistoryItem, HistoryTableColumn } from "..";
+import defaultImage from "../../../common/assets/default_image.png";
 
 interface CustomHistoryTableProps {
   columns: HistoryTableColumn[];
@@ -66,6 +67,16 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
     }
   };
 
+  const getCoverImage = (coverImage: string) => {
+    if (coverImage === null || coverImage === "") {
+      return defaultImage;
+    } else {
+      return `${
+        import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
+      }/${encodeURIComponent(coverImage)}?alt=media`;
+    }
+  };
+
   return (
     <div>
       <Flex className="justify-around border-b border-pastel-orange">
@@ -96,9 +107,7 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
               >
                 {column.key === "image" ? (
                   <img
-                    src={`${
-                      import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
-                    }/${encodeURIComponent(row["image"])}?alt=media`}
+                    src={getCoverImage(row["image"])}
                     alt="Image"
                     className="object-cover h-24 w-36 rounded-xl border-2 border-pastel-orange"
                   />

@@ -2,6 +2,7 @@ import BaseDialogue from "@/common/components/dialogues/BaseDialogue";
 import useTypedSelector from "@/common/hooks/useTypedSelector";
 import { useState } from "react";
 import { IoMdMore } from "react-icons/io";
+import defaultImage from "../../../../common/assets/default_image.png";
 
 type Props = {
   quiz: Quiz;
@@ -33,13 +34,21 @@ export default function QuizCard({ quiz }: Props) {
       onClick: () => console.log("Delete"),
     },
   ];
-  console.log(quiz);
+
+  const getCoverImage = (coverImage: string) => {
+    if (coverImage === null || coverImage === "") {
+      return defaultImage;
+    } else {
+      return `${
+        import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
+      }/${encodeURIComponent(coverImage)}?alt=media`;
+    }
+  };
+
   return (
     <div className="grid grid-cols-12 bg-egg-sour rounded-xl items-center">
       <img
-        src={`${
-          import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
-        }/${encodeURIComponent(quiz.coverImg)}?alt=media`}
+        src={getCoverImage(quiz.coverImg)}
         alt="Cover image"
         className="col-span-2 w-full aspect-video object-cover p-1 pr-8 rounded-lg"
       />
