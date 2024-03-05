@@ -72,7 +72,11 @@ export default function Login() {
         navigate("/");
       } catch (error) {
         console.error(error);
-        setErrorLoginFailed(error.response.data.error ? true : false);
+        setErrorLoginFailed(
+          error.response.data.error || error.response.status == 500
+            ? true
+            : false
+        );
       }
     }
   }
