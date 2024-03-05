@@ -42,7 +42,7 @@ export default function FileUploader({
       try {
         const res = await listAll(ref(storage, folderName));
         if (res.items.length > 0) {
-          res.items.forEach((item) => {
+          res.items.forEach(async (item) => {
             setFile(item);
             onChange(item.fullPath);
           });

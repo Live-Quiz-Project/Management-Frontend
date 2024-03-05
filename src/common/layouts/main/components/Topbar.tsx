@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { logOut } from "@/features/auth/store/slice";
 import { useNavigate } from "react-router-dom";
 import useTypedSelector from "@/common/hooks/useTypedSelector";
+import defaultProfile from "../../../assets/default_profile.png";
 
 type Props = {
   children: React.ReactNode;
@@ -23,6 +24,16 @@ export default function Topbar({
 }: Props) {
   const auth = useTypedSelector((state) => state.auth);
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const getProfileImage = (image: string) => {
+    if (image === null || image === "") {
+      return defaultProfile;
+    } else {
+      return `${
+        import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
+      }/${encodeURIComponent(image)}?alt=media`;
+    }
+  };
 
   return (
     <div className="flex-1 overflow-auto flex flex-col p-5 space-y-4">
@@ -43,7 +54,7 @@ export default function Topbar({
             onClick={() => setIsExpanded((prev) => !prev)}
           >
             <img
-              src={auth.value.user.image}
+              src={getProfileImage(auth.value.user.image)}
               className="w-full h-full object-cover rounded-full"
             />
             <ExpandedUserDropdown

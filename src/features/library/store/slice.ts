@@ -73,7 +73,7 @@ export const editor = createSlice({
       const count = state.value.quiz?.questions
         .slice(action.payload)
         .filter((question) => !question.isInPool)
-        .reduce((acc, isInPool) => (isInPool ? acc + 1 : acc), 0)!;
+        .reduce((acc, question) => (question ? acc + 1 : acc), 0)!;
       state.value.quiz?.questions.splice(action.payload - 1, count + 1);
       state.value.quiz?.questions.forEach((question, index) => {
         question.order = index + 1;

@@ -30,6 +30,7 @@ export default function Topbar({ className = "" }: Props) {
     e.preventDefault();
     const toBeCreatedQuiz = {
       id: editor.value.quiz!.id,
+      version_id: editor.value.quiz!.versionId,
       title: editor.value.quiz!.title,
       description: editor.value.quiz!.description,
       cover_image: editor.value.quiz!.coverImg,
@@ -50,6 +51,7 @@ export default function Topbar({ className = "" }: Props) {
           order: question.order,
           content: question.content,
           note: question.note,
+          media_type: question.mediaType,
           media: question.media,
           use_template: question.useTemplate,
           time_limit: +question.timeLimit,

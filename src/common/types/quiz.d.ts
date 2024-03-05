@@ -1,6 +1,7 @@
 declare global {
   type Quiz = {
     id?: string;
+    versionId: string;
     creatorId: string;
     creatorName: string;
     title: string;
@@ -18,6 +19,7 @@ declare global {
 
   type Question = {
     id?: string;
+    isInPool: boolean;
     pool: number;
     poolRequired: boolean;
     type: string;
