@@ -66,7 +66,7 @@ export default function Sidebar({ className = "" }: Props) {
                 }`}
               >
                 {menu.icon}
-                <p className="font-serif font-semibold">{menu.label}</p>
+                <p className="font-sans-serif font-semibold">{menu.label}</p>
               </Link>
             </li>
           ))}
