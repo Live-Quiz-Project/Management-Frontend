@@ -7,15 +7,18 @@ import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCurPage, setMode, setQuiz } from "../library/store/slice";
+import { privateHttp as http } from "@/common/services/axios";
 import Visibility from "../library/utils/enums/visibility";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
+import MyQuizCard from "./RecentQuizCard";
 
 export default function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch<StoreDispatch>();
   const auth = useTypedSelector((state) => state.auth);
   const [greeting, setGreeting] = useState("");
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 
   useEffect(() => {
     if (auth.value.token) {
@@ -36,6 +39,52 @@ export default function Home() {
       newGreeting = "Good Evening";
     }
     setGreeting(newGreeting);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const q: Quiz[] = [];
+      const { data } = await http.get("/quizzes");
+      data.map(
+        (quiz: {
+          id: string;
+          title: string;
+          description: string;
+          creator_id: string;
+          creator_name: string;
+          cover_image: string;
+          case_sensitive: boolean;
+          font_size: number;
+          mark: number;
+          select_up_to: number;
+          have_time_factor: boolean;
+          time_factor: number;
+          time_limit: number;
+          visibility: string;
+          questions: any;
+        }) => {
+          q.push({
+            id: quiz.id,
+            versionId: "",
+            title: quiz.title,
+            description: quiz.description,
+            creatorId: quiz.creator_id,
+            creatorName: quiz.creator_name,
+            coverImg: quiz.cover_image,
+            caseSensitive: quiz.case_sensitive,
+            fontSize: quiz.font_size,
+            mark: quiz.mark.toString(),
+            haveTimeFactor: quiz.have_time_factor,
+            timeFactor: quiz.time_factor.toString(),
+            timeLimit: quiz.time_limit.toString(),
+            visibility: quiz.visibility,
+            questions: quiz.questions,
+          });
+        }
+      );
+      console.log("quiz: ", q);
+      setQuizzes(q);
+    })();
   }, []);
 
   function onCreateQuiz(e: FormEvent<HTMLButtonElement>) {
@@ -63,67 +112,16 @@ export default function Home() {
     navigate(`/library/quiz/${newUuid}`);
   }
 
-  const buildChartBackground = () => {
+  const buildMyQuizes = () => {
     return (
-      <div className="mt-16 flex-col h-full justify-between">
-        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
-          <button
-            className="bg-chart-pallete10 mb-2 h-12 w-2/12 rounded-r-lg flex pt-2 justify-center cursor-pointer transform transition duration-500 
-              hover:scale-110"
-            onClick={() =>
-              window.open(
-                `${import.meta.env.VITE_LIVE_QUIZ_URL}?token=${
-                  auth.value.token
-                }`
-              )
-            }
-          >
-            <LoginOutlinedIcon className="mt-1 mr-2" style={{ fontSize: 24 }} />
-            <span className="text-2xl font-sans-serif font-semibold">Join</span>
-          </button>
-        </div>
-        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
-          <div className="bg-chart-pallete9 mb-2 h-12 w-3/12 rounded-r-lg"></div>
-        </div>
-        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
-          <div className="bg-chart-pallete8 mb-2 h-12 w-4/12 rounded-r-lg"></div>
-        </div>
-        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
-          <div className="bg-chart-pallete7 mb-2 h-12 w-8/12 rounded-r-lg"></div>
-        </div>
-        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
-          <button
-            className="bg-chart-pallete6 mb-2 h-12 w-5/12 rounded-r-lg flex pt-2 justify-center cursor-pointer transform transition duration-500 
-              hover:scale-110"
-            onClick={onCreateQuiz}
-          >
-            <AddBoxOutlinedIcon className="mb-2" style={{ fontSize: 32 }} />
-            <span className="text-2xl font-sans-serif font-semibold">
-              Create Quiz
-            </span>
-          </button>
-        </div>
-        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
-          <div className="bg-chart-pallete5 mb-2 h-12 w-6/12 rounded-r-lg"></div>
-        </div>
-        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
-          <div className="bg-chart-pallete5 mb-2 h-12 w-9/12 rounded-r-lg"></div>
-        </div>
-        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
-          <div className="bg-chart-pallete3 mb-2 h-12 w-8/12 rounded-r-lg"></div>
-        </div>
-        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
-          <div className="bg-chart-pallete2 mb-2 h-12 w-10/12 rounded-r-lg"></div>
-        </div>
-        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
-          <div className="bg-chart-pallete1 mb-2 h-12 w-7/12 rounded-r-lg"></div>
-        </div>
-        <div className="x-axis-labels flex justify-between mt-2">
-          <span className="text-base font-semibold">K</span>
-          <span className="text-base font-semibold">M</span>
-          <span className="text-base font-semibold">I</span>
-          <span className="text-base font-semibold">T</span>
-          <span className="text-base font-semibold">L</span>
+      <div className="mt-6">
+        <p className="font-sans-serif text-xl">My quizes</p>
+        <div className="flex flex-nowrap overflow-x-auto space-x-4 scrollbar-hide mt-2">
+          {quizzes.map((quiz) => (
+            <div className="shrink-0" key={quiz.id}>
+              <MyQuizCard quiz={quiz} />
+            </div>
+          ))}
         </div>
       </div>
     );
@@ -131,12 +129,10 @@ export default function Home() {
 
   return (
     <Topbar title={`${greeting}, ${auth.value.user.name}!`}>
-      <Flex className="rounded-xl flex-col h-full justify-between">
-        <div></div>
-        {buildChartBackground()}
+      <Flex className="rounded-xl flex-col h-full">
         <div className="flex justify-around">
-          {/* <FilledButton
-            className="w-fit bg-denim transform transition duration-500 
+          <FilledButton
+            className="w-1/2 bg-denim transform transition duration-500 
             hover:scale-110 drop-shadow-lg"
             onClick={() =>
               window.open(
@@ -150,15 +146,15 @@ export default function Home() {
           </FilledButton>
           <FilledButton
             onClick={onCreateQuiz}
-            className="w-5/12 bg-koromiko transform transition duration-500 
+            className="w-1/2 bg-koromiko transform transition duration-500 
               hover:scale-110 drop-shadow-lg"
           >
             <AddBoxOutlinedIcon className="mb-2" style={{ fontSize: 32 }} />
             {"  "}
             <span className="text-3xl">Create Quiz</span>
-          </FilledButton> */}
+          </FilledButton>
         </div>
-        <div></div>
+        {buildMyQuizes()}
       </Flex>
     </Topbar>
   );

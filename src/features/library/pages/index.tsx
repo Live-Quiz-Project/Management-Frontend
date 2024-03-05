@@ -20,7 +20,7 @@ export default function Library() {
 
   useEffect(() => {
     (async () => {
-      let q: Quiz[] = [];
+      const q: Quiz[] = [];
       const { data } = await http.get("/quizzes");
       data.map(
         (quiz: {

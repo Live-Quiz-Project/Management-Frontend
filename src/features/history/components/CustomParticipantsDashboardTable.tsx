@@ -171,14 +171,24 @@ const CustomParticipantsDashboardTable: React.FC<
         displayName: participant.name,
         mark: `${participant.marks}`,
         corrects: `${participant.corrects}/${participant.total_questions}  (${
-          isNaN(correctsPercentage) ? "0%" : correctsPercentage
+          isNaN(parseInt(correctsPercentage.toString()))
+            ? "0%"
+            : parseInt(correctsPercentage.toString())
         }%)`,
         incorrects: `${participant.incorrects}/${
           participant.total_questions
-        } (${isNaN(incorrectsPercentage) ? "0%" : incorrectsPercentage}%)`,
+        } (${
+          isNaN(parseInt(incorrectsPercentage.toString()))
+            ? "0%"
+            : parseInt(incorrectsPercentage.toString())
+        }%)`,
         unanswered: `${participant.unanswered}/${
           participant.total_questions
-        } (${isNaN(unansweredPercentage) ? "0%" : unansweredPercentage}%)`,
+        } (${
+          isNaN(parseInt(unansweredPercentage.toString()))
+            ? "0%"
+            : parseInt(unansweredPercentage.toString())
+        }%)`,
         questions: participant.questions,
       };
     });
