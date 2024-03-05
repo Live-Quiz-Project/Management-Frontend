@@ -226,7 +226,7 @@ const CustomParticipantsDashboardTable: React.FC<
   return (
     <div>
       <Flex className="pl-2 justify-around border-b border-pastel-orange">
-        {participantColumns.map((column) => (
+        {participantColumns?.map((column) => (
           <span key={column.key} style={{ width: column.width }}>
             {column.header}
             <button onClick={() => handleSort(column.key)}>
@@ -242,7 +242,7 @@ const CustomParticipantsDashboardTable: React.FC<
             <p className="font-semibold">Data not found.</p>
           </Flex>
         ) : (
-          historyParticipantsDetailItems.map((row, index) => (
+          historyParticipantsDetailItems?.map((row, index) => (
             <Flex className="flex-col rounded-lg bg-light-gray my-2 ">
               <div
                 key={index}
@@ -253,7 +253,7 @@ const CustomParticipantsDashboardTable: React.FC<
                   toggleRow(index);
                 }}
               >
-                {participantColumns.map((column) => (
+                {participantColumns?.map((column) => (
                   <div
                     key={column.key}
                     className={`py-6`}
@@ -266,14 +266,14 @@ const CustomParticipantsDashboardTable: React.FC<
               {expandedRows[index] && (
                 <div className=" border-2 border-pastel-orange rounded-lg">
                   <Flex className="pl-4 py-2 bg-pastel-orange">
-                    {questionColumns.map((column) => (
+                    {questionColumns?.map((column) => (
                       <span key={column.key} style={{ width: column.width }}>
                         {column.header}
                       </span>
                     ))}
                   </Flex>
                   <Flex className="flex-col">
-                    {row.questions.map((rowData, rowIndex) => (
+                    {row.questions?.map((rowData, rowIndex) => (
                       <Flex
                         key={rowIndex}
                         className={`pl-4 flex-col ${
@@ -281,7 +281,7 @@ const CustomParticipantsDashboardTable: React.FC<
                         }`}
                       >
                         <div className="flex">
-                          {questionColumns.map((column) => (
+                          {questionColumns?.map((column) => (
                             <div
                               key={column.key}
                               className={`py-6`}
