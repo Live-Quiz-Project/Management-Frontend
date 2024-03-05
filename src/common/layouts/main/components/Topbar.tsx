@@ -54,7 +54,7 @@ export default function Topbar({
               {auth.value.user.name}
             </p>
             <p className="pr-2 font-sans-serif text-white text-sm">
-              {auth.value.user.name}
+              {auth.value.user.email}
             </p>
           </div>
           <div
