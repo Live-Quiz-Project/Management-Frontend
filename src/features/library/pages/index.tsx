@@ -16,6 +16,7 @@ export default function Library() {
   const dispatch = useDispatch<StoreDispatch>();
   const auth = useTypedSelector((state) => state.auth);
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const [filteredQuizzes, setFilteredQuizzes] = useState<Quiz[]>([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -63,6 +64,13 @@ export default function Library() {
     })();
   }, []);
 
+  useEffect(() => {
+    const filteredQuizzes = quizzes.filter((quiz) =>
+      quiz.title.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredQuizzes(filteredQuizzes);
+  }, [search]);
+
   function onCreateQuiz(e: FormEvent<HTMLButtonElement>) {
     e.preventDefault();
     const newQuizId = uuid();
@@ -93,7 +101,7 @@ export default function Library() {
 
   return (
     <Topbar>
-      <div className="space-y-4" style={{ maxHeight: "73vh" }}>
+      <div className="space-y-4 font-sans-serif" style={{ maxHeight: "73vh" }}>
         <p className="font-serif text-header-1">Library</p>
         <div className="flex justify-between">
           <FilledButton onClick={onCreateQuiz} className="bg-koromiko">
@@ -107,8 +115,8 @@ export default function Library() {
             <p className="col-span-3">Creator</p>
             <p className="col-span-3">Description</p>
           </div>
-          <div className="space-y-2">
-            {quizzes.map((quiz) => (
+          <div className="space-y-2 pb-2">
+            {filteredQuizzes.map((quiz) => (
               <QuizCard key={quiz.id} quiz={quiz} />
             ))}
           </div>

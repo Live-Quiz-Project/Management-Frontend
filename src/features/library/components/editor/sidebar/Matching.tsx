@@ -118,6 +118,41 @@ export default function Matching() {
   return (
     <div className="py-5 md:py-6 px-4 md:px-8 space-y-10">
       <div className="space-y-6">
+        <p className="truncate">Prompts</p>
+        {(
+          (
+            editor.value.quiz!.questions[editor.value.curPage - 1]
+              .options as MatchingOption[]
+          ).filter(
+            (o) => o.type === "MATCHING_PROMPT"
+          ) as MatchingOptionPrompt[]
+        ).length > 0 &&
+          (
+            (
+              editor.value.quiz!.questions[editor.value.curPage - 1]
+                .options as MatchingOption[]
+            ).filter(
+              (o) => o.type === "MATCHING_PROMPT"
+            ) as MatchingOptionPrompt[]
+          ).map((option, i) => <Prompt key={i} prompt={option} index={i} />)}
+        {(
+          (
+            editor.value.quiz!.questions[editor.value.curPage - 1]
+              .options as MatchingOption[]
+          ).filter(
+            (o) => o.type === "MATCHING_PROMPT"
+          ) as MatchingOptionPrompt[]
+        ).length < 6 && (
+          <FilledButton
+            onClick={onAddPrompt}
+            type="button"
+            className="bg-jordy-blue w-full h-10 xl:h-12 rounded-xl"
+          >
+            + Add prompt
+          </FilledButton>
+        )}
+      </div>
+      <div className="space-y-6">
         <p className="truncate">Options</p>
         {(
           (
@@ -151,41 +186,6 @@ export default function Matching() {
             className="bg-jordy-blue w-full h-10 xl:h-12 rounded-xl"
           >
             + Add option
-          </FilledButton>
-        )}
-      </div>
-      <div className="space-y-6">
-        <p className="truncate">Prompts</p>
-        {(
-          (
-            editor.value.quiz!.questions[editor.value.curPage - 1]
-              .options as MatchingOption[]
-          ).filter(
-            (o) => o.type === "MATCHING_PROMPT"
-          ) as MatchingOptionPrompt[]
-        ).length > 0 &&
-          (
-            (
-              editor.value.quiz!.questions[editor.value.curPage - 1]
-                .options as MatchingOption[]
-            ).filter(
-              (o) => o.type === "MATCHING_PROMPT"
-            ) as MatchingOptionPrompt[]
-          ).map((option, i) => <Prompt key={i} prompt={option} index={i} />)}
-        {(
-          (
-            editor.value.quiz!.questions[editor.value.curPage - 1]
-              .options as MatchingOption[]
-          ).filter(
-            (o) => o.type === "MATCHING_PROMPT"
-          ) as MatchingOptionPrompt[]
-        ).length < 6 && (
-          <FilledButton
-            onClick={onAddPrompt}
-            type="button"
-            className="bg-jordy-blue w-full h-10 xl:h-12 rounded-xl"
-          >
-            + Add prompt
           </FilledButton>
         )}
       </div>
