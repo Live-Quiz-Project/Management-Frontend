@@ -1,4 +1,4 @@
-import defaultImage from "../../common/assets/default_image.png";
+import defaultImage from "../../../common/assets/default_image.png";
 
 type Props = {
   quiz: Quiz;
@@ -19,7 +19,6 @@ export default function MyQuizCard({ quiz }: Props) {
     <div className="flex flex-col items-center w-72 bg-karry rounded-xl px-1 py-1">
       <img
         src={getCoverImage(quiz.coverImg)}
-        src={defaultImage}
         alt="Cover image"
         className="w-full object-cover p-1 rounded-lg"
       />

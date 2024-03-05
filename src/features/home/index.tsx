@@ -11,7 +11,7 @@ import { privateHttp as http } from "@/common/services/axios";
 import Visibility from "../library/utils/enums/visibility";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
-import MyQuizCard from "./RecentQuizCard";
+import MyQuizCard from "./components/MyQuizCard";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -19,6 +19,7 @@ export default function Home() {
   const auth = useTypedSelector((state) => state.auth);
   const [greeting, setGreeting] = useState("");
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const [liveHistoryData, setLiveHistoryData] = useState([]);
 
   useEffect(() => {
     if (auth.value.token) {
@@ -87,6 +88,19 @@ export default function Home() {
     })();
   }, []);
 
+  useEffect(() => {
+    fetchLiveHistory();
+  }, []);
+
+  async function fetchLiveHistory() {
+    try {
+      const liveHistoryResponse = await http.get("/dashboard");
+      setLiveHistoryData(liveHistoryResponse.data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   function onCreateQuiz(e: FormEvent<HTMLButtonElement>) {
     e.preventDefault();
     const newUuid = uuid();
@@ -115,13 +129,38 @@ export default function Home() {
   const buildMyQuizes = () => {
     return (
       <div className="mt-6">
-        <p className="font-sans-serif text-xl">My quizes</p>
+        <p className="font-sans-serif text-xl">My quizzes</p>
         <div className="flex flex-nowrap overflow-x-auto space-x-4 scrollbar-hide mt-2">
-          {quizzes.map((quiz) => (
-            <div className="shrink-0" key={quiz.id}>
-              <MyQuizCard quiz={quiz} />
-            </div>
-          ))}
+          {quizzes.length === 0 || quizzes === null || quizzes === undefined ? (
+            <div></div>
+          ) : (
+            quizzes.map((quiz) => (
+              <div className="shrink-0" key={quiz.id}>
+                <MyQuizCard quiz={quiz} />
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const buildRecentLives = () => {
+    return (
+      <div className="mt-6">
+        <p className="font-sans-serif text-xl">Recent lives</p>
+        <div className="flex flex-nowrap overflow-x-auto space-x-4 scrollbar-hide mt-2">
+          {liveHistoryData.length === 0 ||
+          liveHistoryData === null ||
+          liveHistoryData === undefined ? (
+            <div></div>
+          ) : (
+            liveHistoryData.map((quiz) => (
+              <div className="shrink-0" key={quiz["id"]}>
+                <MyQuizCard quiz={quiz} />
+              </div>
+            ))
+          )}
         </div>
       </div>
     );
@@ -142,6 +181,10 @@ export default function Home() {
               )
             }
           >
+            <LoginOutlinedIcon
+              className="mb-2 mr-2"
+              style={{ fontSize: 32, color: "white" }}
+            />
             <span className="text-white text-3xl">Join</span>
           </FilledButton>
           <FilledButton
@@ -155,6 +198,7 @@ export default function Home() {
           </FilledButton>
         </div>
         {buildMyQuizes()}
+        {buildRecentLives()}
       </Flex>
     </Topbar>
   );
