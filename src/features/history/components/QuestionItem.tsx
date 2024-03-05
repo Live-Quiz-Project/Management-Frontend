@@ -11,6 +11,7 @@ interface QuestionItemProps {
   questionNo: number;
   questionData: IOption[];
   poolQuestionData: [];
+  dashboardAnswerData: [];
   questionType: string;
   poolOrder: number;
 }
@@ -21,6 +22,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   questionType,
   questionData,
   poolQuestionData,
+  dashboardAnswerData,
   poolOrder,
 }) => {
   const [chartType, setChartType] = useState<"BarChart" | "PieChart">(
@@ -143,6 +145,32 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
 
     return chartData;
   }
+
+  // function transformMatchingTypeData(inputObject: IOption[]) {
+  //   const chartData: (string | number | { role: string })[][] = [
+  //     ["", "", { role: "style" }],
+  //   ];
+
+  //   const colors = ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"];
+  //   let colorIndex = 0;
+
+  //   inputObject.forEach((option) => {
+  //     const content = `${option.option_content} - ${option.prompt_content}`;
+
+  //     dashboardAnswerData.forEach((answer) => {
+  //       answer["questions"].forEach((question) => {
+  //         // if (option.prompt_id === question['answer'])
+  //       });
+  //     });
+
+  //     const color = colors[colorIndex % colors.length];
+  //     colorIndex++;
+
+  //     chartData.push([content, 0, color]);
+  //   });
+
+  //   return chartData;
+  // }
 
   const buildMultiTypeChart = () => {
     const chartData = transformMultiTypesData(questionData);

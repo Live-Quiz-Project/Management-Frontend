@@ -167,7 +167,7 @@ const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
 
     return (
       <div>
-        {questionData.map((item, index) => {
+        {questionData?.map((item, index) => {
           const colorIndex = index % colors.length;
           const bgColor = colors[colorIndex];
 
