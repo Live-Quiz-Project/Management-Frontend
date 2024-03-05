@@ -42,7 +42,7 @@ export default function Login() {
       setPasswordError("");
     }
 
-    if (email && password) {
+    if (email && password.length >= 8) {
       try {
         const { data, status: _ } = await http.post("/login", {
           email,
