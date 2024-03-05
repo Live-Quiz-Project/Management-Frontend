@@ -171,7 +171,7 @@ export default function Home() {
       <Flex className="rounded-xl flex-col h-full">
         <div className="flex justify-around">
           <FilledButton
-            className="w-1/2 bg-denim transform transition duration-500 
+            className="w-1/4 bg-denim transform transition duration-500 
             hover:scale-110 drop-shadow-lg"
             onClick={() =>
               window.open(
@@ -189,7 +189,7 @@ export default function Home() {
           </FilledButton>
           <FilledButton
             onClick={onCreateQuiz}
-            className="w-1/2 bg-koromiko transform transition duration-500 
+            className="w-1/4 bg-koromiko transform transition duration-500 
               hover:scale-110 drop-shadow-lg"
           >
             <AddBoxOutlinedIcon className="mb-2" style={{ fontSize: 32 }} />

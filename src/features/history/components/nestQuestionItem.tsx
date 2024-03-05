@@ -183,12 +183,41 @@ const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
     );
   };
 
+  const buildFillInTheBlanksChart = () => {
+    const colors = ["jordy-blue", "quartz", "peach", "sienna", "dune"];
+
+    return (
+      <div>
+        {questionData == null ? (
+          <div className="flex">
+            <p className={`px-2 py-2 rounded-xl border-2`}>No Answers</p>
+          </div>
+        ) : (
+          questionData.map((item, index) => {
+            const colorIndex = index % colors.length;
+            const bgColor = colors[colorIndex];
+
+            return (
+              <div className="flex" key={item.content}>
+                <p
+                  className={`px-2 py-2 rounded-xl border-2 border-${bgColor}`}
+                >
+                  {item.content === "" ? "-" : item.content}
+                </p>
+              </div>
+            );
+          })
+        )}
+      </div>
+    );
+  };
+
   const buildChart = () => {
     switch (questionType) {
       case "CHOICE":
         return buildMultiTypeChart();
       case "FILL_BLANK":
-        return buildMultiTypeChart();
+        return buildFillInTheBlanksChart();
       case "PARAGRAPH":
         return buldParagraphChart();
       case "TRUE_FALSE":
@@ -206,7 +235,11 @@ const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
         <h2 className="font-serif">
           {questionNo}. {title.replace(/\|><\|/g, " _ ")}
         </h2>
-        {questionType === "PARAGRAPH" ? <></> : buildChartTypesButton()}
+        {questionType === "PARAGRAPH" || questionType === "FILL_BLANK" ? (
+          <></>
+        ) : (
+          buildChartTypesButton()
+        )}
       </Flex>
       {buildQuestionTypeBadge(questionType)}
       <div className="py-4">{buildChart()}</div>
