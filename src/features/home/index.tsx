@@ -65,9 +65,9 @@ export default function Home() {
 
   const buildChartBackground = () => {
     return (
-      <div className="flex-col h-full justify-between">
+      <div className="mt-16 flex-col h-full justify-between">
         <button
-          className="bg-chart-red mb-2 h-12 w-2/12 rounded-r-lg flex pt-2 justify-center cursor-pointer transform transition duration-500 
+          className="bg-chart-pallete10 mb-2 h-12 w-2/12 rounded-r-lg flex pt-2 justify-center cursor-pointer transform transition duration-500 
               hover:scale-110"
           onClick={() =>
             window.open(
@@ -75,32 +75,31 @@ export default function Home() {
             )
           }
         >
-          <LoginOutlinedIcon
-            className="mt-1 mr-2"
-            style={{ fontSize: 24, color: "white" }}
-          />
-          <span className="text-white text-2xl font-semibold">Join</span>
+          <LoginOutlinedIcon className="mt-1 mr-2" style={{ fontSize: 24 }} />
+          <span className="text-2xl font-semibold">Join</span>
         </button>
-        <div className="bg-chart-yellow mb-2 h-12 w-3/12 rounded-r-lg"></div>
-        <div className="bg-chart-yellow mb-2 h-12 w-4/12 rounded-r-lg"></div>
-        <div className="bg-chart-yellow mb-2 h-12 w-8/12 rounded-r-lg"></div>
+        <div className="bg-chart-pallete9 mb-2 h-12 w-3/12 rounded-r-lg"></div>
+        <div className="bg-chart-pallete8 mb-2 h-12 w-4/12 rounded-r-lg"></div>
+        <div className="bg-chart-pallete7 mb-2 h-12 w-8/12 rounded-r-lg"></div>
         <button
-          className="bg-chart-orange mb-2 h-12 w-5/12 rounded-r-lg flex pt-2 justify-center cursor-pointer transform transition duration-500 
+          className="bg-chart-pallete6 mb-2 h-12 w-5/12 rounded-r-lg flex pt-2 justify-center cursor-pointer transform transition duration-500 
               hover:scale-110"
           onClick={onCreateQuiz}
         >
-          <AddBoxOutlinedIcon
-            className="mb-2"
-            style={{ fontSize: 32, color: "white" }}
-          />
-          <span className="text-white text-2xl font-semibold">Create Quiz</span>
+          <AddBoxOutlinedIcon className="mb-2" style={{ fontSize: 32 }} />
+          <span className="text-2xl font-semibold">Create Quiz</span>
         </button>
-        <div className="bg-chart-yellow mb-2 h-12 w-6/12 rounded-r-lg"></div>
-        <div className="bg-chart-yellow mb-2 h-12 w-11/12 rounded-r-lg"></div>
-        <div className="bg-chart-yellow mb-2 h-12 w-9/12 rounded-r-lg"></div>
-        <div className="bg-chart-yellow mb-2 h-12 w-7/12 rounded-r-lg"></div>
-        <div className="bg-chart-yellow mb-2 h-12 w-2/12 rounded-r-lg"></div>
-        <div className="bg-chart-yellow mb-2 h-12 w-10/12 rounded-r-lg"></div>
+        <div className="bg-chart-pallete5 mb-2 h-12 w-6/12 rounded-r-lg"></div>
+        <div className="bg-chart-pallete5 mb-2 h-12 w-9/12 rounded-r-lg"></div>
+        <div className="bg-chart-pallete3 mb-2 h-12 w-8/12 rounded-r-lg"></div>
+        <div className="bg-chart-pallete2 mb-2 h-12 w-10/12 rounded-r-lg"></div>
+        <div className="bg-chart-pallete1 mb-2 h-12 w-11/12 rounded-r-lg"></div>
+        <div className="x-axis-labels flex justify-between mt-2">
+          <span className="text-base text-gray-500">C+</span>
+          <span className="text-base text-gray-500">B</span>
+          <span className="text-base text-gray-500">B+</span>
+          <span className="text-base text-gray-500">A</span>
+        </div>
       </div>
     );
   };
