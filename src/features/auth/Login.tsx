@@ -42,7 +42,7 @@ export default function Login() {
       setPasswordError("");
     }
 
-    if (email && password) {
+    if (email && password.length >= 8) {
       try {
         const { data, status: _ } = await http.post("/login", {
           email,
@@ -72,7 +72,11 @@ export default function Login() {
         navigate("/");
       } catch (error) {
         console.error(error);
-        setErrorLoginFailed(error.response.data.error ? true : false);
+        setErrorLoginFailed(
+          error.response.data.error || error.response.status == 500
+            ? true
+            : false
+        );
       }
     }
   }

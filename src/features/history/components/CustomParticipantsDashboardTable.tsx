@@ -151,26 +151,67 @@ const CustomParticipantsDashboardTable: React.FC<
   };
 
   const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
-    return participants.map((participant) => ({
-      displayName: participant.name,
-      mark: `${participant.marks}`,
-      corrects: `${participant.corrects}/${participant.total_questions}  (${
-        (participant.corrects * 100) /
-        (participant.total_questions - participant.unanswered)
-      }%)`,
-      incorrects: `${participant.incorrects}/${participant.total_questions} (${
-        (participant.incorrects * 100) /
-        (participant.total_questions - participant.unanswered)
-      }%)`,
-      unanswered: `${participant.unanswered}/${participant.total_questions} (${
-        (participant.unanswered * 100) /
-        (participant.total_questions - participant.unanswered)
-      }%)`,
-      questions: participant.questions,
-    }));
+    return participants?.map((participant) => {
+      const totalQuestions =
+        participant.total_questions - participant.unanswered;
+      const correctsPercentage =
+        totalQuestions !== 0
+          ? (participant.corrects * 100) / totalQuestions
+          : 0;
+      const incorrectsPercentage =
+        totalQuestions !== 0
+          ? (participant.incorrects * 100) / totalQuestions
+          : 0;
+      const unansweredPercentage =
+        totalQuestions !== 0
+          ? (participant.unanswered * 100) / totalQuestions
+          : 0;
+
+      return {
+        displayName: participant.name,
+        mark: `${participant.marks}`,
+        corrects: `${participant.corrects}/${participant.total_questions}  (${
+          isNaN(correctsPercentage) ? "0%" : correctsPercentage
+        }%)`,
+        incorrects: `${participant.incorrects}/${
+          participant.total_questions
+        } (${isNaN(incorrectsPercentage) ? "0%" : incorrectsPercentage}%)`,
+        unanswered: `${participant.unanswered}/${
+          participant.total_questions
+        } (${isNaN(unansweredPercentage) ? "0%" : unansweredPercentage}%)`,
+        questions: participant.questions,
+      };
+    });
   };
 
   const historyParticipantsDetailItems = mapParticipantsToDetailItems(data);
+
+  const renderCellContent = (
+    columnKey: string,
+    rowData: any,
+    rowIndex: number
+  ) => {
+    switch (columnKey) {
+      case "type":
+        return convertQuestionType(String(rowData[columnKey]));
+      case "order":
+        return String(rowIndex + 1);
+      case "is_correct":
+        return convertIsCorrect(rowData[columnKey]);
+      case "use_time":
+        return String(rowData[columnKey] / 10);
+      case "content":
+        return (
+          <div className="px-2">
+            {String(rowData[columnKey]).replace(/\|><\|/g, " _ ")}
+          </div>
+        );
+      case "answer":
+        return <div className="px-2">{String(rowData[columnKey])}</div>;
+      default:
+        return String(rowData[columnKey]);
+    }
+  };
 
   return (
     <div>
@@ -236,17 +277,7 @@ const CustomParticipantsDashboardTable: React.FC<
                               className={`py-6`}
                               style={{ width: column.width }}
                             >
-                              {column.key === "type"
-                                ? convertQuestionType(
-                                    String(rowData[column.key])
-                                  )
-                                : column.key === "order"
-                                ? String(rowIndex + 1)
-                                : column.key === "is_correct"
-                                ? convertIsCorrect(rowData[column.key])
-                                : column.key === "use_time"
-                                ? String(rowData[column.key] / 10)
-                                : String(rowData[column.key])}
+                              {renderCellContent(column.key, rowData, rowIndex)}
                             </div>
                           ))}
                         </div>
