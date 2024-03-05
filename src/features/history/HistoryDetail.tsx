@@ -63,7 +63,6 @@ export default function HistoryDetail() {
   async function fetchAnswerDashboard() {
     try {
       const dashboardData = await http.get(`/dashboard/answer/${id}`);
-      console.log(dashboardData.data.participants);
       setDashboardAnswerData(dashboardData.data.participants);
     } catch (e) {
       console.log(e);
@@ -383,6 +382,7 @@ export interface IOption {
   option_content: string;
   prompt_content: string;
   correct: boolean;
+  color: string;
   participants: Participant[];
   Participants: Participant[];
 }

@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCurPage, setMode, setQuiz } from "../library/store/slice";
 import Visibility from "../library/utils/enums/visibility";
+import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
+import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -61,84 +63,103 @@ export default function Home() {
     navigate(`/library/quiz/${newUuid}`);
   }
 
-  return (
-    <Topbar title={`${greeting}, ${auth.value.user.name}!`}>
-      <Flex>
-        <FilledButton
-          className="w-fit bg-green"
-          onClick={() =>
-            window.open(
-              `${import.meta.env.VITE_LIVE_QUIZ_URL}?token=${auth.value.token}`
-            )
-          }
-        >
-          Join
-        </FilledButton>
-        <p className="font-serif pt-1 px-4">or</p>
-        <FilledButton onClick={onCreateQuiz} className="bg-koromiko">
-          &#43; Create Quiz
-        </FilledButton>
-      </Flex>
-      <div className="rounded-xl bg-white px-4 py-6 h-full">
-        <div className="">
-          <p className="font-serif text-xl pb-2">Recent lives</p>
-          <Flex className="justify-around rounded-xl px-4 py-4">
-            <img
-              src="https://media.discordapp.net/attachments/988486551275200573/1211589257601355827/article_210424_0.png?ex=65eebf6d&is=65dc4a6d&hm=d917db439475b278b0380848d9ff138a145c26b65539bc074d1fcc0bf1b7b571&=&format=webp&quality=lossless&width=1210&height=712"
-              alt="Image"
-              className="h-40 w-screen rounded-xl border-2 border-regent-gray object-cover mr-4 cursor-pointer hover:border-pastel-orange transform transition duration-500 
+  const buildChartBackground = () => {
+    return (
+      <div className="mt-16 flex-col h-full justify-between">
+        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
+          <button
+            className="bg-chart-pallete10 mb-2 h-12 w-2/12 rounded-r-lg flex pt-2 justify-center cursor-pointer transform transition duration-500 
               hover:scale-110"
-            />
-            <img
-              src="https://media.discordapp.net/attachments/988486551275200573/1211589402606964797/1000_F_451252677_NYrDRHhFQ8bGqCukaHjcvnP7tzhLCfxL.png?ex=65eebf8f&is=65dc4a8f&hm=5b80ca5094251c764fa1480ad5d5c4f8671f6ff22b8caf0f08b16ceedc70ce0d&=&format=webp&quality=lossless&width=1210&height=745"
-              alt="Image"
-              className="h-40 w-screen rounded-xl border-2 border-regent-gray object-cover mr-4 cursor-pointer hover:border-pastel-orange transform transition duration-500 
-              hover:scale-110"
-            />
-            <img
-              src="https://media.discordapp.net/attachments/988486551275200573/1211589324391448586/main-qimg-d526ae7e6659634754593e815acf764a-lq.png?ex=65eebf7d&is=65dc4a7d&hm=5066edbc09a27fa1ea91fd12a314011f239787fbef0f599a3f504dfcd44bef93&=&format=webp&quality=lossless&width=1324&height=882"
-              alt="Image"
-              className="h-40 w-screen rounded-xl border-2 border-regent-gray object-cover mr-4 cursor-pointer hover:border-pastel-orange transform transition duration-500 
-              hover:scale-110"
-            />
-            <img
-              src="https://media.discordapp.net/attachments/988486551275200573/1211589324391448586/main-qimg-d526ae7e6659634754593e815acf764a-lq.png?ex=65eebf7d&is=65dc4a7d&hm=5066edbc09a27fa1ea91fd12a314011f239787fbef0f599a3f504dfcd44bef93&=&format=webp&quality=lossless&width=1324&height=882"
-              alt="Image"
-              className="h-40 w-screen rounded-xl border-2 border-regent-gray object-cover cursor-pointer hover:border-pastel-orange transform transition duration-500 
-              hover:scale-110"
-            />
-          </Flex>
+            onClick={() =>
+              window.open(
+                `${import.meta.env.VITE_LIVE_QUIZ_URL}?token=${
+                  auth.value.token
+                }`
+              )
+            }
+          >
+            <LoginOutlinedIcon className="mt-1 mr-2" style={{ fontSize: 24 }} />
+            <span className="text-2xl font-sans-serif font-semibold">Join</span>
+          </button>
         </div>
-        <div className="pt-8 ">
-          <p className="font-serif text-xl pb-2">My Quizes</p>
-          <Flex className="justify-around rounded-xl px-4 py-4">
-            <img
-              src="https://media.discordapp.net/attachments/988486551275200573/1211589257601355827/article_210424_0.png?ex=65eebf6d&is=65dc4a6d&hm=d917db439475b278b0380848d9ff138a145c26b65539bc074d1fcc0bf1b7b571&=&format=webp&quality=lossless&width=1210&height=712"
-              alt="Image"
-              className="h-40 w-screen rounded-xl border-2 border-regent-gray object-cover mr-4 cursor-pointer hover:border-pastel-orange transform transition duration-500 
+        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
+          <div className="bg-chart-pallete9 mb-2 h-12 w-3/12 rounded-r-lg"></div>
+        </div>
+        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
+          <div className="bg-chart-pallete8 mb-2 h-12 w-4/12 rounded-r-lg"></div>
+        </div>
+        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
+          <div className="bg-chart-pallete7 mb-2 h-12 w-8/12 rounded-r-lg"></div>
+        </div>
+        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
+          <button
+            className="bg-chart-pallete6 mb-2 h-12 w-5/12 rounded-r-lg flex pt-2 justify-center cursor-pointer transform transition duration-500 
               hover:scale-110"
-            />
-            <img
-              src="https://media.discordapp.net/attachments/988486551275200573/1205172567317422140/math-102023-1281244731-01.png?ex=65e9dc6b&is=65d7676b&hm=f659b1905ae896142058c562b2bec9e378a95afb7c311f5ae1c701d60f33fafa&=&format=webp&quality=lossless&width=1150&height=770"
-              alt="Image"
-              className="h-40 w-screen rounded-xl border-2 border-regent-gray object-cover mr-4 cursor-pointer hover:border-pastel-orange transform transition duration-500 
-              hover:scale-110"
-            />
-            <img
-              src="https://media.discordapp.net/attachments/988486551275200573/1205172679750197340/1000_F_280126582_Ig4OLIbbSryXwe2S63aBu2TKY0Bj9WjH.png?ex=65e9dc85&is=65d76785&hm=c25265f67d8a0573daa80b06bfb0618016b940b1283d6994ed2da51f662bcbff&=&format=webp&quality=lossless&width=1157&height=770"
-              alt="Image"
-              className="h-40 w-screen rounded-xl border-2 border-regent-gray object-cover mr-4 cursor-pointer hover:border-pastel-orange transform transition duration-500 
-              hover:scale-110"
-            />
-            <img
-              src="https://media.discordapp.net/attachments/988486551275200573/1205172750059175998/20231222_cpub_bii_header-1703185204173.png?ex=65e9dc96&is=65d76796&hm=e1f6bcba4113e7cdd1831c41d2ed1156b366c54ad4ff01439d0ef9de549b2e89&=&format=webp&quality=lossless&width=1163&height=770"
-              alt="Image"
-              className="h-40 w-screen rounded-xl border-2 border-regent-gray object-cover cursor-pointer hover:border-pastel-orange transform transition duration-500 
-              hover:scale-110"
-            />
-          </Flex>
+            onClick={onCreateQuiz}
+          >
+            <AddBoxOutlinedIcon className="mb-2" style={{ fontSize: 32 }} />
+            <span className="text-2xl font-sans-serif font-semibold">
+              Create Quiz
+            </span>
+          </button>
+        </div>
+        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
+          <div className="bg-chart-pallete5 mb-2 h-12 w-6/12 rounded-r-lg"></div>
+        </div>
+        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
+          <div className="bg-chart-pallete5 mb-2 h-12 w-9/12 rounded-r-lg"></div>
+        </div>
+        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
+          <div className="bg-chart-pallete3 mb-2 h-12 w-8/12 rounded-r-lg"></div>
+        </div>
+        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
+          <div className="bg-chart-pallete2 mb-2 h-12 w-10/12 rounded-r-lg"></div>
+        </div>
+        <div className="bg-light-gray mb-2 h-12 w-full rounded-r-lg z-[-1]">
+          <div className="bg-chart-pallete1 mb-2 h-12 w-7/12 rounded-r-lg"></div>
+        </div>
+        <div className="x-axis-labels flex justify-between mt-2">
+          <span className="text-base font-semibold">K</span>
+          <span className="text-base font-semibold">M</span>
+          <span className="text-base font-semibold">I</span>
+          <span className="text-base font-semibold">T</span>
+          <span className="text-base font-semibold">L</span>
         </div>
       </div>
+    );
+  };
+
+  return (
+    <Topbar title={`${greeting}, ${auth.value.user.name}!`}>
+      <Flex className="rounded-xl flex-col h-full justify-between">
+        <div></div>
+        {buildChartBackground()}
+        <div className="flex justify-around">
+          {/* <FilledButton
+            className="w-fit bg-denim transform transition duration-500 
+            hover:scale-110 drop-shadow-lg"
+            onClick={() =>
+              window.open(
+                `${import.meta.env.VITE_LIVE_QUIZ_URL}?token=${
+                  auth.value.token
+                }`
+              )
+            }
+          >
+            <span className="text-white text-3xl">Join</span>
+          </FilledButton>
+          <FilledButton
+            onClick={onCreateQuiz}
+            className="w-5/12 bg-koromiko transform transition duration-500 
+              hover:scale-110 drop-shadow-lg"
+          >
+            <AddBoxOutlinedIcon className="mb-2" style={{ fontSize: 32 }} />
+            {"  "}
+            <span className="text-3xl">Create Quiz</span>
+          </FilledButton> */}
+        </div>
+        <div></div>
+      </Flex>
     </Topbar>
   );
 }

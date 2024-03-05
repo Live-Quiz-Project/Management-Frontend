@@ -29,7 +29,15 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
 
   const chartOptions = {
     chartArea: { width: "80%", height: "80%" },
-    colors: ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"],
+    colors: [
+      "#FFAAAA",
+      "#FFCA7A",
+      "#C7DAB0",
+      "#C8DAF5",
+      "#DDD1E1",
+      "#D1C4E9",
+      "#B2EBF2",
+    ],
     backgroundColor: "#FFFADD",
     hAxis: { format: "0", minValue: 0 },
   };
@@ -196,18 +204,26 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
 
     return (
       <div>
-        {questionData.map((item, index) => {
-          const colorIndex = index % colors.length;
-          const bgColor = colors[colorIndex];
+        {questionData == null ? (
+          <div className="flex">
+            <p className={`px-2 py-2 rounded-xl border-2`}>No Answers</p>
+          </div>
+        ) : (
+          questionData.map((item, index) => {
+            const colorIndex = index % colors.length;
+            const bgColor = colors[colorIndex];
 
-          return (
-            <div className="flex" key={item.content}>
-              <p className={`px-2 py-2 rounded-xl border-2 border-${bgColor}`}>
-                {item.content}
-              </p>
-            </div>
-          );
-        })}
+            return (
+              <div className="flex" key={item.content}>
+                <p
+                  className={`px-2 py-2 rounded-xl border-2 border-${bgColor}`}
+                >
+                  {item.content}
+                </p>
+              </div>
+            );
+          })
+        )}
       </div>
     );
   };
@@ -235,7 +251,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     <div className="w-full rounded-xl bg-peach p-4 mb-2 mt-2">
       <Flex className="justify-between">
         <h2 className="font-serif">
-          {questionNo}. {title}
+          {questionNo}. {title.replace(/\|><\|/g, " _ ")}
         </h2>
         {questionType === "POOL" || questionType === "PARAGRAPH" ? (
           <></>
