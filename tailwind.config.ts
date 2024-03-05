@@ -28,6 +28,9 @@ export default {
       "shade-green": "#B9E8E6",
       "correct-green": "#4FEF26",
       "false-red": "#FF7373",
+      "chart-yellow": "#e9d8a6",
+      "chart-orange": "#f79256",
+      "chart-red": "#ae2012",
     },
     fontFamily: {
       serif: ["Young Serif", "Chonburi", "serif"],
