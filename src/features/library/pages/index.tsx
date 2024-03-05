@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { setCurPage, setMode, setQuiz } from "@/features/library/store/slice";
 import Visibility from "@/features/library/utils/enums/visibility";
 import useTypedSelector from "@/common/hooks/useTypedSelector";
+import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 
 export default function Library() {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function Library() {
 
   useEffect(() => {
     (async () => {
-      let q: Quiz[] = [];
+      const q: Quiz[] = [];
       const { data } = await http.get("/quizzes");
       data.map(
         (quiz: {
@@ -97,7 +98,7 @@ export default function Library() {
         <p className="font-sans-serif text-header-1">Library</p>
         <div className="flex justify-between">
           <FilledButton onClick={onCreateQuiz} className="bg-koromiko">
-            &#43; Create Quiz
+            <AddBoxOutlinedIcon style={{ fontSize: 24 }} /> Create Quiz
           </FilledButton>
           <SearchBar className="" keyword={search} setKeyword={setSearch} />
         </div>

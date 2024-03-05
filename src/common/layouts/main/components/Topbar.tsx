@@ -49,7 +49,7 @@ export default function Topbar({
         )}
         <p className="font-sans-serif text-4xl font-medium">{title}</p>
         <div className="flex bg-denim rounded-full justify-end">
-          <div className="flex flex-col pl-6">
+          <div className="flex flex-col pl-6 pt-1">
             <p className="pr-2 font-sans-serif text-white">
               {auth.value.user.name}
             </p>

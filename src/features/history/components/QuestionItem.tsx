@@ -11,6 +11,7 @@ interface QuestionItemProps {
   questionNo: number;
   questionData: IOption[];
   poolQuestionData: [];
+  dashboardAnswerData: [];
   questionType: string;
   poolOrder: number;
 }
@@ -21,6 +22,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   questionType,
   questionData,
   poolQuestionData,
+  dashboardAnswerData,
   poolOrder,
 }) => {
   const [chartType, setChartType] = useState<"BarChart" | "PieChart">(
@@ -228,6 +230,35 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
     );
   };
 
+  const buildFillInTheBlanksChart = () => {
+    const colors = ["jordy-blue", "quartz", "peach", "sienna", "dune"];
+
+    return (
+      <div>
+        {questionData == null ? (
+          <div className="flex">
+            <p className={`px-2 py-2 rounded-xl border-2`}>No Answers</p>
+          </div>
+        ) : (
+          questionData.map((item, index) => {
+            const colorIndex = index % colors.length;
+            const bgColor = colors[colorIndex];
+
+            return (
+              <div className="flex" key={item.content}>
+                <p
+                  className={`px-2 py-2 rounded-xl border-2 border-${bgColor}`}
+                >
+                  {item.content}
+                </p>
+              </div>
+            );
+          })
+        )}
+      </div>
+    );
+  };
+
   const buildChart = () => {
     switch (questionType) {
       case "CHOICE":
@@ -235,7 +266,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
       case "POOL":
         return buildPoolChart(poolOrder);
       case "FILL_BLANK":
-        return buildMultiTypeChart();
+        return buildFillInTheBlanksChart();
       case "PARAGRAPH":
         return buldParagraphChart();
       case "TRUE_FALSE":
@@ -253,7 +284,9 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
         <h2 className="font-serif">
           {questionNo}. {title.replace(/\|><\|/g, " _ ")}
         </h2>
-        {questionType === "POOL" || questionType === "PARAGRAPH" ? (
+        {questionType === "POOL" ||
+        questionType === "PARAGRAPH" ||
+        questionType === "FILL_BLANK" ? (
           <></>
         ) : (
           buildChartTypesButton()
