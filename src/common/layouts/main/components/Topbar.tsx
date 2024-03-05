@@ -47,8 +47,16 @@ export default function Topbar({
             <IoArrowBack className="w-6 h-6" />
           </button>
         )}
-        <p className="font-serif text-4xl font-medium">{title}</p>
-        <div className="flex items-center space-x-3">
+        <p className="font-sans-serif text-4xl font-medium">{title}</p>
+        <div className="flex bg-denim rounded-full justify-end">
+          <div className="flex flex-col pl-6">
+            <p className="pr-2 font-sans-serif text-white">
+              {auth.value.user.name}
+            </p>
+            <p className="pr-2 font-sans-serif text-white text-sm">
+              {auth.value.user.email}
+            </p>
+          </div>
           <div
             className="w-14 h-14 bg-quill-gray rounded-full cursor-pointer relative border-2 border-transparent hover:border-pastel-orange"
             onClick={() => setIsExpanded((prev) => !prev)}

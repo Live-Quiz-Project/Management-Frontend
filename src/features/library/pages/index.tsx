@@ -94,7 +94,7 @@ export default function Library() {
   return (
     <Topbar>
       <div className="space-y-4" style={{ maxHeight: "73vh" }}>
-        <p className="font-serif text-header-1">Library</p>
+        <p className="font-sans-serif text-header-1">Library</p>
         <div className="flex justify-between">
           <FilledButton onClick={onCreateQuiz} className="bg-koromiko">
             &#43; Create Quiz
