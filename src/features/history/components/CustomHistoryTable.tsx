@@ -79,7 +79,7 @@ const CustomHistoryTable: React.FC<CustomHistoryTableProps> = ({
 
   return (
     <div>
-      <Flex className="justify-around border-b border-pastel-orange">
+      <Flex className="justify-around border-b-2 border-b-koromiko">
         {columns.map((column) => (
           <span key={column.key} style={{ width: column.width }}>
             {column.header}
