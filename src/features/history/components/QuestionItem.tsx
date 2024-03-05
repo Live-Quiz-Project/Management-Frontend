@@ -29,7 +29,15 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
 
   const chartOptions = {
     chartArea: { width: "80%", height: "80%" },
-    colors: ["#FFAAAA", "#FFCA7A", "#C7DAB0", "#C8DAF5", "#DDD1E1"],
+    colors: [
+      "#FFAAAA",
+      "#FFCA7A",
+      "#C7DAB0",
+      "#C8DAF5",
+      "#DDD1E1",
+      "#D1C4E9",
+      "#B2EBF2",
+    ],
     backgroundColor: "#FFFADD",
     hAxis: { format: "0", minValue: 0 },
   };
