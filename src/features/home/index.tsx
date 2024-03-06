@@ -12,6 +12,7 @@ import Visibility from "../library/utils/enums/visibility";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import MyQuizCard from "./components/MyQuizCard";
+import RecentLiveCard from "./components/RecentLiveCard";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -138,7 +139,7 @@ export default function Home() {
             <div className="flex w-72 h-52 bg-light-gray rounded-xl"></div>
           ) : (
             quizzes.map((quiz) => (
-              <div className="shrink-0" key={quiz.id}>
+              <div className="shrink-0 overflow-hidden" key={quiz.id}>
                 <MyQuizCard quiz={quiz} />
               </div>
             ))
@@ -159,8 +160,8 @@ export default function Home() {
             <div className="flex w-72 h-52 bg-light-gray rounded-xl"></div>
           ) : (
             liveHistoryData.map((quiz) => (
-              <div className="shrink-0" key={quiz["id"]}>
-                <MyQuizCard quiz={quiz} />
+              <div className="shrink-0 overflow-hidden" key={quiz["id"]}>
+                <RecentLiveCard quiz={quiz} />
               </div>
             ))
           )}
