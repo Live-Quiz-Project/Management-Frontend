@@ -459,7 +459,9 @@ export default function TrueFalse({ className = "", canvasSize }: Props) {
               <ChoiceButton.Content>
                 <MathJax className="!flex w-full items-center">
                   <EditableLabel
-                    className="text-center !overflow-auto w-full font-sans-serif font-medium tracking-tight"
+                    className={`text-center !overflow-auto w-full font-sans-serif font-medium tracking-tight ${
+                      i < 2 ? "[&>span]:!opacity-100" : ""
+                    }`}
                     value={option.content}
                     placeholder="Enter option..."
                     onChange={(e) => {
@@ -483,6 +485,7 @@ export default function TrueFalse({ className = "", canvasSize }: Props) {
                       };
                       dispatch(setQuestion(newQuestion));
                     }}
+                    disabled={i < 2}
                   />
                 </MathJax>
               </ChoiceButton.Content>

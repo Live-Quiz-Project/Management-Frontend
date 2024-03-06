@@ -30,7 +30,6 @@ export default function Topbar({ className = "" }: Props) {
     e.preventDefault();
     const toBeCreatedQuiz = {
       id: editor.value.quiz!.id,
-      version_id: editor.value.quiz!.versionId,
       title: editor.value.quiz!.title,
       description: editor.value.quiz!.description,
       cover_image: editor.value.quiz!.coverImg,
@@ -123,11 +122,20 @@ export default function Topbar({ className = "" }: Props) {
       }),
     };
 
-    try {
-      http.post("/quizzes", toBeCreatedQuiz);
-      navigate("/library", { replace: true });
-    } catch (error) {
-      alert(error);
+    if (editor.value.mode === "edit") {
+      try {
+        http.put(`/quizzes/${editor.value.quiz!.id}`, toBeCreatedQuiz);
+        navigate("/library");
+      } catch (error) {
+        alert(error);
+      }
+    } else {
+      try {
+        http.post("/quizzes", toBeCreatedQuiz);
+        navigate("/library");
+      } catch (error) {
+        alert(error);
+      }
     }
   }
 
