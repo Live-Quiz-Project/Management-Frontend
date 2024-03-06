@@ -40,6 +40,7 @@ export default function Library() {
           time_limit: number;
           visibility: string;
           questions: any;
+          created_at: string;
         }) => {
           q.push({
             id: quiz.id,
@@ -57,6 +58,7 @@ export default function Library() {
             timeLimit: quiz.time_limit.toString(),
             visibility: quiz.visibility,
             questions: quiz.questions,
+            created_at: quiz.created_at,
           });
         }
       );
@@ -87,10 +89,24 @@ export default function Library() {
         caseSensitive: false,
         fontSize: 2,
         questions: [],
+        created_at: "",
       })
     );
     navigate(`/library/quiz/${newQuizId}`);
   }
+
+  useEffect(() => {
+    setQuizzes((prevData) => {
+      const sortedData = [...prevData];
+      sortedData.sort((a, b) => {
+        const createdA = new Date(a.created_at).getTime();
+        const createdB = new Date(b.created_at).getTime();
+
+        return createdB - createdA;
+      });
+      return sortedData;
+    });
+  }, [quizzes]);
 
   return (
     <Topbar>
