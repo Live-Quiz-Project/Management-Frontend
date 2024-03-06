@@ -30,7 +30,7 @@ export default function QuizCard({ quiz }: Props) {
     {
       label: "Edit",
       onClick: () => {
-        dispatch(setMode("create"));
+        dispatch(setMode("edit"));
         dispatch(setCurPage(0));
         dispatch(setQuiz(quiz));
         navigate(`/library/quiz/${quiz.id}`);
@@ -61,11 +61,13 @@ export default function QuizCard({ quiz }: Props) {
 
   return (
     <div className="grid grid-cols-12 bg-egg-sour rounded-xl items-center h-40">
-      <img
-        src={getCoverImage(quiz.coverImg)}
-        alt="Cover image"
-        className="col-span-2 w-full h-full object-cover p-1 pr-8 rounded-2xl"
-      />
+      <div className="w-full h-full col-span-2 overflow-hidden">
+        <img
+          src={getCoverImage(quiz.coverImg)}
+          alt="Cover image"
+          className="w-full h-full object-cover p-1 pr-8 rounded-2xl"
+        />
+      </div>
       <h1 className="text-header-2 col-span-4">{quiz.title}</h1>
       <p className="text-header-2 col-span-3">{quiz.creatorName}</p>
       <div className="text-header-2 col-span-3 flex justify-between">

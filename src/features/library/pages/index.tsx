@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { setCurPage, setMode, setQuiz } from "@/features/library/store/slice";
 import Visibility from "@/features/library/utils/enums/visibility";
 import useTypedSelector from "@/common/hooks/useTypedSelector";
+import QuestionTypesEnum from "../utils/enums/question-types";
 
 export default function Library() {
   const navigate = useNavigate();
@@ -23,44 +24,111 @@ export default function Library() {
     (async () => {
       let q: Quiz[] = [];
       const { data } = await http.get("/quizzes");
-      data.map(
-        (quiz: {
-          id: string;
-          title: string;
-          description: string;
-          creator_id: string;
-          creator_name: string;
-          cover_image: string;
-          case_sensitive: boolean;
-          font_size: number;
-          mark: number;
-          select_up_to: number;
-          have_time_factor: boolean;
-          time_factor: number;
-          time_limit: number;
-          visibility: string;
-          questions: any;
-        }) => {
-          q.push({
-            id: quiz.id,
-            versionId: "",
-            title: quiz.title,
-            description: quiz.description,
-            creatorId: quiz.creator_id,
-            creatorName: quiz.creator_name,
-            coverImg: quiz.cover_image,
-            caseSensitive: quiz.case_sensitive,
-            fontSize: quiz.font_size,
-            mark: quiz.mark.toString(),
-            haveTimeFactor: quiz.have_time_factor,
-            timeFactor: quiz.time_factor.toString(),
-            timeLimit: quiz.time_limit.toString(),
-            visibility: quiz.visibility,
-            questions: quiz.questions,
-          });
-        }
-      );
+
+      data.forEach((quiz: any) => {
+        q.push({
+          id: quiz.id,
+          title: quiz.title,
+          description: quiz.description,
+          creatorId: quiz.creator_id,
+          creatorName: quiz.creator_name,
+          coverImg: quiz.cover_image,
+          caseSensitive: quiz.case_sensitive,
+          fontSize: quiz.font_size,
+          mark: quiz.mark.toString(),
+          haveTimeFactor: quiz.have_time_factor,
+          timeFactor: quiz.time_factor.toString(),
+          timeLimit: quiz.time_limit.toString(),
+          visibility: quiz.visibility,
+          questions: quiz.questions
+            ? quiz.questions.map((question: any) => ({
+                id: question.id,
+                isInPool: question.pool_order > -1,
+                pool: question.pool_order,
+                poolRequired: question.pool_required,
+                type: question.type,
+                order: question.order,
+                content: question.content,
+                note: question.note,
+                mediaType: question.media_type,
+                media: question.media,
+                useTemplate: question.use_template,
+                timeLimit: question.time_limit,
+                haveTimeFactor: question.have_time_factor,
+                timeFactor: question.time_factor,
+                fontSize: question.font_size,
+                layout: question.layout_idx,
+                selectMin: question.select_min,
+                selectMax: question.select_max,
+                caseSensitive: question.case_sensitive,
+                options: question.options
+                  ? question.options.map((option: any) => {
+                      if (
+                        question.type === QuestionTypesEnum.CHOICE ||
+                        question.type === QuestionTypesEnum.TRUE_FALSE
+                      ) {
+                        return {
+                          id: option.id,
+                          order: option.order,
+                          color: option.color,
+                          content: option.content,
+                          mark: option.mark,
+                          isCorrect: option.correct,
+                        };
+                      } else if (
+                        question.type === QuestionTypesEnum.PARAGRAPH ||
+                        question.type === QuestionTypesEnum.FILL_BLANK
+                      ) {
+                        return {
+                          id: option.id,
+                          order: option.order,
+                          content: option.content,
+                          mark: option.mark,
+                          case_sensitive: option.case_sensitive,
+                        };
+                      } else if (question.type === QuestionTypesEnum.MATCHING) {
+                        if (
+                          (option as MatchingOption).type === "MATCHING_PROMPT"
+                        ) {
+                          return {
+                            id: option.id,
+                            type: "MATCHING_PROMPT",
+                            content: option.content,
+                            color: option.color,
+                            order: option.order,
+                            eliminate: option.eliminate,
+                          };
+                        } else if (
+                          (option as MatchingOption).type === "MATCHING_OPTION"
+                        ) {
+                          return {
+                            id: option.id,
+                            type: "MATCHING_OPTION",
+                            content: option.content,
+                            color: option.color,
+                            order: option.order,
+                            eliminate: option.eliminate,
+                          };
+                        } else if (
+                          (option as MatchingOption).type === "MATCHING_ANSWER"
+                        ) {
+                          return {
+                            id: option.id,
+                            type: "MATCHING_ANSWER",
+                            prompt: option.prompt_id,
+                            option: option.option_id,
+                            mark: option.mark,
+                          };
+                        }
+                      }
+                    })
+                  : [],
+              }))
+            : [],
+        });
+      });
       setQuizzes(q);
+      setFilteredQuizzes(q);
     })();
   }, []);
 
@@ -74,13 +142,11 @@ export default function Library() {
   function onCreateQuiz(e: FormEvent<HTMLButtonElement>) {
     e.preventDefault();
     const newQuizId = uuid();
-    const newQuizVersionId = uuid();
     dispatch(setMode("create"));
     dispatch(setCurPage(0));
     dispatch(
       setQuiz({
         id: newQuizId,
-        versionId: newQuizVersionId,
         creatorId: auth.value.user.id,
         creatorName: "",
         title: "Untitled Quiz",

@@ -44,6 +44,7 @@ export default function Home() {
     dispatch(
       setQuiz({
         id: newUuid,
+        creatorName: auth.value.user.name,
         creatorId: auth.value.user.id,
         title: "Untitled Quiz",
         description: "",

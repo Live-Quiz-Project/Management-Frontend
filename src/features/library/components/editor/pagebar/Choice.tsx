@@ -41,13 +41,6 @@ export default function Choice({
       />
       {question.options && (
         <div className="relative flex flex-col justify-between h-full w-full space-y-1 active:cursor-grabbing [&_p]:leading-tight">
-          <img
-            src=""
-            alt=""
-            className={`absolute ${
-              full ? "bottom-0" : "bottom-5 lg:bottom-6"
-            } w-5 sm:w-6 h-5 sm:h-6`}
-          />
           <div className="flex flex-col justify-center items-end">
             <p className="text-note text-regent-gray">
               {
