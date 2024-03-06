@@ -206,7 +206,9 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
 
     return (
       <div>
-        {questionData == null ? (
+        {questionData == null ||
+        questionData.length === 0 ||
+        questionData[0].content === "" ? (
           <div className="flex">
             <p className={`px-2 py-2 rounded-xl border-2`}>No Answers</p>
           </div>
@@ -235,7 +237,9 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
 
     return (
       <div>
-        {questionData == null ? (
+        {questionData == null ||
+        questionData.length === 0 ||
+        questionData[0].content === "" ? (
           <div className="flex">
             <p className={`px-2 py-2 rounded-xl border-2`}>No Answers</p>
           </div>
