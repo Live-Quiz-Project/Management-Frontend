@@ -16,11 +16,11 @@ export default function RecentLiveCard({ quiz }: Props) {
   };
 
   return (
-    <div className="flex flex-col items-center w-72 bg-karry rounded-xl px-1 py-1">
+    <div className="grid grid-rows-[auto_auto] items-center w-72 h-full bg-karry rounded-xl px-1 py-1 overflow-hidden">
       <img
         src={defaultImage}
         alt="Cover image"
-        className="w-full object-cover p-1 rounded-lg"
+        className="w-full aspect-video object-cover p-1 rounded-lg"
       />
       {quiz.title}
     </div>
