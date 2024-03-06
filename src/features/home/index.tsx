@@ -139,7 +139,7 @@ export default function Home() {
             <div className="flex w-72 h-52 bg-light-gray rounded-xl"></div>
           ) : (
             quizzes.map((quiz) => (
-              <div className="shrink-0" key={quiz.id}>
+              <div className="shrink-0 overflow-hidden" key={quiz.id}>
                 <MyQuizCard quiz={quiz} />
               </div>
             ))
@@ -160,7 +160,7 @@ export default function Home() {
             <div className="flex w-72 h-52 bg-light-gray rounded-xl"></div>
           ) : (
             liveHistoryData.map((quiz) => (
-              <div className="shrink-0" key={quiz["id"]}>
+              <div className="shrink-0 overflow-hidden" key={quiz["id"]}>
                 <RecentLiveCard quiz={quiz} />
               </div>
             ))
