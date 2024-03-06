@@ -15,6 +15,7 @@ import {
 import { IoClose } from "react-icons/io5";
 import { storage } from "@/common/services/firebase";
 import useTypedSelector from "@/common/hooks/useTypedSelector";
+import { v4 as uuid } from "uuid";
 
 type Props = {
   folderName: string;
@@ -40,15 +41,14 @@ export default function FileUploader({
     (async () => {
       setPending(true);
       try {
-        const res = await listAll(ref(storage, folderName));
+        const res = await listAll(ref(storage, folderName.split("/")[0]));
         if (res.items.length > 0) {
           res.items.forEach(async (item) => {
             setFile(item);
-            onChange(item.fullPath);
+            console.log(item.fullPath);
           });
         } else {
           setFile(null);
-          onChange("");
         }
       } catch (error) {
         alert(error);
@@ -58,14 +58,16 @@ export default function FileUploader({
     })();
   }, [
     editor.value.quiz?.questions[editor.value.curPage - 1]
-      ? editor.value.quiz!.questions[editor.value.curPage - 1].mediaType
+      ? editor.value.quiz!.questions[editor.value.curPage - 1].media
       : null,
   ]);
 
   async function onUploadFile(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setPending(true);
-    const filePath = `${folderName}/${e.currentTarget.files![0].name}`;
+    const filePath = `${uuid()}/${e.currentTarget.files![0].name}`;
+    console.log(filePath);
+
     const storageRef = ref(storage, filePath);
     try {
       await uploadBytes(storageRef, e.currentTarget.files![0]);

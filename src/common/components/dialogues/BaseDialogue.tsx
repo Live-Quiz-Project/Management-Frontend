@@ -30,11 +30,33 @@ export default function BaseDialogue({
         setIsOpen(false);
       }
     };
+
+    const checkOverflow = () => {
+      if (dialogueRef.current) {
+        const spaceAbove = dialogueRef.current.getBoundingClientRect().top;
+        const spaceBelow =
+          window.innerHeight -
+          dialogueRef.current.getBoundingClientRect().bottom;
+        if (spaceAbove <= spaceBelow) {
+          dialogueRef.current.style.top = "";
+          dialogueRef.current.style.borderBottomLeftRadius = ".5rem";
+          dialogueRef.current.style.borderBottomRightRadius = ".5rem";
+        } else {
+          dialogueRef.current.style.top = `-${dialogueRef.current.clientHeight}px`;
+          dialogueRef.current.style.borderTopLeftRadius = ".5rem";
+          dialogueRef.current.style.borderTopRightRadius = ".5rem";
+        }
+      }
+    };
+    checkOverflow();
+
+    window.addEventListener("resize", checkOverflow);
     document.addEventListener("mousedown", onClickOutside);
     return () => {
+      window.removeEventListener("resize", checkOverflow);
       document.removeEventListener("mousedown", onClickOutside);
     };
-  }, [dialogueRef]);
+  }, [dialogueRef, isOpen]);
 
   if (!isOpen) return null;
 

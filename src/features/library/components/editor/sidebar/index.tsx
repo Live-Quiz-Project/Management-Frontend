@@ -22,7 +22,6 @@ import {
 import VISIBILITY from "@/features/library/utils/constants/visibility";
 import MEDIA_TYPES from "@/features/library/utils/constants/media-types";
 import FileUploader from "@/features/library/components/editor/sidebar/FileUploader";
-import { useParams } from "react-router-dom";
 import BaseTextarea from "@/common/components/textareas/BaseTextarea";
 import EquationInput from "@/common/components/inputs/EquationInput";
 import MediaTypesEnum from "@/features/library/utils/enums/media-types";
@@ -36,7 +35,6 @@ export default function Sidebar({ className }: Props) {
   const dispatch = useDispatch<StoreDispatch>();
   const editor = useTypedSelector((state) => state.editor);
   const ref = useRef<HTMLDivElement>(null);
-  const { id } = useParams();
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -189,7 +187,7 @@ export default function Sidebar({ className }: Props) {
             <div className="space-y-1">
               <p className="truncate">Cover image</p>
               <FileUploader
-                folderName={`${id}/${editor.value.quiz!.versionId}/cover`}
+                folderName={editor.value.quiz!.coverImg}
                 onChange={(file) => {
                   dispatch(
                     setQuiz({
@@ -478,85 +476,93 @@ export default function Sidebar({ className }: Props) {
                 }
               />
             </div>
-            <div className="flex justify-between items-center">
-              <p className="truncate">Use template</p>
-              <BaseSwitch
-                checked={
-                  editor.value.quiz!.questions[editor.value.curPage - 1]
-                    .useTemplate
-                }
-                onChange={(e) => {
-                  if (e.currentTarget.checked) {
-                    let newQuestion = {
-                      ...editor.value.quiz!.questions[editor.value.curPage - 1],
-                    };
-                    let newOptions:
-                      | ChoiceOption[]
-                      | TextOption[]
-                      | MatchingOption[];
-                    if (
-                      newQuestion.type === QuestionTypesEnum.PARAGRAPH ||
-                      newQuestion.type === QuestionTypesEnum.FILL_BLANK
-                    ) {
-                      newOptions = [...(newQuestion.options as TextOption[])];
-                      newOptions = newOptions.map((option) => ({
-                        ...option,
-                        mark: editor.value.quiz!.mark,
-                        caseSensitive: editor.value.quiz!.caseSensitive,
-                      }));
-                    } else if (
-                      newQuestion.type === QuestionTypesEnum.MATCHING
-                    ) {
-                      newOptions = [
-                        ...(newQuestion.options as MatchingOption[]),
-                      ];
-                      let newOptionsPrompts = [...newOptions].filter(
-                        (o) => o.type === "MATCHING_PROMPT"
-                      );
-                      let newOptionsOptions = [...newOptions].filter(
-                        (o) => o.type === "MATCHING_OPTION"
-                      );
-                      let newOptionsAnswers = [...newOptions].filter(
-                        (o) => o.type === "MATCHING_ANSWER"
-                      );
-                      if (newOptionsAnswers.length > 0) {
-                        newOptionsAnswers = newOptionsAnswers.map((option) => ({
-                          ...option,
-                          mark: editor.value.quiz!.mark,
-                        }));
-                      }
-                      newOptions = [
-                        ...newOptionsPrompts,
-                        ...newOptionsOptions,
-                        ...newOptionsAnswers,
-                      ];
-                    } else {
-                      newOptions = [...(newQuestion.options as ChoiceOption[])];
-                    }
-                    newQuestion = {
-                      ...newQuestion,
-                      useTemplate: true,
-                      timeLimit: editor.value.quiz!.timeLimit,
-                      haveTimeFactor: editor.value.quiz!.haveTimeFactor,
-                      timeFactor: editor.value.quiz!.timeFactor,
-                      fontSize: editor.value.quiz!.fontSize,
-                      options: newOptions,
-                    };
-                    dispatch(setStoreQuestion(newQuestion));
-                  } else {
-                    dispatch(
-                      setStoreQuestion({
+            {editor.value.curPage <= 0 && (
+              <div className="flex justify-between items-center">
+                <p className="truncate">Use template</p>
+                <BaseSwitch
+                  checked={
+                    editor.value.quiz!.questions[editor.value.curPage - 1]
+                      .useTemplate
+                  }
+                  onChange={(e) => {
+                    if (e.currentTarget.checked) {
+                      let newQuestion = {
                         ...editor.value.quiz!.questions[
                           editor.value.curPage - 1
                         ],
-                        useTemplate: false,
-                      })
-                    );
-                  }
-                }}
-                className="h-5 text-jordy-blue"
-              />
-            </div>
+                      };
+                      let newOptions:
+                        | ChoiceOption[]
+                        | TextOption[]
+                        | MatchingOption[];
+                      if (
+                        newQuestion.type === QuestionTypesEnum.PARAGRAPH ||
+                        newQuestion.type === QuestionTypesEnum.FILL_BLANK
+                      ) {
+                        newOptions = [...(newQuestion.options as TextOption[])];
+                        newOptions = newOptions.map((option) => ({
+                          ...option,
+                          mark: editor.value.quiz!.mark,
+                          caseSensitive: editor.value.quiz!.caseSensitive,
+                        }));
+                      } else if (
+                        newQuestion.type === QuestionTypesEnum.MATCHING
+                      ) {
+                        newOptions = [
+                          ...(newQuestion.options as MatchingOption[]),
+                        ];
+                        let newOptionsPrompts = [...newOptions].filter(
+                          (o) => o.type === "MATCHING_PROMPT"
+                        );
+                        let newOptionsOptions = [...newOptions].filter(
+                          (o) => o.type === "MATCHING_OPTION"
+                        );
+                        let newOptionsAnswers = [...newOptions].filter(
+                          (o) => o.type === "MATCHING_ANSWER"
+                        );
+                        if (newOptionsAnswers.length > 0) {
+                          newOptionsAnswers = newOptionsAnswers.map(
+                            (option) => ({
+                              ...option,
+                              mark: editor.value.quiz!.mark,
+                            })
+                          );
+                        }
+                        newOptions = [
+                          ...newOptionsPrompts,
+                          ...newOptionsOptions,
+                          ...newOptionsAnswers,
+                        ];
+                      } else {
+                        newOptions = [
+                          ...(newQuestion.options as ChoiceOption[]),
+                        ];
+                      }
+                      newQuestion = {
+                        ...newQuestion,
+                        useTemplate: true,
+                        timeLimit: editor.value.quiz!.timeLimit,
+                        haveTimeFactor: editor.value.quiz!.haveTimeFactor,
+                        timeFactor: editor.value.quiz!.timeFactor,
+                        fontSize: editor.value.quiz!.fontSize,
+                        options: newOptions,
+                      };
+                      dispatch(setStoreQuestion(newQuestion));
+                    } else {
+                      dispatch(
+                        setStoreQuestion({
+                          ...editor.value.quiz!.questions[
+                            editor.value.curPage - 1
+                          ],
+                          useTemplate: false,
+                        })
+                      );
+                    }
+                  }}
+                  className="h-5 text-jordy-blue"
+                />
+              </div>
+            )}
           </div>
           <div className="py-5 md:py-6 px-4 md:px-8 space-y-6">
             <div className="space-y-1">
@@ -682,117 +688,134 @@ export default function Sidebar({ className }: Props) {
                 }}
               />
             </div>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <p className="truncate">Media</p>
-                <BaseDropdown
-                  className="bg-white w-[48%]"
-                  options={[{ label: "None", value: "" }, ...MEDIA_TYPES]}
-                  value={
-                    editor.value.quiz!.questions[editor.value.curPage - 1]
-                      .mediaType
-                  }
-                  onChange={(e) => {
-                    e.preventDefault();
-                    dispatch(
-                      setStoreQuestion({
-                        ...editor.value.quiz!.questions[
-                          editor.value.curPage - 1
-                        ],
-                        mediaType: e.currentTarget.value,
-                        media: "",
-                      })
-                    );
-                  }}
-                />
-              </div>
-              {editor.value.quiz!.questions[editor.value.curPage - 1]
-                .mediaType &&
-                (editor.value.quiz!.questions[editor.value.curPage - 1]
-                  .mediaType === MediaTypesEnum.EQUATION ? (
-                  <EquationInput
-                    latex={
-                      editor.value.quiz!.questions[editor.value.curPage - 1]
-                        .media
-                    }
-                    onChange={(mf) => {
-                      dispatch(
-                        setStoreQuestion({
-                          ...editor.value.quiz!.questions[
-                            editor.value.curPage - 1
-                          ],
-                          media: mf.latex(),
-                        })
-                      );
-                    }}
-                  />
-                ) : (
-                  <FileUploader
-                    folderName={`${id}/${
-                      editor.value.quiz!.versionId
-                    }/${editor.value.quiz!.questions[
-                      editor.value.curPage - 1
-                    ].mediaType.toLowerCase()}/${editor.value.curPage}`}
-                    acceptImage={
-                      editor.value.quiz!.questions[editor.value.curPage - 1]
-                        .mediaType === MediaTypesEnum.IMAGE
-                    }
-                    acceptAudio={
-                      editor.value.quiz!.questions[editor.value.curPage - 1]
-                        .mediaType === MediaTypesEnum.AUDIO
-                    }
-                    acceptVideo={
-                      editor.value.quiz!.questions[editor.value.curPage - 1]
-                        .mediaType === MediaTypesEnum.VIDEO
-                    }
-                    onChange={(file) => {
-                      dispatch(
-                        setStoreQuestion({
-                          ...editor.value.quiz!.questions[
-                            editor.value.curPage - 1
-                          ],
-                          media: file,
-                        })
-                      );
-                    }}
-                  />
-                ))}
-            </div>
             {!editor.value.quiz!.questions[editor.value.curPage - 1]
               .isInPool && (
-              <div className="flex justify-between">
-                <div className="space-y-2 w-[48%]">
-                  <div
-                    className={`flex space-x-1 2xl:space-x-2 items-center transition-all duration-300 ${
-                      editor.value.quiz!.questions[editor.value.curPage - 1]
-                        .useTemplate
-                        ? "text-regent-gray"
-                        : "text-black"
-                    }`}
-                  >
-                    <p className="truncate">Time limit</p>
-                    <div className="relative cursor-auto">
-                      <IoInformationCircleSharp className="w-5 h-5 peer" />
-                      <span className="absolute bottom-[110%] -z-1 left-1/3 w-40 xl:w-48 px-3 py-1.5 leading-tight bg-beige/50 backdrop-blur-sm rounded-xl rounded-bl-none opacity-0 peer-active:opacity-100 peer-hover:opacity-100 peer-active:z-1 peer-hover:z-1 transition-all duration-300">
-                        Time limit for each question (Unit: second)
-                      </span>
-                    </div>
+              <>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <p className="truncate">Media</p>
+                    <BaseDropdown
+                      className="bg-white w-[48%]"
+                      options={[{ label: "None", value: "" }, ...MEDIA_TYPES]}
+                      value={
+                        editor.value.quiz!.questions[editor.value.curPage - 1]
+                          .mediaType
+                      }
+                      onChange={(e) => {
+                        e.preventDefault();
+                        dispatch(
+                          setStoreQuestion({
+                            ...editor.value.quiz!.questions[
+                              editor.value.curPage - 1
+                            ],
+                            mediaType: e.currentTarget.value,
+                            media: "",
+                          })
+                        );
+                      }}
+                    />
                   </div>
-                  <BaseInput
-                    pattern="\\d*"
-                    placeholder="Enter time limit..."
-                    value={
-                      editor.value.quiz!.questions[editor.value.curPage - 1]
-                        .useTemplate
-                        ? editor.value.quiz!.timeLimit
-                        : editor.value.quiz!.questions[editor.value.curPage - 1]
-                            .timeLimit
-                    }
-                    onChange={(e) => {
-                      e.preventDefault();
-                      if (!isNaN(+e.target.value)) {
+                  {editor.value.quiz!.questions[editor.value.curPage - 1]
+                    .mediaType &&
+                    (editor.value.quiz!.questions[editor.value.curPage - 1]
+                      .mediaType === MediaTypesEnum.EQUATION ? (
+                      <EquationInput
+                        latex={
+                          editor.value.quiz!.questions[editor.value.curPage - 1]
+                            .media
+                        }
+                        onChange={(mf) => {
+                          dispatch(
+                            setStoreQuestion({
+                              ...editor.value.quiz!.questions[
+                                editor.value.curPage - 1
+                              ],
+                              media: mf.latex(),
+                            })
+                          );
+                        }}
+                      />
+                    ) : (
+                      <FileUploader
+                        folderName={
+                          editor.value.quiz!.questions[editor.value.curPage - 1]
+                            .media
+                        }
+                        acceptImage={
+                          editor.value.quiz!.questions[editor.value.curPage - 1]
+                            .mediaType === MediaTypesEnum.IMAGE
+                        }
+                        acceptAudio={
+                          editor.value.quiz!.questions[editor.value.curPage - 1]
+                            .mediaType === MediaTypesEnum.AUDIO
+                        }
+                        acceptVideo={
+                          editor.value.quiz!.questions[editor.value.curPage - 1]
+                            .mediaType === MediaTypesEnum.VIDEO
+                        }
+                        onChange={(file) => {
+                          dispatch(
+                            setStoreQuestion({
+                              ...editor.value.quiz!.questions[
+                                editor.value.curPage - 1
+                              ],
+                              media: file,
+                            })
+                          );
+                        }}
+                      />
+                    ))}
+                </div>
+                <div className="flex justify-between">
+                  <div className="space-y-2 w-[48%]">
+                    <div
+                      className={`flex space-x-1 2xl:space-x-2 items-center transition-all duration-300 ${
+                        editor.value.quiz!.questions[editor.value.curPage - 1]
+                          .useTemplate
+                          ? "text-regent-gray"
+                          : "text-black"
+                      }`}
+                    >
+                      <p className="truncate">Time limit</p>
+                      <div className="relative cursor-auto">
+                        <IoInformationCircleSharp className="w-5 h-5 peer" />
+                        <span className="absolute bottom-[110%] -z-1 left-1/3 w-40 xl:w-48 px-3 py-1.5 leading-tight bg-beige/50 backdrop-blur-sm rounded-xl rounded-bl-none opacity-0 peer-active:opacity-100 peer-hover:opacity-100 peer-active:z-1 peer-hover:z-1 transition-all duration-300">
+                          Time limit for each question (Unit: second)
+                        </span>
+                      </div>
+                    </div>
+                    <BaseInput
+                      pattern="\\d*"
+                      placeholder="Enter time limit..."
+                      value={
+                        editor.value.quiz!.questions[editor.value.curPage - 1]
+                          .useTemplate
+                          ? editor.value.quiz!.timeLimit
+                          : editor.value.quiz!.questions[
+                              editor.value.curPage - 1
+                            ].timeLimit
+                      }
+                      onChange={(e) => {
+                        e.preventDefault();
+                        if (!isNaN(+e.target.value)) {
+                          const value =
+                            +e.target.value > 1800 ? "1800" : e.target.value;
+                          dispatch(
+                            setStoreQuestion({
+                              ...editor.value.quiz!.questions[
+                                editor.value.curPage - 1
+                              ],
+                              timeLimit: value,
+                            })
+                          );
+                        }
+                      }}
+                      onBlur={(e) => {
+                        e.preventDefault();
                         const value =
-                          +e.target.value > 1800 ? "1800" : e.target.value;
+                          e.target.value === "" || +e.target.value < 1
+                            ? "1"
+                            : (+e.target.value).toString();
                         dispatch(
                           setStoreQuestion({
                             ...editor.value.quiz!.questions[
@@ -801,91 +824,92 @@ export default function Sidebar({ className }: Props) {
                             timeLimit: value,
                           })
                         );
-                      }
-                    }}
-                    onBlur={(e) => {
-                      e.preventDefault();
-                      const value =
-                        e.target.value === "" || +e.target.value < 1
-                          ? "1"
-                          : (+e.target.value).toString();
-                      dispatch(
-                        setStoreQuestion({
-                          ...editor.value.quiz!.questions[
-                            editor.value.curPage - 1
-                          ],
-                          timeLimit: value,
-                        })
-                      );
-                    }}
-                    disabled={
-                      editor.value.quiz!.questions[editor.value.curPage - 1]
-                        .useTemplate
-                    }
-                  />
-                </div>
-                <div
-                  className={`space-y-2 w-[48%] transition-all duration-300 ${
-                    editor.value.quiz!.questions[editor.value.curPage - 1]
-                      .useTemplate
-                      ? "text-regent-gray"
-                      : "text-black"
-                  }`}
-                >
-                  <div className="relative grid grid-cols-[auto_auto_1fr] items-center 2xl:space-x-2 space-x-1">
-                    <p className="truncate">Time factor</p>
-                    <div className="relative">
-                      <IoInformationCircleSharp className="w-5 h-5 peer" />
-                      <span className="absolute bottom-[110%] right-1/3 -z-1 w-44 sm:w-52 px-3 py-1.5 leading-tight bg-beige/50 backdrop-blur-sm rounded-xl rounded-br-none opacity-0 peer-active:opacity-100 peer-hover:opacity-100 peer-active:z-1 peer-hover:z-1  transition-all duration-300">
-                        If checked, remaining time (by seconds) will be
-                        multiplied by this factor
-                      </span>
-                    </div>
-                    <BaseSwitch
-                      checked={
-                        editor.value.quiz!.questions[editor.value.curPage - 1]
-                          .useTemplate
-                          ? editor.value.quiz!.haveTimeFactor
-                          : editor.value.quiz!.questions[
-                              editor.value.curPage - 1
-                            ].haveTimeFactor
-                      }
-                      onChange={(e) => {
-                        dispatch(
-                          setStoreQuestion({
-                            ...editor.value.quiz!.questions[
-                              editor.value.curPage - 1
-                            ],
-                            haveTimeFactor: e.currentTarget.checked,
-                          })
-                        );
                       }}
-                      className="h-5 text-jordy-blue place-self-end self-center"
                       disabled={
                         editor.value.quiz!.questions[editor.value.curPage - 1]
                           .useTemplate
                       }
                     />
                   </div>
-                  <BaseInput
-                    pattern="\\d*"
-                    placeholder="Enter time factor..."
-                    value={
+                  <div
+                    className={`space-y-2 w-[48%] transition-all duration-300 ${
                       editor.value.quiz!.questions[editor.value.curPage - 1]
                         .useTemplate
-                        ? editor.value.quiz!.timeFactor
-                        : editor.value.quiz!.questions[editor.value.curPage - 1]
-                            .timeFactor
-                    }
-                    onChange={(e) => {
-                      e.preventDefault();
-                      if (!isNaN(+e.target.value)) {
+                        ? "text-regent-gray"
+                        : "text-black"
+                    }`}
+                  >
+                    <div className="relative grid grid-cols-[auto_auto_1fr] items-center 2xl:space-x-2 space-x-1">
+                      <p className="truncate">Time factor</p>
+                      <div className="relative">
+                        <IoInformationCircleSharp className="w-5 h-5 peer" />
+                        <span className="absolute bottom-[110%] right-1/3 -z-1 w-44 sm:w-52 px-3 py-1.5 leading-tight bg-beige/50 backdrop-blur-sm rounded-xl rounded-br-none opacity-0 peer-active:opacity-100 peer-hover:opacity-100 peer-active:z-1 peer-hover:z-1  transition-all duration-300">
+                          If checked, remaining time (by seconds) will be
+                          multiplied by this factor
+                        </span>
+                      </div>
+                      <BaseSwitch
+                        checked={
+                          editor.value.quiz!.questions[editor.value.curPage - 1]
+                            .useTemplate
+                            ? editor.value.quiz!.haveTimeFactor
+                            : editor.value.quiz!.questions[
+                                editor.value.curPage - 1
+                              ].haveTimeFactor
+                        }
+                        onChange={(e) => {
+                          dispatch(
+                            setStoreQuestion({
+                              ...editor.value.quiz!.questions[
+                                editor.value.curPage - 1
+                              ],
+                              haveTimeFactor: e.currentTarget.checked,
+                            })
+                          );
+                        }}
+                        className="h-5 text-jordy-blue place-self-end self-center"
+                        disabled={
+                          editor.value.quiz!.questions[editor.value.curPage - 1]
+                            .useTemplate
+                        }
+                      />
+                    </div>
+                    <BaseInput
+                      pattern="\\d*"
+                      placeholder="Enter time factor..."
+                      value={
+                        editor.value.quiz!.questions[editor.value.curPage - 1]
+                          .useTemplate
+                          ? editor.value.quiz!.timeFactor
+                          : editor.value.quiz!.questions[
+                              editor.value.curPage - 1
+                            ].timeFactor
+                      }
+                      onChange={(e) => {
+                        e.preventDefault();
+                        if (!isNaN(+e.target.value)) {
+                          const value =
+                            +e.target.value > 100
+                              ? "100"
+                              : +e.target.value < 0
+                              ? "0"
+                              : e.target.value;
+                          dispatch(
+                            setStoreQuestion({
+                              ...editor.value.quiz!.questions[
+                                editor.value.curPage - 1
+                              ],
+                              timeFactor: value,
+                            })
+                          );
+                        }
+                      }}
+                      onBlur={(e) => {
+                        e.preventDefault();
                         const value =
-                          +e.target.value > 100
-                            ? "100"
-                            : +e.target.value < 0
+                          e.target.value === "" || +e.target.value < 1
                             ? "0"
-                            : e.target.value;
+                            : (+e.target.value).toString();
                         dispatch(
                           setStoreQuestion({
                             ...editor.value.quiz!.questions[
@@ -894,35 +918,21 @@ export default function Sidebar({ className }: Props) {
                             timeFactor: value,
                           })
                         );
+                      }}
+                      disabled={
+                        editor.value.quiz!.questions[editor.value.curPage - 1]
+                          .useTemplate ||
+                        !(editor.value.quiz!.questions[editor.value.curPage - 1]
+                          .useTemplate
+                          ? editor.value.quiz!.haveTimeFactor
+                          : editor.value.quiz!.questions[
+                              editor.value.curPage - 1
+                            ].haveTimeFactor)
                       }
-                    }}
-                    onBlur={(e) => {
-                      e.preventDefault();
-                      const value =
-                        e.target.value === "" || +e.target.value < 1
-                          ? "0"
-                          : (+e.target.value).toString();
-                      dispatch(
-                        setStoreQuestion({
-                          ...editor.value.quiz!.questions[
-                            editor.value.curPage - 1
-                          ],
-                          timeFactor: value,
-                        })
-                      );
-                    }}
-                    disabled={
-                      editor.value.quiz!.questions[editor.value.curPage - 1]
-                        .useTemplate ||
-                      !(editor.value.quiz!.questions[editor.value.curPage - 1]
-                        .useTemplate
-                        ? editor.value.quiz!.haveTimeFactor
-                        : editor.value.quiz!.questions[editor.value.curPage - 1]
-                            .haveTimeFactor)
-                    }
-                  />
+                    />
+                  </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
           {editor.value.quiz!.questions[editor.value.curPage - 1].type ===
