@@ -9,7 +9,6 @@ import Matching from "@/features/library/components/editor/display/Matching";
 import Pool from "@/features/library/components/editor/display/Pool";
 import { setCurPage, setEditing } from "@/features/library/store/slice";
 import { useDispatch } from "react-redux";
-// import { FaChalkboardUser, FaPeopleGroup } from "react-icons/fa6";
 
 type Props = {
   className?: string;
@@ -26,6 +25,8 @@ export default function Display({ className }: Props) {
   }>({ width: 0, height: 0 });
 
   useEffect(() => {
+    console.log(editor.value.curPage);
+
     function onClickOutside(e: MouseEvent) {
       if (
         containerRef.current &&
@@ -87,6 +88,15 @@ export default function Display({ className }: Props) {
         editor.value.curPage === 0 ? "cursor-auto" : "cursor-pointer"
       } ${className}`}
     >
+      {editor.value.curPage === 0 && editor.value.quiz!.coverImg && (
+        <img
+          src={`${
+            import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
+          }/${encodeURIComponent(editor.value.quiz!.coverImg)}?alt=media`}
+          alt="Empty"
+          className="w-full h-full object-contain"
+        />
+      )}
       {editor.value.quiz!.questions.length > 0 && editor.value.curPage > 0 && (
         <>
           <div

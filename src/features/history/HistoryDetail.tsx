@@ -245,7 +245,7 @@ export default function HistoryDetail() {
                         questionNo={index + 1}
                         questionType={item["type"]}
                         questionData={item["options"]}
-                        poolOrder={item["pool_order"]}
+                        poolOrder={item["order"]}
                         poolQuestionData={filteredPoolQuestions}
                       />
                     </div>
@@ -381,6 +381,7 @@ export interface IOption {
   mark: number;
   option_content: string;
   prompt_content: string;
+  prompt_id: string;
   correct: boolean;
   color: string;
   participants: Participant[];

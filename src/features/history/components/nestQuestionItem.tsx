@@ -167,18 +167,71 @@ const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
 
     return (
       <div>
-        {questionData.map((item, index) => {
-          const colorIndex = index % colors.length;
-          const bgColor = colors[colorIndex];
+        {questionData == null ||
+        questionData.length === 0 ||
+        questionData[0].content === "" ? (
+          <div className="flex">
+            <p className={`px-2 py-2 rounded-xl border-2`}>No Answers</p>
+          </div>
+        ) : (
+          questionData.map((item, index) => {
+            const colorIndex = index % colors.length;
+            const bgColor = colors[colorIndex];
 
-          return (
-            <div className="flex" key={item.content}>
-              <p className={`px-2 py-2 rounded-xl border-2 border-${bgColor}`}>
-                {item.content}
-              </p>
-            </div>
-          );
-        })}
+            return (
+              <div className="flex" key={item.content}>
+                <p
+                  className={`px-2 py-2 rounded-xl border-2 border-${bgColor}`}
+                >
+                  {item.content}
+                </p>
+              </div>
+            );
+          })
+        )}
+      </div>
+    );
+  };
+
+  const buildCorrectAnswerBadge = () => {
+    return questionData?.map((option) => {
+      return option.correct === true ? (
+        <div className="ml-2 inline-flex px-2 py-1 bg-chart-pallete8 rounded-xl">
+          Correct Answer: {option.content}
+        </div>
+      ) : (
+        <></>
+      );
+    });
+  };
+
+  const buildFillInTheBlanksChart = () => {
+    const colors = ["jordy-blue", "quartz", "peach", "sienna", "dune"];
+
+    return (
+      <div className="flex">
+        {questionData == null ||
+        questionData.length === 0 ||
+        questionData[0].content === "" ? (
+          <div className="flex">
+            <p className={`px-2 py-2 rounded-xl border-2`}>No Answers</p>
+          </div>
+        ) : (
+          questionData.map((item, index) => {
+            const colorIndex = index % colors.length;
+            const bgColor = colors[colorIndex];
+
+            return (
+              <div className="flex mx-2" key={item.content}>
+                <p
+                  className={`px-2 py-2 rounded-xl border-2 border-${bgColor}`}
+                >
+                  {item.content === "" ? "-" : item.content}
+                </p>
+              </div>
+            );
+          })
+        )}
       </div>
     );
   };
@@ -188,7 +241,7 @@ const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
       case "CHOICE":
         return buildMultiTypeChart();
       case "FILL_BLANK":
-        return buildMultiTypeChart();
+        return buildFillInTheBlanksChart();
       case "PARAGRAPH":
         return buldParagraphChart();
       case "TRUE_FALSE":
@@ -206,9 +259,13 @@ const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
         <h2 className="font-serif">
           {questionNo}. {title.replace(/\|><\|/g, " _ ")}
         </h2>
-        {questionType === "PARAGRAPH" ? <></> : buildChartTypesButton()}
+        {questionType === "PARAGRAPH" || questionType === "FILL_BLANK" ? (
+          <></>
+        ) : (
+          buildChartTypesButton()
+        )}
       </Flex>
-      {buildQuestionTypeBadge(questionType)}
+      {buildQuestionTypeBadge(questionType)} {buildCorrectAnswerBadge()}
       <div className="py-4">{buildChart()}</div>
     </div>
   );

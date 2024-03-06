@@ -1,7 +1,6 @@
 declare global {
   type Quiz = {
     id?: string;
-    versionId: string;
     creatorId: string;
     creatorName: string;
     title: string;
@@ -15,6 +14,7 @@ declare global {
     caseSensitive: boolean;
     fontSize: number;
     questions: Question[];
+    created_at: string;
   };
 
   type Question = {
