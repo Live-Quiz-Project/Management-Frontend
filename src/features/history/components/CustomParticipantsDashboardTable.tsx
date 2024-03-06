@@ -151,31 +151,82 @@ const CustomParticipantsDashboardTable: React.FC<
   };
 
   const mapParticipantsToDetailItems = (participants: IParticipantDetail[]) => {
-    return participants.map((participant) => ({
-      displayName: participant.name,
-      mark: `${participant.marks}`,
-      corrects: `${participant.corrects}/${participant.total_questions}  (${
-        (participant.corrects * 100) /
-        (participant.total_questions - participant.unanswered)
-      }%)`,
-      incorrects: `${participant.incorrects}/${participant.total_questions} (${
-        (participant.incorrects * 100) /
-        (participant.total_questions - participant.unanswered)
-      }%)`,
-      unanswered: `${participant.unanswered}/${participant.total_questions} (${
-        (participant.unanswered * 100) /
-        (participant.total_questions - participant.unanswered)
-      }%)`,
-      questions: participant.questions,
-    }));
+    return participants?.map((participant) => {
+      const totalQuestions =
+        participant.total_questions - participant.unanswered;
+      const correctsPercentage =
+        totalQuestions !== 0
+          ? (participant.corrects * 100) / totalQuestions
+          : 0;
+      const incorrectsPercentage =
+        totalQuestions !== 0
+          ? (participant.incorrects * 100) / totalQuestions
+          : 0;
+      const unansweredPercentage =
+        totalQuestions !== 0
+          ? (participant.unanswered * 100) / totalQuestions
+          : 0;
+
+      return {
+        displayName: participant.name,
+        mark: `${participant.marks}`,
+        corrects: `${participant.corrects}/${participant.total_questions}  (${
+          isNaN(parseInt(correctsPercentage.toString()))
+            ? "0%"
+            : parseInt(correctsPercentage.toString())
+        }%)`,
+        incorrects: `${participant.incorrects}/${
+          participant.total_questions
+        } (${
+          isNaN(parseInt(incorrectsPercentage.toString()))
+            ? "0%"
+            : parseInt(incorrectsPercentage.toString())
+        }%)`,
+        unanswered: `${participant.unanswered}/${
+          participant.total_questions
+        } (${
+          isNaN(parseInt(unansweredPercentage.toString()))
+            ? "0%"
+            : parseInt(unansweredPercentage.toString())
+        }%)`,
+        questions: participant.questions,
+      };
+    });
   };
 
   const historyParticipantsDetailItems = mapParticipantsToDetailItems(data);
 
+  const renderCellContent = (
+    columnKey: string,
+    rowData: any,
+    rowIndex: number
+  ) => {
+    switch (columnKey) {
+      case "type":
+        return convertQuestionType(String(rowData[columnKey]));
+      case "order":
+        return String(rowIndex + 1);
+      case "is_correct":
+        return convertIsCorrect(rowData[columnKey]);
+      case "use_time":
+        return String(rowData[columnKey] / 10);
+      case "content":
+        return (
+          <div className="px-2">
+            {String(rowData[columnKey]).replace(/\|><\|/g, " _ ")}
+          </div>
+        );
+      case "answer":
+        return <div className="px-2">{String(rowData[columnKey])}</div>;
+      default:
+        return String(rowData[columnKey]);
+    }
+  };
+
   return (
     <div>
       <Flex className="pl-2 justify-around border-b border-pastel-orange">
-        {participantColumns.map((column) => (
+        {participantColumns?.map((column) => (
           <span key={column.key} style={{ width: column.width }}>
             {column.header}
             <button onClick={() => handleSort(column.key)}>
@@ -191,7 +242,7 @@ const CustomParticipantsDashboardTable: React.FC<
             <p className="font-semibold">Data not found.</p>
           </Flex>
         ) : (
-          historyParticipantsDetailItems.map((row, index) => (
+          historyParticipantsDetailItems?.map((row, index) => (
             <Flex className="flex-col rounded-lg bg-light-gray my-2 ">
               <div
                 key={index}
@@ -202,7 +253,7 @@ const CustomParticipantsDashboardTable: React.FC<
                   toggleRow(index);
                 }}
               >
-                {participantColumns.map((column) => (
+                {participantColumns?.map((column) => (
                   <div
                     key={column.key}
                     className={`py-6`}
@@ -215,14 +266,14 @@ const CustomParticipantsDashboardTable: React.FC<
               {expandedRows[index] && (
                 <div className=" border-2 border-pastel-orange rounded-lg">
                   <Flex className="pl-4 py-2 bg-pastel-orange">
-                    {questionColumns.map((column) => (
+                    {questionColumns?.map((column) => (
                       <span key={column.key} style={{ width: column.width }}>
                         {column.header}
                       </span>
                     ))}
                   </Flex>
                   <Flex className="flex-col">
-                    {row.questions.map((rowData, rowIndex) => (
+                    {row.questions?.map((rowData, rowIndex) => (
                       <Flex
                         key={rowIndex}
                         className={`pl-4 flex-col ${
@@ -230,23 +281,13 @@ const CustomParticipantsDashboardTable: React.FC<
                         }`}
                       >
                         <div className="flex">
-                          {questionColumns.map((column) => (
+                          {questionColumns?.map((column) => (
                             <div
                               key={column.key}
                               className={`py-6`}
                               style={{ width: column.width }}
                             >
-                              {column.key === "type"
-                                ? convertQuestionType(
-                                    String(rowData[column.key])
-                                  )
-                                : column.key === "order"
-                                ? String(rowIndex + 1)
-                                : column.key === "is_correct"
-                                ? convertIsCorrect(rowData[column.key])
-                                : column.key === "use_time"
-                                ? String(rowData[column.key] / 10)
-                                : String(rowData[column.key])}
+                              {renderCellContent(column.key, rowData, rowIndex)}
                             </div>
                           ))}
                         </div>

@@ -972,54 +972,60 @@ export default function Sidebar({ className }: Props) {
               </div>
             )}
           <div className="py-5 md:py-6 px-4 md:px-8 space-y-6">
-            <div className="space-y-2">
-              <p className="truncate">Layout</p>
-              <div className="grid grid-cols-2 gap-4">
-                {LAYOUTS[
-                  editor.value.quiz!.questions[editor.value.curPage - 1]
-                    .type as keyof typeof LAYOUTS
-                ].map((layout: string, i: number) => (
-                  <div key={i} className="flex items-center justify-center">
-                    <input
-                      type="radio"
-                      name="layout"
-                      id={`layout-${i}`}
-                      checked={
-                        i ===
-                        editor.value.quiz!.questions[editor.value.curPage - 1]
-                          .layout
-                      }
-                      onChange={() => {
-                        dispatch(
-                          setStoreQuestion({
-                            ...editor.value.quiz!.questions[
-                              editor.value.curPage - 1
-                            ],
-                            layout: i,
-                          })
-                        );
-                      }}
-                      className="peer hidden"
-                    />
-                    <label
-                      htmlFor={`layout-${i}`}
-                      className="w-full aspect-[4/3] bg-quill-gray rounded-xl cursor-pointer peer-checked:ring-2 ring-jordy-blue"
-                    >
-                      <img
-                        src={layout}
-                        alt={
+            {editor.value.quiz!.questions[editor.value.curPage - 1].type !==
+            QuestionTypesEnum.POOL ? (
+              <div className="space-y-2">
+                <p className="truncate">Layout</p>
+                <div className="grid grid-cols-2 gap-4">
+                  {LAYOUTS[
+                    editor.value.quiz!.questions[editor.value.curPage - 1]
+                      .type as keyof typeof LAYOUTS
+                  ].map((layout: string, i: number) => (
+                    <div key={i} className="flex items-center justify-center">
+                      <input
+                        type="radio"
+                        name="layout"
+                        id={`layout-${i}`}
+                        checked={
+                          i ===
                           editor.value.quiz!.questions[editor.value.curPage - 1]
-                            .type +
-                          "-" +
-                          i
+                            .layout
                         }
-                        className="object-cover text-note"
+                        onChange={() => {
+                          dispatch(
+                            setStoreQuestion({
+                              ...editor.value.quiz!.questions[
+                                editor.value.curPage - 1
+                              ],
+                              layout: i,
+                            })
+                          );
+                        }}
+                        className="peer hidden"
                       />
-                    </label>
-                  </div>
-                ))}
+                      <label
+                        htmlFor={`layout-${i}`}
+                        className="w-full bg-quill-gray rounded-xl cursor-pointer peer-checked:ring-2 ring-jordy-blue"
+                      >
+                        <img
+                          src={layout}
+                          alt={
+                            editor.value.quiz!.questions[
+                              editor.value.curPage - 1
+                            ].type +
+                            "-" +
+                            i
+                          }
+                          className="object-cover text-note"
+                        />
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : (
+              <></>
+            )}
             <div className="flex justify-between items-center">
               <p
                 className={`truncate transition-all duration-300 ${

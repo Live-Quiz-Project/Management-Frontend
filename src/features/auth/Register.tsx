@@ -31,6 +31,8 @@ export default function Register() {
 
     if (!password) {
       setPasswordError("Password is required");
+    } else if (password.length < 8) {
+      setPasswordError("Password must be at least 8 characters");
     } else {
       setPasswordError("");
     }
@@ -58,7 +60,9 @@ export default function Register() {
       password &&
       confirmPassword &&
       password === confirmPassword &&
-      name
+      name &&
+      password.length >= 8 &&
+      confirmPassword.length >= 8
     ) {
       try {
         const { data, status: _ } = await http.post("/users", {
@@ -97,20 +101,53 @@ export default function Register() {
               value={email}
               onInput={(e) => setEmail(e.currentTarget.value)}
             />
-            {emailError && <p className="text-red-600">{emailError}</p>}
+            {emailError && (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  textAlign: "left",
+                  marginTop: "4px",
+                }}
+              >
+                {emailError}
+              </p>
+            )}
             <TextInput
               label="Name"
               value={name}
               onInput={(e) => setName(e.currentTarget.value)}
             />
-            {nameError && <p className="text-red-600">{nameError}</p>}
+            {nameError && (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  textAlign: "left",
+                  marginTop: "4px",
+                }}
+              >
+                {nameError}
+              </p>
+            )}
             <TextInput
               type="password"
               label="Password"
               value={password}
               onInput={(e) => setPassword(e.currentTarget.value)}
             />
-            {passwordError && <p className="text-red-600">{passwordError}</p>}
+            {passwordError && (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  textAlign: "left",
+                  marginTop: "4px",
+                }}
+              >
+                {passwordError}
+              </p>
+            )}
             <TextInput
               type="password"
               label="Confirm Password"
@@ -118,7 +155,16 @@ export default function Register() {
               onInput={(e) => setConfirmPassword(e.currentTarget.value)}
             />
             {confirmPasswordError && (
-              <p className="text-red-600">{confirmPasswordError}</p>
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                  textAlign: "left",
+                  marginTop: "4px",
+                }}
+              >
+                {confirmPasswordError}
+              </p>
             )}
             <div className="w-full flex flex-col justify-center items-center space-y-4 relative">
               <p className="">

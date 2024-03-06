@@ -1,34 +1,19 @@
 import QuestionTypesEnum from "@/features/library/utils/enums/question-types";
+import layoutA from "../../../../common/assets/layoutA.png";
+import layoutB from "../../../../common/assets/layoutB.png";
+import layoutC from "../../../../common/assets/layoutC.png";
+import layoutD from "../../../../common/assets/layoutD.png";
+import layoutE from "../../../../common/assets/layoutE.png";
+import layoutF from "../../../../common/assets/layoutF.png";
+import layoutG from "../../../../common/assets/layoutG.png";
+import layoutH from "../../../../common/assets/layoutH.png";
 
 const LAYOUTS = {
-  [QuestionTypesEnum.CHOICE]: [
-    "/images/layouts/choice-1.png",
-    "/images/layouts/choice-2.png",
-    "/images/layouts/choice-3.png",
-    "/images/layouts/choice-4.png",
-  ],
-  [QuestionTypesEnum.TRUE_FALSE]: [
-    "/images/layouts/true-false-1.png",
-    "/images/layouts/true-false-2.png",
-  ],
-  [QuestionTypesEnum.FILL_BLANK]: [
-    "/images/layouts/fill-blank-1.png",
-    "/images/layouts/fill-blank-2.png",
-    "/images/layouts/fill-blank-1.png",
-    "/images/layouts/fill-blank-2.png",
-  ],
-  [QuestionTypesEnum.PARAGRAPH]: [
-    "/images/layouts/paragraph-1.png",
-    "/images/layouts/paragraph-2.png",
-    "/images/layouts/paragraph-1.png",
-    "/images/layouts/paragraph-2.png",
-  ],
-  [QuestionTypesEnum.MATCHING]: [
-    "/images/layouts/matching-1.png",
-    "/images/layouts/matching-2.png",
-    "/images/layouts/matching-3.png",
-    "/images/layouts/matching-4.png",
-  ],
+  [QuestionTypesEnum.CHOICE]: [layoutA, layoutB, layoutC, layoutD],
+  [QuestionTypesEnum.TRUE_FALSE]: [layoutA, layoutB],
+  [QuestionTypesEnum.FILL_BLANK]: [layoutA, layoutB, layoutC, layoutD],
+  [QuestionTypesEnum.PARAGRAPH]: [layoutA, layoutB, layoutC, layoutD],
+  [QuestionTypesEnum.MATCHING]: [layoutH, layoutG, layoutF, layoutE],
   [QuestionTypesEnum.POOL]: [
     "/images/layouts/pool-1.png",
     "/images/layouts/pool-2.png",

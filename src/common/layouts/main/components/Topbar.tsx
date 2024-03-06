@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { logOut } from "@/features/auth/store/slice";
 import { useNavigate } from "react-router-dom";
 import useTypedSelector from "@/common/hooks/useTypedSelector";
+import defaultProfile from "../../../assets/default_profile.png";
 
 type Props = {
   children: React.ReactNode;
@@ -24,6 +25,16 @@ export default function Topbar({
   const auth = useTypedSelector((state) => state.auth);
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const getProfileImage = (image: string) => {
+    if (image === null || image === "") {
+      return defaultProfile;
+    } else {
+      return `${
+        import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
+      }/${encodeURIComponent(image)}?alt=media`;
+    }
+  };
+
   return (
     <div className="flex-1 overflow-auto flex flex-col p-5 space-y-4">
       <div
@@ -36,16 +47,22 @@ export default function Topbar({
             <IoArrowBack className="w-6 h-6" />
           </button>
         )}
-        <p className="font-serif text-4xl font-medium">{title}</p>
-        <div className="flex items-center space-x-3">
+        <p className="font-sans-serif text-4xl font-medium">{title}</p>
+        <div className="flex bg-denim rounded-full justify-end">
+          <div className="flex flex-col pl-6 pt-1">
+            <p className="pr-2 font-sans-serif text-white">
+              {auth.value.user.name}
+            </p>
+            <p className="pr-2 font-sans-serif text-white text-sm">
+              {auth.value.user.email}
+            </p>
+          </div>
           <div
             className="w-14 h-14 bg-quill-gray rounded-full cursor-pointer relative border-2 border-transparent hover:border-pastel-orange"
             onClick={() => setIsExpanded((prev) => !prev)}
           >
             <img
-              src={`${
-                import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
-              }/${encodeURIComponent(auth.value.user.image)}?alt=media`}
+              src={getProfileImage(auth.value.user.image)}
               className="w-full h-full object-cover rounded-full"
             />
             <ExpandedUserDropdown
@@ -96,9 +113,6 @@ function ExpandedUserDropdown({
       ref={ref}
       className="w-[150px] bg-white rounded-md shadow-md absolute top-14 right-0 overflow-clip z-10"
     >
-      <div className="w-full flex-col justify-start items-center px-4 py-3 gap-2 bg-main-white">
-        <div className="font-light">{auth.value.user.name}</div>
-      </div>
       <div
         className="w-full flex justify-start items-center px-4 py-3 gap-2 bg-main-white hover:bg-light-gray"
         onClick={logout}
