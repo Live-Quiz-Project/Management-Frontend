@@ -146,7 +146,9 @@ export default function History() {
   };
 
   const handleRowClick = (rowData: IHistoryItem) => {
-    navigate(`/history/history-detail?id=${rowData.id}`);
+    if (rowData.id) {
+      navigate(`/history/history-detail?id=${rowData.id}`);
+    }
   };
 
   return (
