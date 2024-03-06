@@ -131,8 +131,10 @@ export default function Home() {
       <div className="mt-6">
         <p className="font-sans-serif text-xl">My quizzes</p>
         <div className="flex flex-nowrap overflow-x-auto space-x-4 scrollbar-hide mt-2">
-          {quizzes.length === 0 || quizzes === null || quizzes === undefined ? (
-            <div></div>
+          {quizzes === null ||
+          quizzes === undefined ||
+          quizzes?.length === 0 ? (
+            <div className="flex w-72 h-52 bg-light-gray rounded-xl"></div>
           ) : (
             quizzes.map((quiz) => (
               <div className="shrink-0" key={quiz.id}>
@@ -150,10 +152,10 @@ export default function Home() {
       <div className="mt-6">
         <p className="font-sans-serif text-xl">Recent lives</p>
         <div className="flex flex-nowrap overflow-x-auto space-x-4 scrollbar-hide mt-2">
-          {liveHistoryData.length === 0 ||
-          liveHistoryData === null ||
-          liveHistoryData === undefined ? (
-            <div></div>
+          {liveHistoryData === null ||
+          liveHistoryData === undefined ||
+          liveHistoryData?.length === 0 ? (
+            <div className="flex w-72 h-52 bg-light-gray rounded-xl"></div>
           ) : (
             liveHistoryData.map((quiz) => (
               <div className="shrink-0" key={quiz["id"]}>
