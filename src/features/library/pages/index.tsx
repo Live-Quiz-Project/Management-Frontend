@@ -41,6 +41,7 @@ export default function Library() {
           timeFactor: quiz.time_factor.toString(),
           timeLimit: quiz.time_limit.toString(),
           visibility: quiz.visibility,
+          created_at: quiz.created_at,
           questions: quiz.questions
             ? quiz.questions.map((question: any) => ({
                 id: question.id,
