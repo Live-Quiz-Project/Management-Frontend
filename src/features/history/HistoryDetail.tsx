@@ -247,7 +247,6 @@ export default function HistoryDetail() {
                         questionData={item["options"]}
                         poolOrder={item["order"]}
                         poolQuestionData={filteredPoolQuestions}
-                        dashboardAnswerData={dashboardAnswerData ?? []}
                       />
                     </div>
                   </div>

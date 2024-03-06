@@ -284,7 +284,7 @@ const CustomParticipantsDashboardTable: React.FC<
                           {questionColumns?.map((column) => (
                             <div
                               key={column.key}
-                              className={`py-6`}
+                              className={`py-6 break-words`}
                               style={{ width: column.width }}
                             >
                               {renderCellContent(column.key, rowData, rowIndex)}
