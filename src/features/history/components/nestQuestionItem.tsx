@@ -167,18 +167,28 @@ const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
 
     return (
       <div>
-        {questionData?.map((item, index) => {
-          const colorIndex = index % colors.length;
-          const bgColor = colors[colorIndex];
+        {questionData == null ||
+        questionData.length === 0 ||
+        questionData[0].content === "" ? (
+          <div className="flex">
+            <p className={`px-2 py-2 rounded-xl border-2`}>No Answers</p>
+          </div>
+        ) : (
+          questionData.map((item, index) => {
+            const colorIndex = index % colors.length;
+            const bgColor = colors[colorIndex];
 
-          return (
-            <div className="flex" key={item.content}>
-              <p className={`px-2 py-2 rounded-xl border-2 border-${bgColor}`}>
-                {item.content}
-              </p>
-            </div>
-          );
-        })}
+            return (
+              <div className="flex" key={item.content}>
+                <p
+                  className={`px-2 py-2 rounded-xl border-2 border-${bgColor}`}
+                >
+                  {item.content}
+                </p>
+              </div>
+            );
+          })
+        )}
       </div>
     );
   };
@@ -188,7 +198,9 @@ const NestQuestionItem: React.FC<NestQuestionItemProps> = ({
 
     return (
       <div>
-        {questionData == null ? (
+        {questionData == null ||
+        questionData.length === 0 ||
+        questionData[0].content === "" ? (
           <div className="flex">
             <p className={`px-2 py-2 rounded-xl border-2`}>No Answers</p>
           </div>
