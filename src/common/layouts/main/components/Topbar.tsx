@@ -113,9 +113,6 @@ function ExpandedUserDropdown({
       ref={ref}
       className="w-[150px] bg-white rounded-md shadow-md absolute top-14 right-0 overflow-clip z-10"
     >
-      <div className="w-full flex-col justify-start items-center px-4 py-3 gap-2 bg-main-white">
-        <div className="font-light">{auth.value.user.name}</div>
-      </div>
       <div
         className="w-full flex justify-start items-center px-4 py-3 gap-2 bg-main-white hover:bg-light-gray"
         onClick={logout}

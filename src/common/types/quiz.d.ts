@@ -15,6 +15,7 @@ declare global {
     caseSensitive: boolean;
     fontSize: number;
     questions: Question[];
+    created_at: string;
   };
 
   type Question = {
