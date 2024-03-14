@@ -22,13 +22,14 @@ type Props = {
 export default function Topbar({ className = "" }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch<StoreDispatch>();
+  const auth = useTypedSelector((state) => state.auth);
   const editor = useTypedSelector((state) => state.editor);
   const [isCanceling, setIsCanceling] = useState<boolean>(false);
   const [isButtonsExpanded, setIsButtonsExpanded] = useState<boolean>(false);
 
   async function onSubmit(e: FormEvent<HTMLButtonElement>) {
     e.preventDefault();
-    const toBeCreatedQuiz = {
+    const submittedQuiz = {
       id: editor.value.quiz!.id,
       title: editor.value.quiz!.title,
       description: editor.value.quiz!.description,
@@ -39,7 +40,7 @@ export default function Topbar({ className = "" }: Props) {
       time_factor: +editor.value.quiz!.timeFactor,
       font_size: editor.value.quiz!.fontSize,
       mark: +editor.value.quiz!.mark,
-      case_sensitive: editor.value.quiz!.caseSensitive,
+      case_sensitive: editor.value.quiz!.caseSensitive ? true : false,
       questions: editor.value.quiz!.questions.map((question) => {
         return {
           id: question.id || null,
@@ -82,7 +83,9 @@ export default function Topbar({ className = "" }: Props) {
                 order: (option as TextOption).order,
                 content: (option as TextOption).content,
                 mark: +(option as TextOption).mark,
-                case_sensitive: (option as TextOption).caseSensitive,
+                case_sensitive: (option as TextOption).caseSensitive
+                  ? true
+                  : false,
               };
             } else if (question.type === QuestionTypesEnum.MATCHING) {
               if ((option as MatchingOption).type === "MATCHING_PROMPT") {
@@ -124,14 +127,14 @@ export default function Topbar({ className = "" }: Props) {
 
     if (editor.value.mode === "edit") {
       try {
-        http.put(`/quizzes/${editor.value.quiz!.id}`, toBeCreatedQuiz);
+        http.put(`/quizzes/${editor.value.quiz!.id}`, submittedQuiz);
         navigate("/library");
       } catch (error) {
         alert(error);
       }
     } else {
       try {
-        http.post("/quizzes", toBeCreatedQuiz);
+        http.post("/quizzes", submittedQuiz);
         navigate("/library");
       } catch (error) {
         alert(error);
@@ -141,6 +144,17 @@ export default function Topbar({ className = "" }: Props) {
 
   async function onStart(e: FormEvent<HTMLButtonElement>) {
     e.preventDefault();
+    try {
+      await onSubmit(e);
+    } catch (error) {
+      console.log(error);
+    }
+
+    window.open(
+      `${import.meta.env.VITE_LIVE_QUIZ_URL}?token=${auth.value.token}&qid=${
+        editor.value.quiz!.id
+      }`
+    );
   }
 
   async function onCancel(e: FormEvent<HTMLButtonElement>) {

@@ -1005,7 +1005,7 @@ export default function Sidebar({ className }: Props) {
                       />
                       <label
                         htmlFor={`layout-${i}`}
-                        className="w-full bg-quill-gray rounded-xl cursor-pointer peer-checked:ring-2 ring-jordy-blue"
+                        className="w-full bg-quill-gray rounded-xl cursor-pointer peer-checked:ring-2 ring-jordy-blue overflow-hidden"
                       >
                         <img
                           src={layout}

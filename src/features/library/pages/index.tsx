@@ -168,19 +168,6 @@ export default function Library() {
     navigate(`/library/quiz/${newQuizId}`);
   }
 
-  useEffect(() => {
-    setQuizzes((prevData) => {
-      const sortedData = [...prevData];
-      sortedData.sort((a, b) => {
-        const createdA = new Date(a.created_at).getTime();
-        const createdB = new Date(b.created_at).getTime();
-
-        return createdB - createdA;
-      });
-      return sortedData;
-    });
-  }, [quizzes]);
-
   return (
     <Topbar>
       <div className="space-y-4 font-sans-serif" style={{ maxHeight: "73vh" }}>
@@ -192,10 +179,10 @@ export default function Library() {
           <SearchBar className="" keyword={search} setKeyword={setSearch} />
         </div>
         <div className="space-y-4">
-          <div className="grid grid-cols-12 border-b-2 border-b-koromiko">
-            <p className="col-span-4 col-start-3">Title</p>
-            <p className="col-span-3">Creator</p>
-            <p className="col-span-3">Description</p>
+          <div className="grid grid-cols-[2fr_3fr_2fr_2fr] border-b-2 border-b-koromiko text-header-3">
+            <p className="col-start-2">Title</p>
+            <p>Creator</p>
+            <p>Description</p>
           </div>
           <div className="space-y-2 pb-2">
             {filteredQuizzes.map((quiz) => (
