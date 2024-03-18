@@ -186,7 +186,16 @@ export default function Library() {
           </div>
           <div className="space-y-2 pb-2">
             {filteredQuizzes.map((quiz) => (
-              <QuizCard key={quiz.id} quiz={quiz} />
+              <QuizCard
+                key={quiz.id}
+                quiz={{
+                  id: quiz.id!,
+                  title: quiz.title,
+                  description: quiz.description,
+                  creatorName: quiz.creatorName,
+                  coverImg: quiz.coverImg,
+                }}
+              />
             ))}
           </div>
         </div>
