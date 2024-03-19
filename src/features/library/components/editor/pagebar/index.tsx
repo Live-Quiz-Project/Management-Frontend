@@ -8,7 +8,7 @@ import {
   setCurPage,
   setQuiz,
 } from "@/features/library/store/slice";
-import { LuPanelBottomOpen, LuPanelBottomClose } from "react-icons/lu";
+// import { LuPanelBottomOpen, LuPanelBottomClose } from "react-icons/lu";
 import { BiSwim } from "react-icons/bi";
 import { BsQuestionLg } from "react-icons/bs";
 import { RiTimerLine } from "react-icons/ri";
@@ -51,7 +51,10 @@ export default function Pagebar({
     number | false
   >(false);
   const [curPoolIndex, setCurPoolIndex] = useState<number>(0);
-  const [isAllShown, setIsAllShown] = useState<boolean>(false);
+  const [
+    isAllShown,
+    // setIsAllShown
+  ] = useState<boolean>(false);
 
   function onAddQuestion(e: FormEvent<HTMLButtonElement>) {
     e.preventDefault();
@@ -362,7 +365,7 @@ export default function Pagebar({
                 "Add a question"
               )}
             </p>
-            <p className="absolute xl:static invisible xl:visible mx-auto">
+            {/* <p className="absolute xl:static invisible xl:visible mx-auto">
               Something to put here
             </p>
             <button
@@ -375,7 +378,7 @@ export default function Pagebar({
               ) : (
                 <LuPanelBottomOpen className="w-5 h-5" />
               )}
-            </button>
+            </button> */}
           </div>
         </>
       </div>
