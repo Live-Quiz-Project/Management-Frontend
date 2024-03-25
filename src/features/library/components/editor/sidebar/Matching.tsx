@@ -51,7 +51,7 @@ export default function Matching() {
         order: newOptionsPrompts.length + newOptionsOptions.length + 1,
         color: randomColor(),
         content: "",
-        eliminate: false,
+        eliminate: true,
       } as MatchingOptionOption,
     ];
     newOptions = [
@@ -90,6 +90,10 @@ export default function Matching() {
         eliminate: false,
       } as MatchingOptionPrompt,
     ];
+    newOptionsAnswers = newOptionsAnswers.map((o) => ({
+      ...o,
+      optionOrder: o.optionOrder > 0 ? o.optionOrder + 1 : 0,
+    }));
     newOptionsAnswers = [
       ...newOptionsAnswers,
       {
@@ -395,6 +399,7 @@ function Prompt({ index }: { prompt: MatchingOptionPrompt; index: number }) {
     newOptionsAnswers = newOptionsAnswers.map((o, i) => ({
       ...o,
       promptOrder: i + 1,
+      optionOrder: o.optionOrder > 0 ? o.optionOrder - 1 : 0,
     }));
     newOptionsOptions = newOptionsOptions.map((o, i) => ({
       ...o,

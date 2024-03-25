@@ -67,6 +67,7 @@ export default function Home() {
         }) => {
           q.push({
             id: quiz.id,
+            // @ts-ignore
             versionId: "",
             title: quiz.title,
             description: quiz.description,
@@ -108,6 +109,7 @@ export default function Home() {
     dispatch(setMode("create"));
     dispatch(setCurPage(0));
     dispatch(
+      // @ts-ignore
       setQuiz({
         id: newUuid,
         creatorName: auth.value.user.name,

@@ -24,6 +24,8 @@ declare global {
     curPage: number;
     editing: boolean;
     sidebarExpanded: boolean;
+    savable: boolean;
+    error: string | null;
     quiz: Quiz | null;
   };
   type InitQuizEditorStoreState = {

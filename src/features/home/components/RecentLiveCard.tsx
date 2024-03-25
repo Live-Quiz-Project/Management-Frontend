@@ -5,15 +5,15 @@ type Props = {
 };
 
 export default function RecentLiveCard({ quiz }: Props) {
-  const getCoverImage = (coverImage: string) => {
-    if (coverImage === null || coverImage === "") {
-      return defaultImage;
-    } else {
-      return `${
-        import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
-      }/${encodeURIComponent(coverImage)}?alt=media`;
-    }
-  };
+  // const getCoverImage = (coverImage: string) => {
+  //   if (coverImage === null || coverImage === "") {
+  //     return defaultImage;
+  //   } else {
+  //     return `${
+  //       import.meta.env.VITE_FIREBASE_STORAGE_BASE_URL
+  //     }/${encodeURIComponent(coverImage)}?alt=media`;
+  //   }
+  // };
 
   return (
     <div className="grid grid-rows-[auto_auto] items-center w-72 h-full bg-karry rounded-xl px-1 py-1 overflow-hidden">

@@ -3,8 +3,8 @@ import { http } from "@/common/services/axios";
 import { FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { createUser } from "./store/slice";
-import SuccessDialog from "../../common/components/dialogues/successfulDialog";
+import { createUser, logIn } from "@/features/auth/store/slice";
+import SuccessDialog from "@/common/components/dialogues/successfulDialog";
 
 export default function Register() {
   const dispatch = useDispatch<StoreDispatch>();
@@ -70,7 +70,17 @@ export default function Register() {
           email,
           password,
         });
-        console.log(data);
+        dispatch(
+          logIn({
+            token: data.accessToken,
+            user: {
+              id: data.id,
+              name: data.name,
+              email: data.email,
+              image: data.image,
+            },
+          })
+        );
         dispatch(createUser(data));
         setRegistrationSuccess(true);
       } catch (error) {
@@ -82,13 +92,13 @@ export default function Register() {
   return (
     <form
       onSubmit={onSubmit}
-      className="flex flex-col justify-center items-center w-full h-dscreen"
+      className="flex flex-col justify-center items-center w-full h-dscreen font-sans-serif"
     >
       {registrationSuccess ? (
         <SuccessDialog
           label="Registration Successful"
           onClose={() => {
-            navigate("/login");
+            navigate("/");
           }}
         />
       ) : (

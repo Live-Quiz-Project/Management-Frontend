@@ -5,8 +5,6 @@ import MainLayout from "@/common/layouts/main";
 import HistoryRoutes from "@/app/router/HistoryRoutes";
 
 const Home = lazy(() => import("@/features/home"));
-const Help = lazy(() => import("@/features/help"));
-const Setting = lazy(() => import("@/features/setting"));
 
 const MainMenuRoutes: RouteObject[] = [
   {
@@ -24,14 +22,6 @@ const MainMenuRoutes: RouteObject[] = [
   {
     path: "history",
     children: HistoryRoutes,
-  },
-  {
-    path: "help",
-    element: <Help />,
-  },
-  {
-    path: "setting",
-    element: <Setting />,
   },
 ];
 

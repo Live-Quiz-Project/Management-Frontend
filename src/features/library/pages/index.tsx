@@ -7,131 +7,59 @@ import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { privateHttp as http } from "@/common/services/axios";
 import { useDispatch } from "react-redux";
-import { setCurPage, setMode, setQuiz } from "@/features/library/store/slice";
+import {
+  setCurPage,
+  setError,
+  setMode,
+  setQuiz,
+  setSavable,
+} from "@/features/library/store/slice";
 import Visibility from "@/features/library/utils/enums/visibility";
 import useTypedSelector from "@/common/hooks/useTypedSelector";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
-import QuestionTypesEnum from "../utils/enums/question-types";
+
+type DisplayQuiz = {
+  id: string;
+  title: string;
+  description: string;
+  creatorName: string;
+  coverImg: string;
+  updatedAt: Date;
+};
 
 export default function Library() {
   const navigate = useNavigate();
   const dispatch = useDispatch<StoreDispatch>();
+  const editor = useTypedSelector((state) => state.editor);
   const auth = useTypedSelector((state) => state.auth);
-  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
-  const [filteredQuizzes, setFilteredQuizzes] = useState<Quiz[]>([]);
+  const [quizzes, setQuizzes] = useState<DisplayQuiz[]>([]);
+  const [filteredQuizzes, setFilteredQuizzes] = useState<DisplayQuiz[]>([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    (async () => {
-      const q: Quiz[] = [];
+    async function fetchQuizzes() {
       const { data } = await http.get("/quizzes");
+      const q: DisplayQuiz[] = data.map((quiz: any) => ({
+        id: quiz.id,
+        title: quiz.title,
+        description: quiz.description,
+        creatorName: quiz.creator_name,
+        coverImg: quiz.cover_image,
+        updatedAt: new Date(quiz.updated_at),
+      }));
+      q.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
 
-      data.forEach((quiz: any) => {
-        q.push({
-          id: quiz.id,
-          title: quiz.title,
-          description: quiz.description,
-          creatorId: quiz.creator_id,
-          creatorName: quiz.creator_name,
-          coverImg: quiz.cover_image,
-          caseSensitive: quiz.case_sensitive,
-          fontSize: quiz.font_size,
-          mark: quiz.mark.toString(),
-          haveTimeFactor: quiz.have_time_factor,
-          timeFactor: quiz.time_factor.toString(),
-          timeLimit: quiz.time_limit.toString(),
-          visibility: quiz.visibility,
-          created_at: quiz.created_at,
-          questions: quiz.questions
-            ? quiz.questions.map((question: any) => ({
-                id: question.id,
-                isInPool: question.pool_order > -1,
-                pool: question.pool_order,
-                poolRequired: question.pool_required,
-                type: question.type,
-                order: question.order,
-                content: question.content,
-                note: question.note,
-                mediaType: question.media_type,
-                media: question.media,
-                useTemplate: question.use_template,
-                timeLimit: question.time_limit,
-                haveTimeFactor: question.have_time_factor,
-                timeFactor: question.time_factor,
-                fontSize: question.font_size,
-                layout: question.layout_idx,
-                selectMin: question.select_min,
-                selectMax: question.select_max,
-                caseSensitive: question.case_sensitive,
-                options: question.options
-                  ? question.options.map((option: any) => {
-                      if (
-                        question.type === QuestionTypesEnum.CHOICE ||
-                        question.type === QuestionTypesEnum.TRUE_FALSE
-                      ) {
-                        return {
-                          id: option.id,
-                          order: option.order,
-                          color: option.color,
-                          content: option.content,
-                          mark: option.mark,
-                          isCorrect: option.correct,
-                        };
-                      } else if (
-                        question.type === QuestionTypesEnum.PARAGRAPH ||
-                        question.type === QuestionTypesEnum.FILL_BLANK
-                      ) {
-                        return {
-                          id: option.id,
-                          order: option.order,
-                          content: option.content,
-                          mark: option.mark,
-                          case_sensitive: option.case_sensitive,
-                        };
-                      } else if (question.type === QuestionTypesEnum.MATCHING) {
-                        if (
-                          (option as MatchingOption).type === "MATCHING_PROMPT"
-                        ) {
-                          return {
-                            id: option.id,
-                            type: "MATCHING_PROMPT",
-                            content: option.content,
-                            color: option.color,
-                            order: option.order,
-                            eliminate: option.eliminate,
-                          };
-                        } else if (
-                          (option as MatchingOption).type === "MATCHING_OPTION"
-                        ) {
-                          return {
-                            id: option.id,
-                            type: "MATCHING_OPTION",
-                            content: option.content,
-                            color: option.color,
-                            order: option.order,
-                            eliminate: option.eliminate,
-                          };
-                        } else if (
-                          (option as MatchingOption).type === "MATCHING_ANSWER"
-                        ) {
-                          return {
-                            id: option.id,
-                            type: "MATCHING_ANSWER",
-                            prompt: option.prompt_id,
-                            option: option.option_id,
-                            mark: option.mark,
-                          };
-                        }
-                      }
-                    })
-                  : [],
-              }))
-            : [],
-        });
-      });
       setQuizzes(q);
       setFilteredQuizzes(q);
-    })();
+    }
+
+    fetchQuizzes();
+    dispatch(setError(null));
+
+    if (editor.value.savable) {
+      dispatch(setSavable(false));
+      navigate(0);
+    }
   }, []);
 
   useEffect(() => {
@@ -156,8 +84,8 @@ export default function Library() {
         coverImg: "",
         visibility: Visibility.PRIVATE,
         timeLimit: "60",
-        haveTimeFactor: true,
-        timeFactor: "1",
+        haveTimeFactor: false,
+        timeFactor: "0",
         mark: "1",
         caseSensitive: false,
         fontSize: 2,

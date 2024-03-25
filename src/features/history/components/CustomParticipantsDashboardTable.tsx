@@ -249,6 +249,7 @@ const CustomParticipantsDashboardTable: React.FC<
                 className="flex rounded-lg bg-peach pl-2 border-2 border-transparent hover:border-pastel-orange"
                 style={{ cursor: onRowClick ? "pointer" : "default" }}
                 onClick={() => {
+                  // @ts-ignore
                   onRowClick && onRowClick(row, index);
                   toggleRow(index);
                 }}

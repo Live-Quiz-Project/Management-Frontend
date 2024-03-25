@@ -288,6 +288,9 @@ export default function Sidebar({ className }: Props) {
                           setQuiz({
                             ...editor.value.quiz!,
                             haveTimeFactor: e.currentTarget.checked,
+                            timeFactor: e.currentTarget.checked
+                              ? editor.value.quiz!.timeFactor
+                              : "0",
                           })
                         );
                       }}
@@ -590,7 +593,11 @@ export default function Sidebar({ className }: Props) {
                             editor.value.curPage - 1
                           ],
                           content: `${e.currentTarget.value}${
-                            rest ? BLANK_IDENTIFIER : ""
+                            editor.value.quiz!.questions[
+                              editor.value.curPage - 1
+                            ].options.length > 0
+                              ? BLANK_IDENTIFIER
+                              : ""
                           }${rest}`,
                         })
                       );
@@ -864,6 +871,11 @@ export default function Sidebar({ className }: Props) {
                                 editor.value.curPage - 1
                               ],
                               haveTimeFactor: e.currentTarget.checked,
+                              timeFactor: e.currentTarget.checked
+                                ? editor.value.quiz!.questions[
+                                    editor.value.curPage - 1
+                                  ].timeFactor
+                                : "0",
                             })
                           );
                         }}

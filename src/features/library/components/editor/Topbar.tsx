@@ -10,7 +10,12 @@ import FilledButton from "@/common/components/buttons/FilledButton";
 import EditableLabel from "@/common/components/inputs/EditableLabel";
 import useTypedSelector from "@/common/hooks/useTypedSelector";
 import { useDispatch } from "react-redux";
-import { setCurPage, setQuiz } from "@/features/library/store/slice";
+import {
+  setCurPage,
+  setError,
+  setQuiz,
+  setSavable,
+} from "@/features/library/store/slice";
 import { FormEvent, useState } from "react";
 import QuestionTypesEnum from "@/features/library/utils/enums/question-types";
 import BaseModal from "@/common/components/modals/BaseModal";
@@ -29,6 +34,119 @@ export default function Topbar({ className = "" }: Props) {
 
   async function onSubmit(e: FormEvent<HTMLButtonElement>) {
     e.preventDefault();
+
+    if (editor.value.quiz!.title === "") {
+      dispatch(setError("Please enter title"));
+      return;
+    }
+
+    if (editor.value.quiz!.questions.length <= 0) {
+      dispatch(setError("Please add at least one question"));
+      return;
+    }
+
+    let nah = false;
+    editor.value.quiz!.questions.forEach((question, i) => {
+      if (question.content === "") {
+        dispatch(setError(`Please enter content for question ${i + 1}`));
+        nah = true;
+      }
+      if (
+        question.type !== QuestionTypesEnum.PARAGRAPH &&
+        question.options.length < 0
+      ) {
+        dispatch(
+          setError(`Please add at least one option for question ${i + 1}`)
+        );
+        nah = true;
+      }
+      if (
+        question.type === QuestionTypesEnum.CHOICE ||
+        question.type === QuestionTypesEnum.TRUE_FALSE
+      ) {
+        let haveCorrectAnswer = false;
+        question.options.forEach((option) => {
+          if ((option as ChoiceOption).content === "") {
+            dispatch(
+              setError(
+                `Please enter content for option ${i + 1} in question ${i + 1}`
+              )
+            );
+            nah = true;
+          }
+          if ((option as ChoiceOption).isCorrect) {
+            haveCorrectAnswer = true;
+          }
+        });
+        if (!haveCorrectAnswer) {
+          dispatch(
+            setError(`Please select correct answer for question ${i + 1}`)
+          );
+          nah = true;
+        }
+      }
+      if (question.type === QuestionTypesEnum.MATCHING) {
+        let optionsPrompts = [...(question.options as MatchingOption[])].filter(
+          (o) => o.type === "MATCHING_PROMPT"
+        ) as MatchingOptionPrompt[];
+        let optionsOptions = [...(question.options as MatchingOption[])].filter(
+          (o) => o.type === "MATCHING_OPTION"
+        ) as MatchingOptionOption[];
+        let optionsAnswers = [...(question.options as MatchingOption[])].filter(
+          (o) => o.type === "MATCHING_ANSWER"
+        ) as MatchingOptionAnswer[];
+
+        if (optionsPrompts.length < 1) {
+          dispatch(
+            setError(`Please add at least one prompt for question ${i + 1}`)
+          );
+          nah = true;
+        }
+        if (optionsOptions.length < 1) {
+          dispatch(
+            setError(`Please add at least one option for question ${i + 1}`)
+          );
+          nah = true;
+        }
+        optionsPrompts.forEach((prompt, j) => {
+          if (prompt.content === "") {
+            dispatch(
+              setError(
+                `Please enter content for prompt ${j + 1} in question ${i + 1}`
+              )
+            );
+            nah = true;
+          }
+        });
+        optionsOptions.forEach((option, j) => {
+          if (option.content === "") {
+            dispatch(
+              setError(
+                `Please enter content for option ${j + 1} in question ${i + 1}`
+              )
+            );
+            nah = true;
+          }
+        });
+        optionsAnswers.forEach((answer) => {
+          if (answer.optionOrder < 1) {
+            dispatch(
+              setError(
+                `Please select matched option for prompt ${
+                  answer.promptOrder
+                } in question ${i + 1}`
+              )
+            );
+            nah = true;
+          }
+        });
+      }
+    });
+    if (nah) return;
+
+    dispatch(setSavable(true));
+    dispatch(setError(null));
+
     const submittedQuiz = {
       id: editor.value.quiz!.id,
       title: editor.value.quiz!.title,
@@ -128,14 +246,14 @@ export default function Topbar({ className = "" }: Props) {
     if (editor.value.mode === "edit") {
       try {
         http.put(`/quizzes/${editor.value.quiz!.id}`, submittedQuiz);
-        navigate("/library");
+        navigate("/library", { replace: true });
       } catch (error) {
         alert(error);
       }
     } else {
       try {
         http.post("/quizzes", submittedQuiz);
-        navigate("/library");
+        navigate("/library", { replace: true });
       } catch (error) {
         alert(error);
       }
@@ -220,6 +338,11 @@ export default function Topbar({ className = "" }: Props) {
             isButtonsExpanded ? "grid" : "hidden"
           } bg-sienna/10 md:bg-transparent z-10 md:z-auto rounded-xl backdrop-blur-md md:backdrop-blur-0 absolute top-10 right-2.5 p-2 md:p-0 space-y-2 md:space-y-0 md:static md:flex items-center justify-center space-x-0 md:space-x-2`}
         >
+          {editor.value.error && (
+            <p className="text-red-500 text-header-3 text-scarlet animate-bounce">
+              {editor.value.error}
+            </p>
+          )}
           <FilledButton
             type="button"
             onClick={onSubmit}

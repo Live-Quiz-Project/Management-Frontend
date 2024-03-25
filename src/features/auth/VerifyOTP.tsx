@@ -19,7 +19,7 @@ export default function VerifyOTP() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center w-full h-dscreen">
+    <div className="flex flex-col justify-center items-center w-full h-dscreen font-sans-serif">
       <div className="w-1/2 flex flex-col items-center space-y-10">
         <h1 className="font-serif font-semibold text-xl">Verify OTP</h1>
         <div className="w-full flex flex-col justify-center items-start space-y-4 relative">

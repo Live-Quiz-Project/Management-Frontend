@@ -1,6 +1,6 @@
 import TextInput from "@/common/layouts/auth/components/TextInput";
 import { http } from "@/common/services/axios";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   Link,
@@ -12,11 +12,13 @@ import { logIn } from "@/features/auth/store/slice";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import BaseModal from "@/common/components/modals/BaseModal";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import useTypedSelector from "@/common/hooks/useTypedSelector";
 
 export default function Login() {
   const dispatch = useDispatch<StoreDispatch>();
   const navigate = useNavigate();
   const location = useLocation();
+  const auth = useTypedSelector((state) => state.auth);
   const [searchParams, _] = useSearchParams();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -24,6 +26,12 @@ export default function Login() {
   const [passwordError, setPasswordError] = useState<string>("");
   const [errorLoginFailed, setErrorLoginFailed] = useState<boolean>(false);
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
+
+  useEffect(() => {
+    if (auth.value.token) {
+      navigate("/");
+    }
+  }, []);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -76,6 +84,7 @@ export default function Login() {
       } catch (error) {
         console.error(error);
         setErrorLoginFailed(
+          // @ts-ignore
           error.response.data.error || error.response.status == 500
             ? true
             : false
@@ -93,6 +102,7 @@ export default function Login() {
       dispatch(
         logIn({
           token: data.token,
+          // @ts-ignore
           user: {
             id: data.id,
             name: data.name,
@@ -119,9 +129,9 @@ export default function Login() {
   return (
     <form
       onSubmit={onSubmit}
-      className="flex flex-col justify-center items-center w-full h-dscreen"
+      className="flex flex-col justify-center items-center w-full h-dscreen font-sans-serif"
     >
-      {errorLoginFailed ? (
+      {errorLoginFailed && (
         <BaseModal
           setIsOpen={setErrorLoginFailed}
           className="!p-6 xl:!p-8 flex flex-col space-y-6  !rounded-3xl !bg-beige font-sans-serif"
@@ -133,8 +143,6 @@ export default function Login() {
             Invalid email or password
           </p>
         </BaseModal>
-      ) : (
-        <></>
       )}
       <div className="w-1/2 flex flex-col items-center space-y-10">
         <h1 className="font-serif font-semibold text-3xl">Log In</h1>

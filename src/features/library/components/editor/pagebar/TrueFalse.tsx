@@ -59,7 +59,7 @@ export default function TrueFalse({
             )}
           </div>
           <div className="flex flex-col justify-center items-end space-y-1">
-            <div className="text-body-1 flex items-center gap-1.5 truncate w-4/5">
+            <div className="text-body-1 flex items-center gap-1.5 truncate w-4/5 justify-end">
               {(question.options as ChoiceOption[]).find(
                 (option) => option.isCorrect
               ) ? (

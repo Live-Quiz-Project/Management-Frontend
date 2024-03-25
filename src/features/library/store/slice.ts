@@ -6,7 +6,9 @@ const initState = {
     curPage: 0,
     editing: false,
     sidebarExpanded: false,
+    savable: false,
     quiz: null,
+    error: null,
   } as QuizEditorStoreState,
 } as InitQuizEditorStoreState;
 
@@ -28,6 +30,12 @@ export const editor = createSlice({
     },
     setSideBarExpanded: (state, action: PayloadAction<boolean>) => {
       state.value.sidebarExpanded = action.payload;
+    },
+    setSavable: (state, action: PayloadAction<boolean>) => {
+      state.value.savable = action.payload;
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.value.error = action.payload;
     },
     setQuiz: (state, action: PayloadAction<Quiz | null>) => {
       state.value.quiz = action.payload;
@@ -98,6 +106,8 @@ export const {
   setCurPage,
   setEditing,
   setSideBarExpanded,
+  setSavable,
+  setError,
   setQuiz,
   addQuestion,
   addQuestionFromPool,

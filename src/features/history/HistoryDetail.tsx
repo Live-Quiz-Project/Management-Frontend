@@ -246,6 +246,7 @@ export default function HistoryDetail() {
                         questionType={item["type"]}
                         questionData={item["options"]}
                         poolOrder={item["order"]}
+                        // @ts-ignore
                         poolQuestionData={filteredPoolQuestions}
                       />
                     </div>
@@ -258,6 +259,7 @@ export default function HistoryDetail() {
               <CustomParticipantsDashboardTable
                 participantColumns={participantColumns}
                 questionColumns={questionColumns}
+                // @ts-ignore
                 data={dashboardAnswerData ?? []}
                 onRowClick={handleRowClick}
                 sortByName={sortByName}

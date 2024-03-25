@@ -32,7 +32,7 @@ export default function ForgotPassword() {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center w-full h-dscreen">
+    <div className="flex flex-col justify-center items-center w-full h-dscreen font-sans-serif">
       {errorSubmitEmail ? (
         <BaseModal
           setIsOpen={setErrorSubmitEmail}
