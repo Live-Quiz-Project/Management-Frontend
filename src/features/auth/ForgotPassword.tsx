@@ -26,6 +26,7 @@ export default function ForgotPassword() {
         navigate("/verify-otp");
       } catch (error) {
         console.error(error);
+        // @ts-ignore
         setErrorSubmitEmail(error.response.data.error ? true : false);
       }
     }
